@@ -2,6 +2,8 @@ package com.rekoe.domain;
 
 import java.io.Serializable;
 
+import org.nutz.dao.entity.annotation.Comment;
+import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
@@ -16,27 +18,33 @@ public class Pj implements Serializable{
 	/**
 	 * 项目ID
 	 */
+	@Name
 	private String pj;
 	/**
 	 * 仓库位置
 	 */
+	@Comment
 	private String path;
 	/**
 	 * 访问项目的svn地址
 	 */
+	@Comment
 	private String url;
 	/**
 	 * 描述
 	 */
+	@Comment
 	private String des;
 	/**
 	 * 类型
 	 */
+	@Comment
 	private String type;
 
 	/**
 	 * 用户是否是这个项目的管理员
 	 */
+	@Comment
 	private boolean manager;
 
 	/**

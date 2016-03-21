@@ -2,6 +2,7 @@ package com.rekoe.domain;
 
 import java.io.Serializable;
 
+import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
@@ -18,18 +19,22 @@ public class Usr implements Serializable {
 	/**
 	 * 用户ID
 	 */
+	@Comment
 	private String usr;
 	/**
 	 * 用户姓名
 	 */
+	@Comment
 	private String name;
 	/**
 	 * 密码(加密)
 	 */
+	@Comment
 	private String psw;
 	/**
 	 * 角色
 	 */
+	@Comment
 	private String role;
 
 	/**

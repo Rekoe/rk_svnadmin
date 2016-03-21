@@ -1,5 +1,6 @@
 package com.rekoe.domain;
 
+import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
@@ -14,6 +15,7 @@ public class PjUsr extends Usr {
 	/**
 	 * 项目ID
 	 */
+	@Name
 	private String pj;
 
 	/**

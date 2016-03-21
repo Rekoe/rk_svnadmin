@@ -2,6 +2,8 @@ package com.rekoe.domain;
 
 import java.io.Serializable;
 
+import org.nutz.dao.entity.annotation.Comment;
+import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
@@ -16,18 +18,22 @@ public class PjGrUsr implements Serializable {
 	/**
 	 * 项目
 	 */
+	@Name
 	private String pj;
 	/**
 	 * 用户
 	 */
+	@Comment
 	private String usr;
 	/**
 	 * 用户姓名
 	 */
+	@Comment
 	private String usrName;
 	/**
 	 * 组
 	 */
+	@Comment
 	private String gr;
 
 	/**
