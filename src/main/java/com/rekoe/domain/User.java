@@ -3,7 +3,6 @@ package com.rekoe.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.ColType;
@@ -15,10 +14,7 @@ import org.nutz.dao.entity.annotation.Table;
 import org.nutz.dao.entity.annotation.TableIndexes;
 
 /**
- * @author 科技㊣²º¹³ 
- * 2014年2月3日 下午4:48:45 
- * http://www.rekoe.com 
- * QQ:5382211
+ * @author 科技㊣²º¹³ 2014年2月3日 下午4:48:45 http://www.rekoe.com QQ:5382211
  */
 @Table("system_user")
 @TableIndexes({ @Index(name = "user_name", fields = { "name" }, unique = true), @Index(name = "user_openid", fields = { "openid" }, unique = true) })
@@ -61,9 +57,6 @@ public class User implements Serializable {
 	@Column("is_system")
 	@ColDefine(type = ColType.BOOLEAN)
 	private boolean system;
-
-	@ManyMany(target = GameServer.class, relation = "system_user_server", from = "USERID", to = "SERVERID", key = "id")
-	private Map<Integer, GameServer> servers;
 
 	public String getProviderid() {
 		return providerid;
@@ -159,14 +152,6 @@ public class User implements Serializable {
 
 	public void setSystem(boolean system) {
 		this.system = system;
-	}
-
-	public Map<Integer, GameServer> getServers() {
-		return servers;
-	}
-
-	public void setServers(Map<Integer, GameServer> servers) {
-		this.servers = servers;
 	}
 
 }

@@ -13,32 +13,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.nutz.dao.Dao;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.util.Daos;
-import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.web.ajax.AjaxReturn;
 
 import com.rekoe.common.Message;
-import com.rekoe.domain.GameServer;
-import com.rekoe.service.GameServerService;
 
 public class BaseAction {
 	private final static Log log = Logs.get();
 
-	@Inject
-	public GameServerService gameServerService;
-
 	protected Message responseMessage(AjaxReturn result, HttpServletRequest req) {
 		return result.isOk() ? Message.success("admin.common.ok", req) : Message.error(StringUtils.defaultString(result.getMsg(), "admin.common.resopnse.error"), req);
-	}
-
-	public GameServer getServer(int id) {
-		GameServer server = gameServerService.getServer(id);
-		return server;
-	}
-
-	public List<Integer> getAllServerIDs() {
-		return gameServerService.getAllIds();
 	}
 
 	public int getPage(Integer page) {

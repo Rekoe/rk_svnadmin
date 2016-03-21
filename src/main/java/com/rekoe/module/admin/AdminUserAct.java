@@ -1,8 +1,6 @@
 package com.rekoe.module.admin;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,10 +31,8 @@ import com.alibaba.druid.util.DruidWebUtils;
 import com.rekoe.annotation.PermissionTag;
 import com.rekoe.common.Message;
 import com.rekoe.common.page.Pagination;
-import com.rekoe.domain.GameServer;
 import com.rekoe.domain.Role;
 import com.rekoe.domain.User;
-import com.rekoe.service.GameServerService;
 import com.rekoe.service.RoleService;
 import com.rekoe.service.UserService;
 
@@ -54,9 +50,6 @@ public class AdminUserAct {
 	private UserService userService;
 	@Inject
 	private RoleService roleService;
-
-	@Inject
-	private GameServerService gameServerService;
 
 	@At
 	@Ok("fm:template.admin.common.main")
@@ -132,12 +125,6 @@ public class AdminUserAct {
 		if (isSupper) {
 			roleList = roleService.list();
 		}
-		List<GameServer> serverList = gameServerService.loadAll();
-		int systemSize = serverList.size();
-		int userSize = editUser.getServers().size();
-		boolean allServer = userSize >= systemSize;
-		req.setAttribute("allServer", allServer);
-		req.setAttribute("serverList", serverList);
 		req.setAttribute("roleList", roleList);
 		return editUser;
 	}
@@ -148,28 +135,6 @@ public class AdminUserAct {
 	public Object update(@Param("id") long id, @Param("allServer") Boolean allServer, @Param("serverIds") Integer[] serverIds, @Param("roleIds") Integer[] roleIds) {
 		User user = userService.fetch(id);
 		userService.removeUserUpdata(user);
-		allServer = user.isSystem() ? true : allServer;
-		if (allServer) {
-			List<GameServer> serverList = gameServerService.loadAll();
-			Map<Integer, GameServer> serverMap = user.getServers();
-			if (Lang.isEmpty(serverMap)) {
-				serverMap = new HashMap<>();
-				user.setServers(serverMap);
-			}
-			for (GameServer server : serverList) {
-				serverMap.put(server.getId(), server);
-			}
-		} else {
-			List<GameServer> serverList = gameServerService.loadAllByIds(serverIds);
-			Map<Integer, GameServer> serverMap = user.getServers();
-			if (Lang.isEmpty(serverMap)) {
-				serverMap = new HashMap<>();
-				user.setServers(serverMap);
-			}
-			for (GameServer server : serverList) {
-				serverMap.put(server.getId(), server);
-			}
-		}
 		user.setRoles(roleService.loadRoles(roleIds));
 		userService.insertRelations(user);
 		return user;

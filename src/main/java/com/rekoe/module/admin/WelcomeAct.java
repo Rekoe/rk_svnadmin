@@ -1,20 +1,12 @@
 package com.rekoe.module.admin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresUser;
-import org.nutz.castor.Castors;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.lang.Lang;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 
-import com.rekoe.domain.GameServer;
-import com.rekoe.domain.User;
 import com.rekoe.module.BaseAction;
 
 @IocBean
@@ -29,15 +21,6 @@ public class WelcomeAct extends BaseAction {
 	@Ok("fm:template.admin.top")
 	@RequiresUser
 	public boolean top(HttpServletRequest req) {
-		Object obj = SecurityUtils.getSubject().getPrincipal();
-		if (obj instanceof User) {
-			User user = Castors.me().castTo(obj, User.class);
-			Collection<GameServer> servers = Lang.isEmpty(user.getServers()) ? (new ArrayList<GameServer>()) : ((User) obj).getServers().values();
-			req.setAttribute("servers", servers);
-			return Lang.equals("local", user.getProviderid());
-		} else {
-			req.setAttribute("servers", new ArrayList<GameServer>());
-		}
 		return true;
 	}
 

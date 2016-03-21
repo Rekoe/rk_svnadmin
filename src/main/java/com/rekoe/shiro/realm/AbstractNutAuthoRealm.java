@@ -13,7 +13,6 @@ import org.nutz.mvc.Mvcs;
 
 import com.rekoe.domain.Role;
 import com.rekoe.domain.User;
-import com.rekoe.mobile.Profile;
 import com.rekoe.service.RoleService;
 import com.rekoe.service.UserService;
 
@@ -69,19 +68,12 @@ public abstract class AbstractNutAuthoRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		Object object = principals.getPrimaryPrincipal();
-		if (object.getClass().isAssignableFrom(User.class)) {
-			User user = Castors.me().castTo(object, User.class);
-			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			info.addRoles(getUserService().getRoleNameList(user));
-			for (Role role : user.getRoles()) {
-				info.addStringPermissions(getRoleService().getPermissionNameList(role));
-			}
-			return info;
-		} else if (object.getClass().isAssignableFrom(Profile.class)) {
-			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			info.addStringPermission("auth.login");
-			return info;
+		User user = Castors.me().castTo(object, User.class);
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		info.addRoles(getUserService().getRoleNameList(user));
+		for (Role role : user.getRoles()) {
+			info.addStringPermissions(getRoleService().getPermissionNameList(role));
 		}
-		return null;
+		return info;
 	}
 }
