@@ -11,15 +11,16 @@ import org.nutz.dao.entity.annotation.Index;
 import org.nutz.dao.entity.annotation.ManyMany;
 import org.nutz.dao.entity.annotation.Table;
 import org.nutz.dao.entity.annotation.TableIndexes;
+
 /**
- * @author 科技㊣²º¹³
- * 2014年2月3日 下午4:48:45
- * http://www.rekoe.com
- * QQ:5382211
+ * @author 科技㊣²º¹³<br />
+ *         2014年2月3日 下午4:48:45<br />
+ *         http://www.rekoe.com<br />
+ *         QQ:5382211
  */
 @Table("system_role")
 @TableIndexes({ @Index(name = "role_name", fields = { "name" }, unique = true) })
-public class Role implements Serializable{
+public class Role implements Serializable {
 	private static final long serialVersionUID = 7928270441533321123L;
 	@Id
 	private Long id;

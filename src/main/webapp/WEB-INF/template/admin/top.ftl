@@ -99,38 +99,14 @@ $(function(){
                               <tr>
                                 <td></td>
                                 <td>
-                                	<#assign max = 20>
+                                	<#assign max = 13>
                                 	<ul class="nav-menu">
                                     	<li class="current" id="tb_11" onclick="HoverLi(1,1,${max});"><a href="index_main" target="mainFrame"><@s.m "global.admin.home"/></a></li>
 										<@perm_chow perm="system.user,system.role,system.permission">	
 										<li class="sep"></li><li class="normal" id="tb_12" onclick="HoverLi(1,2,${max});"><a href="frame/user/main" target="mainFrame">账号管理</a></li>
 										</@perm_chow>
-										<@perm_chow perm="oauth.client">	
-										<li class="sep"></li><li class="normal" id="tb_13" onclick="HoverLi(1,3,${max});"><a href="frame/oauth_client/main" target="mainFrame">OauthClient</a></li>
-										</@perm_chow>
-										<@perm_chow perm="oauth.user">	
-										<li class="sep"></li><li class="normal" id="tb_14" onclick="HoverLi(1,4,${max});"><a href="frame/oauth_user/main" target="mainFrame">OauthUser</a></li>
-										</@perm_chow>
-										<@perm_chow perm="system.notice">	
-										<li class="sep"></li><li class="normal" id="tb_15" onclick="HoverLi(1,5,${max});"><a href="frame/notice/main" target="mainFrame">公告管理</a></li>
-										</@perm_chow>
-										<@perm_chow perm="game.server">	
-										<li class="sep"></li><li class="normal" id="tb_16" onclick="HoverLi(1,6,${max});"><a href="frame/server/main" target="mainFrame"><@s.m "top.frame.server"/></a></li>
-										</@perm_chow>
-										<@perm_chow perm="admin:pay:refund">	
-										<li class="sep"></li><li class="normal" id="tb_17" onclick="HoverLi(1,7,${max});"><a href="frame/pay_refund/main" target="mainFrame">退单处理</a></li>
-										</@perm_chow>
-										<@perm_chow perm="app.account">	
-										<li class="sep"></li><li class="normal" id="tb_18" onclick="HoverLi(1,8,${max});"><a href="app/frame/account/main" target="mainFrame">平台账号</a></li>
-										</@perm_chow>
-										<@perm_chow perm="system.cdkey">	
-										<li class="sep"></li><li class="normal" id="tb_19" onclick="HoverLi(1,9,${max});"><a href="frame/cdkey/main" target="mainFrame">CDKey</a></li>
-										</@perm_chow>
-										<@perm_chow perm="report">	
-										<li class="sep"></li><li class="normal" id="tb_20" onclick="HoverLi(1,20,${max});"><a href="frame/report/main" target="mainFrame">数据汇报</a></li>
-										</@perm_chow>
 										<#if obj=true>
-										<li class="sep"></li><li class="normal" id="tb_21" onclick="HoverLi(1,21,${max});"><a href="frame/account/main" target="mainFrame">修改密码</a></li>
+										<li class="sep"></li><li class="normal" id="tb_13" onclick="HoverLi(1,13,${max});"><a href="frame/account/main" target="mainFrame">修改密码</a></li>
 										</#if>
                                     </ul>
                                 </td>

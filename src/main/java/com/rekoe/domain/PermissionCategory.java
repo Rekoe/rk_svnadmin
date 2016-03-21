@@ -13,13 +13,13 @@ import org.nutz.dao.entity.annotation.Prev;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
- * @author 科技㊣²º¹³
- * 2014年4月19日 上午8:54:23
- * http://www.rekoe.com
- * QQ:5382211
+ * @author 科技㊣²º¹³<br />
+ *         2014年4月19日 上午8:54:23<br />
+ *         http://www.rekoe.com<br />
+ *         QQ:5382211
  */
 @Table("permission_category")
-public class PermissionCategory implements Serializable{
+public class PermissionCategory implements Serializable {
 
 	private static final long serialVersionUID = 7685127380108984960L;
 	@Name
@@ -32,27 +32,35 @@ public class PermissionCategory implements Serializable{
 	@Column("is_locked")
 	@ColDefine(type = ColType.BOOLEAN)
 	private boolean locked;
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public List<Permission> getPermissions() {
 		return permissions;
 	}
+
 	public void setPermissions(List<Permission> permissions) {
 		this.permissions = permissions;
 	}
+
 	public boolean isLocked() {
 		return locked;
 	}
+
 	public void setLocked(boolean locked) {
 		this.locked = locked;
 	}
