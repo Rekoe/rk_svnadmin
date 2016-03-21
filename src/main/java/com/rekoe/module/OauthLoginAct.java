@@ -32,8 +32,6 @@ import org.nutz.lang.Lang;
 import org.nutz.lang.stream.NullInputStream;
 import org.nutz.mvc.View;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.By;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.view.ForwardView;
 import org.nutz.mvc.view.ServerRedirectView;
@@ -42,7 +40,6 @@ import org.nutz.plugins.view.freemarker.FreeMarkerConfigurer;
 import org.nutz.plugins.view.freemarker.FreemarkerView;
 
 import com.rekoe.common.Message;
-import com.rekoe.filter.IPFilter;
 import com.rekoe.shiro.realm.OAuthToken;
 
 /**
@@ -52,7 +49,6 @@ import com.rekoe.shiro.realm.OAuthToken;
  */
 @IocBean(create = "init")
 @At("/user")
-@Filters(@By(type = IPFilter.class, args = { "ioc:iPFilter" }))
 public class OauthLoginAct {
 
 	@Inject

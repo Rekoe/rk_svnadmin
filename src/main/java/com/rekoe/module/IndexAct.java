@@ -2,15 +2,10 @@ package com.rekoe.module;
 
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.By;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
-
-import com.rekoe.filter.IPFilter;
 
 @IocBean
 @At("/user")
-@Filters(@By(type = IPFilter.class, args = { "ioc:iPFilter" }))
 public class IndexAct {
 
 	@At
