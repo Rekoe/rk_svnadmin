@@ -46,9 +46,9 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 * @return 项目的资源列表
 	 */
 	public List<String> getResList(String pj) {
-		Sql sql = Sqls.create("select distinct res from pj_gr_auth where pj=? UNION select distinct res from pj_usr_auth where pj=$pj order by res");
+		Sql sql = Sqls.create("select distinct res from pj_gr_auth where pj=? UNION select distinct res from pj_usr_auth where pj=@pj order by res");
 		sql.setCallback(Sqls.callback.strList());
-		sql.setVar("pj", pj);
+		sql.setParam("pj", pj);
 		dao().execute(sql);
 		return sql.getList(String.class);
 	}
@@ -75,9 +75,9 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 * @return 项目资源的权限列表
 	 */
 	private List<PjAuth> getList(String pj, String res) {
-		String sqlStr = "select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj=$pj and res = $res " + " UNION " + " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name as usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj=$tpj and a.res = $tres " + " order by res,gr,usr";
+		String sqlStr = "select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj=@pj and res = @res " + " UNION " + " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name as usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj=@tpj and a.res = @tres " + " order by res,gr,usr";
 		Sql sql = Sqls.create(sqlStr);
-		sql.setVar("pj", pj).setVar("res", res).setVar("tpj", pj).setVar("tres", res);
+		sql.setParam("pj", pj).setParam("res", res).setParam("tpj", pj).setParam("tres", res);
 		final List<PjAuth> list = new ArrayList<PjAuth>();
 		sql.setCallback(new SqlCallback() {
 
@@ -113,9 +113,9 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 * @return 项目资源的权限列表
 	 */
 	public List<PjAuth> getList(String pj) {
-		String sqlStr = "select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj=$pj " + " UNION " + " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name as usrname from pj_usr_auth a left join usr b on (a.usr = b.usr) where a.pj=$tpj " + " order by res,gr,usr";
+		String sqlStr = "select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj=@pj " + " UNION " + " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name as usrname from pj_usr_auth a left join usr b on (a.usr = b.usr) where a.pj=@tpj " + " order by res,gr,usr";
 		Sql sql = Sqls.create(sqlStr);
-		sql.setVar("pj", pj).setVar("tpj", pj);
+		sql.setParam("pj", pj).setParam("tpj", pj);
 		final List<PjAuth> list = new ArrayList<PjAuth>();
 		sql.setCallback(new SqlCallback() {
 
@@ -220,8 +220,8 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 * @return 项目用户资源的权限
 	 */
 	public PjAuth getByUsr(String pj, String usr, String res) {
-		Sql sql = Sqls.create("select a.pj,a.res,a.rw,b.usr,b.name as usrname,' ' gr from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj =$pj and a.usr=$usr and a.res=$res");
-		sql.setVar("pj", pj).setVar("usr", usr).setVar("res", res);
+		Sql sql = Sqls.create("select a.pj,a.res,a.rw,b.usr,b.name as usrname,' ' gr from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj =@pj and a.usr=@usr and a.res=@res");
+		sql.setParam("pj", pj).setParam("usr", usr).setParam("res", res);
 		sql.setCallback(new SqlCallback() {
 
 			@Override
@@ -345,8 +345,8 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 * @return 具有相同svn root的项目资源的权限列表
 	 */
 	public List<PjAuth> getListByRootPath(String rootPath) {
-		Sql sql = Sqls.create("select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj in (select distinct pj from pj where type=$type and path like $like) " + " UNION " + " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj in (select distinct pj from pj where type=$type and path like $like) " + " order by res,gr,usr");
-		sql.setVar("type", Constants.HTTP_MUTIL).setVar("like", rootPath + "%");
+		Sql sql = Sqls.create("select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj in (select distinct pj from pj where type=@type and path like @like) " + " UNION " + " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj in (select distinct pj from pj where type=@type and path like @like) " + " order by res,gr,usr");
+		sql.setParam("type", Constants.HTTP_MUTIL).setParam("like", rootPath + "%");
 		final List<PjAuth> list = new ArrayList<PjAuth>();
 		sql.setCallback(new SqlCallback() {
 
