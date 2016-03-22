@@ -18,6 +18,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.rekoe.domain.Pj;
 import com.rekoe.domain.PjAuth;
+import com.rekoe.domain.PjGrAuth;
 import com.rekoe.utils.Constants;
 
 /**
@@ -283,9 +284,11 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 */
 	public void saveByGr(PjAuth pjAuth) {
 		if (this.getByGr(pjAuth.getPj(), pjAuth.getGr(), pjAuth.getRes()) == null) {
-			dao().insert(pjAuth);
+			Sql sql = Sqls.create("insert into pj_gr_auth (pj,gr,res,rw) values (@pj,@gr,@res,@rw)");
+			sql.setParam("pj", pjAuth.getPj()).setParam("gr", pjAuth.getGr()).setParam("res", pjAuth.getRes()).setParam("rw", pjAuth.getRw());
+			dao().execute(sql);
 		} else {
-			dao().update(getEntityClass(), Chain.make("rw", pjAuth.getRw()), Cnd.where("pj", "=", pjAuth.getPj()).and("gr", "=", pjAuth.getGr()).and("res", "=", pjAuth.getRes()));
+			dao().update(PjGrAuth.class, Chain.make("rw", pjAuth.getRw()), Cnd.where("pj", "=", pjAuth.getPj()).and("gr", "=", pjAuth.getGr()).and("res", "=", pjAuth.getRes()));
 		}
 	}
 

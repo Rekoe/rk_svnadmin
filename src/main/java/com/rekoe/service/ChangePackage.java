@@ -30,6 +30,7 @@ public class ChangePackage {
 			public void visit(File file) {
 				if (file.isDirectory())
 					return;
+				System.out.println(file);
 				String origin = Files.read(file);
 				String output = origin.replaceAll("WenQuanYi Micro Hei.ttf", "FZY4JW_0.ttf");
 				if (origin.equals(output))

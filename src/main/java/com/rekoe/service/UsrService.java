@@ -33,8 +33,8 @@ public class UsrService extends BaseService<Usr> {
 	 * @return 所有项目用户列表(不包括*)
 	 */
 	public List<Usr> getList(String pj) {
-		Sql sql = Sqls.create("select p.usr,p.name,p.role,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from (" + " select a.usr,a.role,a.psw,a.name from usr a " + " where " + " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj=$pj) " + " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj=$pj) " + " ) p " + " left join pj_usr pu on (p.usr=pu.usr and pu.pj=$pj) where p.usr <> '*'" + " order by p.usr ");
-		sql.setVar("pj", pj);
+		Sql sql = Sqls.create("select p.usr,p.name,p.role,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from (" + " select a.usr,a.role,a.psw,a.name from usr a " + " where " + " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj=@pj) " + " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj=@pj) " + " ) p " + " left join pj_usr pu on (p.usr=pu.usr and pu.pj=@pj) where p.usr <> '*'" + " order by p.usr ");
+		sql.setParam("pj", pj);
 		final List<Usr> list = new ArrayList<Usr>();
 		sql.setCallback(new SqlCallback() {
 
@@ -60,8 +60,8 @@ public class UsrService extends BaseService<Usr> {
 	}
 
 	public List<Usr> getListByRootPath(String rootPath) {
-		Sql sql = Sqls.create("select p.usr,p.name,p.role,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from (" + " select a.usr,a.role,a.psw,a.name from usr a " + " where " + " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj in (select distinct pj from pj where type=$type and path like $like)) " + " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj in (select distinct pj from pj where type=$type and path like $like)) " + " ) p " + " left join pj_usr pu on (p.usr=pu.usr) where p.usr <> '*'" + " order by p.usr ");
-		sql.setVar("like", rootPath + "%").setVar("type", com.rekoe.utils.Constants.HTTP_MUTIL);
+		Sql sql = Sqls.create("select p.usr,p.name,p.role,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from (" + " select a.usr,a.role,a.psw,a.name from usr a " + " where " + " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj in (select distinct pj from pj where type=@type and path like @like)) " + " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj in (select distinct pj from pj where type=@type and path like @like)) " + " ) p " + " left join pj_usr pu on (p.usr=pu.usr) where p.usr <> '*'" + " order by p.usr ");
+		sql.setParam("like", rootPath + "%").setParam("type", com.rekoe.utils.Constants.HTTP_MUTIL);
 		final List<Usr> list = new ArrayList<Usr>();
 		sql.setCallback(new SqlCallback() {
 
