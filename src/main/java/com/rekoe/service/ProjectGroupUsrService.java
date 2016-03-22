@@ -39,8 +39,8 @@ public class ProjectGroupUsrService extends BaseService<PjGrUsr> {
 	 * @return 组用户
 	 */
 	public PjGrUsr get(String pj, String gr, String usr) {
-		Sql sql = Sqls.create("select a.pj,a.usr,a.gr,b.name as usrname from pj_gr_usr a left join usr b on (a.usr=b.usr) where a.pj = $pj and a.gr=$gr and a.usr=$usr");
-		sql.setVar("pj", pj).setVar("gr", gr).setVar("usr", usr);
+		Sql sql = Sqls.create("select a.pj,a.usr,a.gr,b.name as usrname from pj_gr_usr a left join usr b on (a.usr=b.usr) where a.pj = @pj and a.gr=@gr and a.usr=@usr");
+		sql.setParam("pj", pj).setParam("gr", gr).setParam("usr", usr);
 		sql.setCallback(new SqlCallback() {
 
 			@Override
@@ -63,8 +63,8 @@ public class ProjectGroupUsrService extends BaseService<PjGrUsr> {
 	 * @return 组用户列表
 	 */
 	public List<PjGrUsr> getList(String pj, String gr) {
-		Sql sql = Sqls.create("select a.pj,a.usr,a.gr,b.name as usrname from pj_gr_usr a left join usr b on (a.usr = b.usr) where a.pj=$pj and a.gr=$gr order by a.usr");
-		sql.setVar("pj", pj).setVar("gr", gr);
+		Sql sql = Sqls.create("select a.pj,a.usr,a.gr,b.name as usrname from pj_gr_usr a left join usr b on (a.usr = b.usr) where a.pj=@pj and a.gr=@gr order by a.usr");
+		sql.setParam("pj", pj).setParam("gr", gr);
 		final List<PjGrUsr> list = new ArrayList<PjGrUsr>();
 		sql.setCallback(new SqlCallback() {
 
@@ -88,8 +88,8 @@ public class ProjectGroupUsrService extends BaseService<PjGrUsr> {
 	 * @return 项目的组用户列表
 	 */
 	public List<PjGrUsr> getList(String pj) {
-		Sql sql = Sqls.create("select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr = c.usr) where a.pj=$pj order by a.gr,b.usr");
-		sql.setVar("pj", pj);
+		Sql sql = Sqls.create("select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr = c.usr) where a.pj=@pj order by a.gr,b.usr");
+		sql.setParam("pj", pj);
 		final List<PjGrUsr> list = new ArrayList<PjGrUsr>();
 		sql.setCallback(new SqlCallback() {
 
@@ -113,8 +113,8 @@ public class ProjectGroupUsrService extends BaseService<PjGrUsr> {
 	 * @return 有相同的svn root的项目组用户
 	 */
 	public List<PjGrUsr> getListByRootPath(String rootPath) {
-		Sql sql = Sqls.create("select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr=c.usr) " + " where a.pj in (select distinct pj from pj where type=$type and path like $like) order by a.pj,a.gr,b.usr");
-		sql.setVar("type", Constants.HTTP_MUTIL).setVar("like", rootPath + "%");
+		Sql sql = Sqls.create("select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr=c.usr) " + " where a.pj in (select distinct pj from pj where type=@type and path like @like) order by a.pj,a.gr,b.usr");
+		sql.setParam("type", Constants.HTTP_MUTIL).setParam("like", rootPath + "%");
 		final List<PjGrUsr> list = new ArrayList<PjGrUsr>();
 		sql.setCallback(new SqlCallback() {
 

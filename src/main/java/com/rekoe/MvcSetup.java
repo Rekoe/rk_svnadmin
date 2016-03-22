@@ -15,6 +15,7 @@ import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
 import org.nutz.plugins.view.freemarker.FreeMarkerConfigurer;
 
+import com.rekoe.domain.PjUsr;
 import com.rekoe.domain.User;
 import com.rekoe.service.UserService;
 
@@ -41,6 +42,8 @@ public class MvcSetup implements Setup {
 		});
 		ioc.get(FreeMarkerConfigurer.class, "mapTags");
 		Dao dao = ioc.get(Dao.class);
+		dao.drop(PjUsr.class);
+		dao.create(PjUsr.class, true);
 		// dao.clear(OAuthUser.class);
 		Daos.createTablesInPackage(dao, User.class.getPackage().getName(), false);
 		if (0 == dao.count(User.class)) {
