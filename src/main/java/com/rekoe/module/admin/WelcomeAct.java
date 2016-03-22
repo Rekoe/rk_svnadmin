@@ -38,4 +38,5 @@ public class WelcomeAct extends BaseAction {
 	@Ok("fm:template.admin.right")
 	public void right() {
 	}
+
 }

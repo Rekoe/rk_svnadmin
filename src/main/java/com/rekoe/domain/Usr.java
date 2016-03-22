@@ -38,11 +38,22 @@ public class Usr implements Serializable {
 	@Comment
 	private String role;
 
+	@Comment
+	private String email;
+
 	/**
 	 * @return 用户ID
 	 */
 	public String getUsr() {
 		return usr;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	/**

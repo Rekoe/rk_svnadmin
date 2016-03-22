@@ -99,14 +99,20 @@ $(function(){
                               <tr>
                                 <td></td>
                                 <td>
-                                	<#assign max = 13>
+                                	<#assign max = 15>
                                 	<ul class="nav-menu">
                                     	<li class="current" id="tb_11" onclick="HoverLi(1,1,${max});"><a href="index_main" target="mainFrame"><@s.m "global.admin.home"/></a></li>
 										<@perm_chow perm="system.user,system.role,system.permission">	
 										<li class="sep"></li><li class="normal" id="tb_12" onclick="HoverLi(1,2,${max});"><a href="frame/user/main" target="mainFrame">账号管理</a></li>
 										</@perm_chow>
+										<@perm_chow perm="svn.user">	
+										<li class="sep"></li><li class="normal" id="tb_13" onclick="HoverLi(1,3,${max});"><a href="frame/svn/user/main" target="mainFrame">SVN账号管理</a></li>
+									    </@perm_chow>
+									    <@perm_chow perm="svn.project">	
+										<li class="sep"></li><li class="normal" id="tb_14" onclick="HoverLi(1,4,${max});"><a href="frame/project/main" target="mainFrame">项目管理</a></li>
+									    </@perm_chow>
 										<#if obj=true>
-										<li class="sep"></li><li class="normal" id="tb_13" onclick="HoverLi(1,13,${max});"><a href="frame/account/main" target="mainFrame">修改密码</a></li>
+										<li class="sep"></li><li class="normal" id="tb_15" onclick="HoverLi(1,15,${max});"><a href="frame/account/main" target="mainFrame">修改密码</a></li>
 										</#if>
                                     </ul>
                                 </td>
