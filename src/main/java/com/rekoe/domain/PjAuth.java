@@ -3,12 +3,14 @@ package com.rekoe.domain;
 import java.io.Serializable;
 
 import org.nutz.dao.entity.annotation.Comment;
+import org.nutz.dao.entity.annotation.PK;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
  * 权限
  */
 @Table("pj_auth")
+@PK({ "pj", "res", "gr" })
 public class PjAuth implements Serializable {
 	/**
 	 * 

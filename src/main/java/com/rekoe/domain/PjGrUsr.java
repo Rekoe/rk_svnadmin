@@ -3,13 +3,18 @@ package com.rekoe.domain;
 import java.io.Serializable;
 
 import org.nutz.dao.entity.annotation.Comment;
+import org.nutz.dao.entity.annotation.Index;
 import org.nutz.dao.entity.annotation.Name;
+import org.nutz.dao.entity.annotation.PK;
 import org.nutz.dao.entity.annotation.Table;
+import org.nutz.dao.entity.annotation.TableIndexes;
 
 /**
  * 项目组用户
  */
 @Table("pj_gr_usr")
+@PK({ "pj", "usr", "gr" })
+@TableIndexes({ @Index(name = "FK_Reference_10", fields = { "pj", "gr" }, unique = false), @Index(name = "FK_Reference_9", fields = { "usr" }, unique = false) })
 public class PjGrUsr implements Serializable {
 	/**
 	 * 

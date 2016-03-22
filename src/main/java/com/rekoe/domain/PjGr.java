@@ -3,7 +3,7 @@ package com.rekoe.domain;
 import java.io.Serializable;
 
 import org.nutz.dao.entity.annotation.Comment;
-import org.nutz.dao.entity.annotation.Name;
+import org.nutz.dao.entity.annotation.PK;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
@@ -11,7 +11,8 @@ import org.nutz.dao.entity.annotation.Table;
  * 
  */
 @Table("pj_gr")
-public class PjGr implements Serializable{
+@PK({ "pj", "gr" })
+public class PjGr implements Serializable {
 	/**
 	 * 
 	 */
@@ -19,7 +20,7 @@ public class PjGr implements Serializable{
 	/**
 	 * 项目
 	 */
-	@Name
+	@Comment
 	private String pj;
 	/**
 	 * 组

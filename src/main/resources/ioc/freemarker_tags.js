@@ -1,21 +1,9 @@
 var ioc = {
-	platformEditDirective : {
-		type : "com.rekoe.web.freemarker.PlatformEditDirective",
-		events : {
-			create : "init",
-		}
-	},
 	shiroTags : {
 		type : "com.rekoe.shiro.freemarker.ShiroTags"
 	},
 	permissionResolver : {
 		type : "org.apache.shiro.authz.permission.WildcardPermissionResolver"
-	},
-	sidName : {
-		type : "com.rekoe.web.freemarker.Sid2NameDirective",
-		args : [ {
-			refer : "officialServerService"
-		} ]
 	},
 	permissionShiro : {
 		type : "com.rekoe.web.freemarker.PermissionShiroFreemarker",
@@ -41,20 +29,11 @@ var ioc = {
 	timeFormat : {
 		type : "com.rekoe.web.freemarker.TimeFormatDirective"
 	},
-	platformPermission : {
-		type : "com.rekoe.web.freemarker.PlatformPermissionDirective"
-	},
 	mapTags : {
 		factory : "$freeMarkerConfigurer#addTags",
 		args : [ {
 			'shiro' : {
 				refer : 'shiroTags'
-			},
-			'sid_name' : {
-				refer : 'sidName'
-			},
-			'platform_perm' : {
-				refer : 'platformPermission'
 			},
 			'perm_chow' : {
 				refer : 'permissionShiro'
@@ -76,9 +55,6 @@ var ioc = {
 			},
 			'currentTime' : {
 				refer : 'currentTime'
-			},
-			'platform_edit' : {
-				refer : 'platformEditDirective'
 			}
 		} ]
 	}
