@@ -46,9 +46,7 @@ public class AdminProjectAct extends BaseAction{
 	public Message o_save(@Param("::pj.") Pj pj, HttpServletRequest req) {
 		boolean isOk = projectService.nameOk(pj.getPj());
 		if (isOk) {
-			isOk = projectService.insert(pj);
-		}
-		if (isOk) {
+			projectService.save(pj);
 			return Message.success("ok", req);
 		}
 		return Message.error("error", req);
