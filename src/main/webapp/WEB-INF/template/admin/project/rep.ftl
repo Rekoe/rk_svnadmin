@@ -6,6 +6,7 @@
 <#include "/template/admin/head.ftl"/>
 <span style="color:green;font-weight:bold;"><a href="${base}/pj">项目管理(${pj})</a>　|　权限管理</span><br><br>
 <script type="text/javascript" src="${base}/resources/treeview/treeview.js"></script>
+<link rel="stylesheet" href="${base}/resources/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="${base}/resources/treeview/treeview.css"></link>
 <style>
 #svnroot li{

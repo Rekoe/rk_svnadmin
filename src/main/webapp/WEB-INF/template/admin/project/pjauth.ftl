@@ -3,6 +3,7 @@
 		<script src="${base}/resources/jquery-1.7.min.js" type="text/javascript"></script>
 		<script src="${base}/resources/sorttable.js"></script>
 		<script src="${base}/resources/svnadmin.js"></script>
+		<link rel="stylesheet" href="${base}/resources/bootstrap.min.css" />
 		<link rel="stylesheet" href="${base}/resources/svnadmin.css" />
 		<script>
 		$(function(){
@@ -85,11 +86,7 @@
 		</script>
 	</head>
 <body style="margin: 0px;">
-	<#assign errorMsg="">
-	<#if errorMsg?exists>
-		<div style="color:red;">错误 ${errorMsg}</div>
-	</#if>
-<form name="pjauth" action="${base}/pjauth" method="post" onsubmit="return checkForm(this);">
+<form name="pjauth" action="pjauth" method="post" onsubmit="return checkForm(this);">
 	<input type="hidden" name="act" value="save">
 	<input type="hidden" name="pj" value="${pj}">
 	<table class="table table-striped table-bordered">

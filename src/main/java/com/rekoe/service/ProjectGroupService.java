@@ -55,6 +55,7 @@ public class ProjectGroupService extends BaseService<PjGr> {
 				return list;
 			}
 		});
+		dao().execute(sql);
 		return list;
 	}
 
