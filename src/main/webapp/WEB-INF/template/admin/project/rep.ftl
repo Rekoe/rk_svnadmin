@@ -3,11 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title></title>
-<#include "/template/admin/head.ftl"/>
+<script src="${base}/resources/jquery-1.7.min.js" type="text/javascript"></script>
 <span style="color:green;font-weight:bold;"><a href="${base}/pj">项目管理(${pj})</a>　|　权限管理</span><br><br>
 <script type="text/javascript" src="${base}/resources/treeview/treeview.js"></script>
 <link rel="stylesheet" href="${base}/resources/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="${base}/resources/treeview/treeview.css"></link>
+<script src="${base}/resources/svnadmin.js"></script>
 <style>
 #svnroot li{
 	line-height: 11px;
@@ -62,7 +63,7 @@ function freshTree(){
 	AjaxTreeView.open($r[0]);
 }
 </script>
-<table style="width:100%;height:80%;" class="table table-striped table-bordered">
+<table style="width:100%;height:100%;" class="table table-striped table-bordered">
 	<tr>
 		<td valign="top" style="width:300px;">
 			<input type="text" style="width:210px;" id="path" value="${path}">　<input onclick="freshTree();" class="btn btn-primary" type="button" value="刷新">
