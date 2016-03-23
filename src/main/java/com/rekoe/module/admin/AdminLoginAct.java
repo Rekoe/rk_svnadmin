@@ -10,6 +10,7 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ThreadContext;
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
@@ -28,8 +29,10 @@ import org.nutz.plugins.view.freemarker.FreemarkerView;
 import org.nutz.web.Webs;
 
 import com.rekoe.domain.User;
+import com.rekoe.domain.Usr;
 import com.rekoe.exception.IncorrectCaptchaException;
 import com.rekoe.filter.AuthenticationFilter;
+import com.rekoe.service.UsrService;
 
 /**
  * @author 科技㊣²º¹³<br />
@@ -44,6 +47,9 @@ public class AdminLoginAct {
 	@Inject
 	private FreeMarkerConfigurer freeMarkerConfigurer;
 
+	@Inject
+	private UsrService usrService;
+
 	@At
 	@Filters(@By(type = AuthenticationFilter.class))
 	public View login(@Attr("loginToken") AuthenticationToken token, HttpSession session, HttpServletRequest req) {
@@ -51,6 +57,10 @@ public class AdminLoginAct {
 			Subject subject = SecurityUtils.getSubject();
 			ThreadContext.bind(subject);
 			subject.login(token);
+			Usr usr = usrService.fetch(Cnd.where("usr", "=", "admin"));
+			if (!Lang.isEmpty(usr)) {
+				session.setAttribute("usr", usr);
+			}
 			session.setAttribute(Webs.ME, subject.getPrincipal());
 			return new ServerRedirectView("/admin/main.rk");
 		} catch (IncorrectCaptchaException e) {

@@ -46,7 +46,7 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 * @return 项目的资源列表
 	 */
 	public List<String> getResList(String pj) {
-		Sql sql = Sqls.create("select distinct res from pj_gr_auth where pj=? UNION select distinct res from pj_usr_auth where pj=@pj order by res");
+		Sql sql = Sqls.create("select distinct res from pj_gr_auth where pj=@pj UNION select distinct res from pj_usr_auth where pj=@pj order by res");
 		sql.setCallback(Sqls.callback.strList());
 		sql.setParam("pj", pj);
 		dao().execute(sql);

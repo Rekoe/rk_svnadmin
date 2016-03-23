@@ -3,6 +3,8 @@
  */
 package com.rekoe.utils;
 
+import org.nutz.mvc.Mvcs;
+
 import com.rekoe.domain.Usr;
 
 /**
@@ -17,7 +19,7 @@ public class UsrProvider {
 	 * @return 当前的用户
 	 */
 	public static Usr getCurrentUsr() {
-		Usr usr = USR_THREAD_LOCAL.get();
+		Usr usr = (Usr)Mvcs.getReq().getSession().getAttribute("usr");
 		if (usr == null) {
 			throw new RuntimeException("当前线程没有设置用户!");
 		}

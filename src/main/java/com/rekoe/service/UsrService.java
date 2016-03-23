@@ -28,6 +28,13 @@ public class UsrService extends BaseService<Usr> {
 	}
 
 	/**
+	 * @return 所有用户列表
+	 */
+	public List<Usr> getList() {
+		return dao().query(getEntityClass(), null);
+	}
+
+	/**
 	 * @param pj
 	 *            项目
 	 * @return 所有项目用户列表(不包括*)

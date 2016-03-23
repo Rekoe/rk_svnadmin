@@ -25,7 +25,7 @@ function getTableForm() {
 	<@p.column title="ID" align="center">${i+1}</@p.column><#t/>
 	<@p.column title="姓名" align="center">${user.pj}</@p.column><#t/>
 	<@p.column title="路径" align="center">${user.path}</@p.column><#t/>
-	<@p.column title="URL" align="center">${user.url}</@p.column><#t/>
+	<@p.column title="URL" align="center"><a href="rep?pj=${user.pj}">${user.url}</a></@p.column><#t/>
 	<@p.column title="类型" align="center">${user.type}</@p.column><#t/>
 	<@p.column title="描述" align="center">${user.des}</@p.column><#t/>
 	<@p.column title="设置用户组" align="center">设置用户组</@p.column><#t/>
