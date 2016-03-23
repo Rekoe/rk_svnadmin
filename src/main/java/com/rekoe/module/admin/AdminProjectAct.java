@@ -5,12 +5,14 @@ import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
@@ -21,11 +23,13 @@ import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.Pj;
 import com.rekoe.domain.PjAuth;
 import com.rekoe.module.BaseAction;
+import com.rekoe.service.DefaultTreeService;
 import com.rekoe.service.ProjectAuthService;
 import com.rekoe.service.ProjectGroupService;
 import com.rekoe.service.ProjectService;
 import com.rekoe.service.RepositoryService;
 import com.rekoe.service.UsrService;
+import com.rekoe.utils.CommonUtils;
 import com.rekoe.utils.UsrProvider;
 
 @IocBean
@@ -100,10 +104,10 @@ public class AdminProjectAct extends BaseAction {
 
 	@Inject
 	private ProjectGroupService projectGroupService;
-	
+
 	@Inject
 	private UsrService usrService;
-	
+
 	@At
 	@Ok("fm:template.admin.project.pjauth")
 	@RequiresPermissions({ "svn.project:view" })
@@ -129,8 +133,23 @@ public class AdminProjectAct extends BaseAction {
 		req.setAttribute("list", list);
 		req.setAttribute("pj", pj);
 		req.setAttribute("pjreslist", projectAuthService.getResList(pj));
-		req.setAttribute("pjgrlist",projectGroupService.getList(pj));
+		req.setAttribute("pjgrlist", projectGroupService.getList(pj));
 		req.setAttribute("usrList", usrService.getList());
 		return pj;
+	}
+
+	@Inject
+	private DefaultTreeService treeService;
+
+	@At
+	@Ok("raw")
+	@RequiresPermissions({ "svn.project:view" })
+	public String ajaxTreeService(HttpServletRequest req, HttpServletResponse response) {
+		NutMap params = CommonUtils.getRequestParametersMap(req);
+		com.rekoe.domain.Ajax ajax = treeService.execute(params);
+		if (ajax != null) {
+			return ajax.getResult();
+		}
+		return "";
 	}
 }

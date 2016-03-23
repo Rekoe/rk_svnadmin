@@ -46,10 +46,10 @@ function freshTree(){
 	var $p = $("#path");
 	var p = $p.val();
 	if(p==""){
-		p="/";
+		//p="/";
 		$p.val(p);
 	}else if(p.substring(0,1)!="/"){
-		p = "/"+p;
+		//p = "/"+p;
 		$p.val(p);
 	}
 	var $r = $("#svnroot");
