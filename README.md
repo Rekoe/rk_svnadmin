@@ -1,5 +1,6 @@
 1. create database rk_svnadmin
 2. mvn eclipse:eclipse -Dwtpversion=1.0
+
 服务器启动完手动执行alter
 
 ```
