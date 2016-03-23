@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="${base}/resources/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="${base}/resources/treeview/treeview.css"></link>
 <script src="${base}/resources/svnadmin.js"></script>
+<link rel="stylesheet" href="${base}/resources/svnadmin.css" />
 <style>
 #svnroot li{
 	line-height: 11px;

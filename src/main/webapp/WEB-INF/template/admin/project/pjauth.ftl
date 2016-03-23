@@ -93,7 +93,7 @@
 		<tr>
 			<td class="lbl">资源</td>
 			<td colspan="3">
-				<input type="text" name="res" value="${entity.res!""}" style="width:400px;"><span style="color:red;">*</span>
+				<input type="text" name="res" value="${entity.res!""}" style="width:400px;height:30px"><span style="color:red;">*</span>
 			  <select onchange="this.form.res.value=this.value">
 				<option value="">选择资源</option>
 				<#list pjreslist as pjre>
