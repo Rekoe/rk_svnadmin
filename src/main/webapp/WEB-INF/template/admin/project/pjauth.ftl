@@ -99,7 +99,7 @@
 				<#list pjreslist as pjre>
 				 <option value="${pjre}">${pjre}</option>
 				 </#list>
-			  </select>
+			  </select> 
 			</td>
 		</tr>
 		<tr>
