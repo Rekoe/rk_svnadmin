@@ -2,15 +2,9 @@ package com.rekoe.domain;
 
 import java.io.Serializable;
 
-import org.nutz.dao.entity.annotation.Comment;
-import org.nutz.dao.entity.annotation.PK;
-import org.nutz.dao.entity.annotation.Table;
-
 /**
  * 权限
  */
-@Table("pj_auth")
-@PK({ "pj", "res", "gr" })
 public class PjAuth implements Serializable {
 	/**
 	 * 
@@ -19,37 +13,30 @@ public class PjAuth implements Serializable {
 	/**
 	 * 资源
 	 */
-	@Comment
 	private String res;
 	/**
 	 * 项目
 	 */
-	@Comment
 	private String pj;
 	/**
 	 * 组
 	 */
-	@Comment
 	private String gr;
 	/**
 	 * 用户
 	 */
-	@Comment
 	private String usr;
 	/**
 	 * 用户姓名
 	 */
-	@Comment
 	private String usrName;
 	/**
 	 * r : 可读; w : 可写
 	 */
-	@Comment
 	private String rw;
 	/**
 	 * 描述
 	 */
-	@Comment
 	private String des;
 
 	/**

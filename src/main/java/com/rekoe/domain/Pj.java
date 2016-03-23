@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Name;
+import org.nutz.dao.entity.annotation.Readonly;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
@@ -44,7 +45,7 @@ public class Pj implements Serializable{
 	/**
 	 * 用户是否是这个项目的管理员
 	 */
-	@Comment
+	@Readonly
 	private boolean manager;
 
 	/**
