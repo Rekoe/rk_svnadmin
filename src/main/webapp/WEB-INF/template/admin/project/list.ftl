@@ -30,9 +30,9 @@ function getTableForm() {
 	<@p.column title="描述" align="center">${user.des}</@p.column><#t/>
 	<@p.column title="设置用户组" align="center">设置用户组</@p.column><#t/>
 	<@p.column title="设置权限" align="center">设置权限</@p.column><#t/>
-	<@shiro.hasPermission name="svn.user:edit">	
+	<@shiro.hasPermission name="svn.project:auth.manager">	
 	<@p.column title="编辑" align="center">
-		<a href="delete.rk?id=${user.pj}" class="pn-opt">删除</a><#rt/>
+		<a href="javascript:void(0);" onclick="Cms.deleted('${user.pj}')" class="pn-opt">删除</a><#rt/>
 	</@p.column><#t/>
 	</@shiro.hasPermission>
 </@p.table>
