@@ -163,9 +163,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="4" align="center" style="text-align: center;">
-				<input type="submit" class="btn btn-primary" value="保存">
-			</td>
+			<td colspan="4" align="center" style="text-align: center;"><input type="submit" class="btn btn-primary" value="保存"></td>
 		</tr>
 	</table>
 </form>
@@ -184,19 +182,9 @@
 		<td>${pjAuth.pj}</td>
 		<td>${pjAuth.res}</td>
 		<td>${pjAuth.gr!""}${pjAuth.usr!pjAuth.usrName}:(${pjAuth.usr})</td>
-		<td>
-			<#if "r"== pjAuth.rw>
-				可读
-			<#elseif "rw"== pjAuth.rw>
-				可读可写
-			<#else>
-				没有权限
-			</#if>
-		</td>
+		<td><#if "r"== pjAuth.rw>可读<#elseif "rw"== pjAuth.rw>可读可写<#else>没有权限</#if></td>
 		<@shiro.hasPermission name="svn.project:auth.manager">	
-		<td>
-		<a href="javascript:if(confirm('确认删除?')){del('pjauth/delete?pj=${pjAuth.pj}&res=${pjAuth.res}&gr=${pjAuth.gr}&usr=${pjAuth.usr}')}">删除</a>
-		</td>
+		<td><a href="javascript:if(confirm('确认删除?')){del('pjauth/delete?pj=${pjAuth.pj}&res=${pjAuth.res}&gr=${pjAuth.gr}&usr=${pjAuth.usr}')}">删除</a></td>
 		</@shiro.hasPermission>
 	</tr>
 	</#list>
