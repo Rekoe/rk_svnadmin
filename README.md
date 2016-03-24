@@ -73,3 +73,5 @@ http://服务器IP/svn
 #启动httpd
 
 service httpd start
+
+管理系统配置请参考[管理系统配置请参考](https://github.com/yuexiaoyun/svnadmin/blob/master/doc/SvnAdmin_Manual_zh_CN.pdf)
