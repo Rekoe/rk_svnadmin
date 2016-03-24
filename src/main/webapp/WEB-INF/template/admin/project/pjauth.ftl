@@ -193,9 +193,11 @@
 				没有权限
 			</#if>
 		</td>
+		<@shiro.hasPermission name="svn.project:auth.manager">	
 		<td>
-		<a href="javascript:if(confirm('确认删除?')){del('${base}/pjauth?pj=${pjAuth.pj}&res=${pjAuth.res}&gr=${pjAuth.gr}&usr=${pjAuth.usr}')}">删除</a>
+		<a href="javascript:if(confirm('确认删除?')){del('pjauth/delete?pj=${pjAuth.pj}&res=${pjAuth.res}&gr=${pjAuth.gr}&usr=${pjAuth.usr}')}">删除</a>
 		</td>
+		</@shiro.hasPermission>
 	</tr>
 	</#list>
 </table>

@@ -13,6 +13,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.util.NutMap;
+import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
@@ -151,5 +152,18 @@ public class AdminProjectAct extends BaseAction {
 			return ajax.getResult();
 		}
 		return "";
+	}
+
+	@At("/pjauth/delete")
+	@Ok("fm:template.admin.project.pjauth")
+	@RequiresPermissions({ "svn.project:auth.manager" })
+	@PermissionTag(name = "管理项目权限", tag = "SVN项目管理", enable = true)
+	public String pjauth_delete(@Param("gr") String gr, @Param("pj") String pj, @Param("res") String res, @Param("usr") String usr) {
+		if (StringUtils.isNotBlank(gr)) {
+			projectAuthService.deleteByGr(pj, gr, res);
+		} else if (StringUtils.isNotBlank(usr)) {
+			projectAuthService.deleteByUsr(pj, usr, res);
+		}
+		return pjauth(pj, res, Mvcs.getReq());
 	}
 }
