@@ -140,3 +140,29 @@ Cms.update = function(id){
 	}); 
 	return false;
 }
+
+Cms.updateAll = function(url,back){
+	$.dialog({
+		type: "warn",
+		content: '确定要修改此记录?',
+		ok: 'Ok',
+		cancel: 'Cancel',
+		onOk: function() {
+			$.ajax({
+				url: url,
+				type: "POST",
+				data: $('#jvForm').serialize(),
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+					if (message.type == "success")
+					{
+						window.location.href = back;
+					}
+				}
+			});
+		}
+	}); 
+	return false;
+}

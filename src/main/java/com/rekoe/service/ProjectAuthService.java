@@ -362,4 +362,19 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 		dao().execute(sql);
 		return list;
 	}
+
+	/**
+	 * 删除项目 资源的权限
+	 * 
+	 * @param pj
+	 *            项目
+	 */
+	public void deletePj(String pj) {
+		Sql sql = Sqls.create("delete from pj_gr_auth $condition");
+		sql.setCondition(Cnd.where("pj", "=", pj));
+		dao().execute(sql);
+		sql = Sqls.create("delete from pj_usr_auth $condition");
+		sql.setCondition(Cnd.where("pj", "=", pj));
+		dao().execute(sql);
+	}
 }

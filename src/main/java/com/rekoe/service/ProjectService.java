@@ -3,8 +3,10 @@ package com.rekoe.service;
 import java.io.File;
 
 import org.apache.commons.lang3.StringUtils;
+import org.nutz.aop.interceptor.ioc.TransAop;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
+import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
@@ -118,35 +120,58 @@ public class ProjectService extends BaseService<Pj> {
 		}
 		svnService.exportConfig(pj.getPj());
 	}
-	
+
 	/**
 	 * 获取项目的相对根路径.例如项目的path=e:/svn/projar，则返回projar。如果path为空，则返回项目ID
-	 * @param pj 项目id
+	 * 
+	 * @param pj
+	 *            项目id
 	 * @return 项目的相对根路径
 	 * @since 3.0.3
 	 */
-	public String getRelateRootPath(String pj){
+	public String getRelateRootPath(String pj) {
 		Pj p = this.get(pj);
-		if(p == null || StringUtils.isBlank(p.getPath())){
+		if (p == null || StringUtils.isBlank(p.getPath())) {
 			return pj;
 		}
 		return getRelateRootPath(pj);
 	}
+
 	/**
 	 * 获取项目的相对根路径.例如项目的path=e:/svn/projar，则返回projar。如果path为空，则返回项目ID
-	 * @param pj 项目
+	 * 
+	 * @param pj
+	 *            项目
 	 * @return 项目的相对根路径
 	 * @since 3.0.3
 	 */
-	public String getRelateRootPath(Pj pj){
+	public String getRelateRootPath(Pj pj) {
 		String path = pj.getPath();
-		if(StringUtils.isBlank(path)){
+		if (StringUtils.isBlank(path)) {
 			return pj.getPj();
 		}
 		path = StringUtils.replace(path, "\\", "/");
-		while(path.endsWith("/")){
-			path = path.substring(0, path.length()-1);
+		while (path.endsWith("/")) {
+			path = path.substring(0, path.length() - 1);
 		}
 		return StringUtils.substringAfterLast(path, "/");
+	}
+
+	@Inject
+	private ProjectGroupUsrService projectGroupUsrService;
+
+	@Inject
+	private ProjectUserService projectUserService;
+	@Inject
+	private ProjectService projectService;
+
+	@Aop(TransAop.READ_COMMITTED)
+	public void delete(String pj) {
+		projectAuthService.deletePj(pj);
+		projectGroupUsrService.deletePj(pj);
+		projectGroupService.deletePj(pj);
+		projectUserService.deletePj(pj);
+		svnService.exportConfig(pj);
+		projectService.delete(pj);
 	}
 }

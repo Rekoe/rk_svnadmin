@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
@@ -45,5 +46,17 @@ public class ProjectUserService extends BaseService<PjUsr> {
 		});
 		dao().execute(sql);
 		return sql.getObject(PjUsr.class);
+	}
+
+	/**
+	 * 删除这个项目的用户
+	 * 
+	 * @param pj
+	 *            项目
+	 */
+	public void deletePj(String pj) {
+		Sql sql = Sqls.create("delete from pj_usr $condition");// where pj = ?";
+		sql.setCondition(Cnd.where("pj", "=", pj));
+		dao().execute(sql);
 	}
 }

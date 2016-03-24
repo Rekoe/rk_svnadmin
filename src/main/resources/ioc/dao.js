@@ -54,7 +54,7 @@ var ioc = {
 					"system_role", "system_user", "system_server",
 					" system_user_server", "system_user_role", "verify_server",
 					"official_server", "server_history", "platform_user",
-					"cdkey_category" ],
+					"cdkey_category", "project_config" ],
 			enableWhenTrans : false, // 事务作用域内不启用缓存,默认也是false
 			db : "MYSQL"
 		}

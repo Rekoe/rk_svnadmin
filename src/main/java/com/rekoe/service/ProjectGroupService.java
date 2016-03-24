@@ -66,4 +66,16 @@ public class ProjectGroupService extends BaseService<PjGr> {
 		result.setDes(rs.getString("des"));
 		return result;
 	}
+
+	/**
+	 * 删除
+	 * 
+	 * @param pj
+	 *            项目
+	 */
+	public void deletePj(String pj) {
+		Sql sql = Sqls.create("delete from pj_gr $condition");
+		sql.setCondition(Cnd.where("pj", "=", pj));
+		dao().execute(sql);
+	}
 }

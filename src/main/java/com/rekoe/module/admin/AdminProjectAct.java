@@ -23,9 +23,11 @@ import com.rekoe.common.Message;
 import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.Pj;
 import com.rekoe.domain.PjAuth;
+import com.rekoe.domain.ProjectConfig;
 import com.rekoe.module.BaseAction;
 import com.rekoe.service.DefaultTreeService;
 import com.rekoe.service.ProjectAuthService;
+import com.rekoe.service.ProjectConfigService;
 import com.rekoe.service.ProjectGroupService;
 import com.rekoe.service.ProjectService;
 import com.rekoe.service.RepositoryService;
@@ -154,6 +156,19 @@ public class AdminProjectAct extends BaseAction {
 		return "";
 	}
 
+	@At
+	@Ok("json")
+	@RequiresPermissions({ "svn.project:auth.manager" })
+	@PermissionTag(name = "管理项目权限", tag = "SVN项目管理", enable = false)
+	public Message delete(@Param("id") String id, HttpServletRequest req) {
+		try {
+			projectService.delete(id);
+		} catch (Exception e) {
+			return Message.error(e.getMessage(), req);
+		}
+		return Message.success("ok", req);
+	}
+
 	@At("/pjauth/delete")
 	@Ok("fm:template.admin.project.pjauth")
 	@RequiresPermissions({ "svn.project:auth.manager" })
@@ -165,5 +180,28 @@ public class AdminProjectAct extends BaseAction {
 			projectAuthService.deleteByUsr(pj, usr, res);
 		}
 		return pjauth(pj, res, Mvcs.getReq());
+	}
+
+	@Inject
+	private ProjectConfigService projectConfigService;
+
+	@At
+	@Ok("fm:template.admin.project.config")
+	@RequiresPermissions({ "svn.project:conf" })
+	@PermissionTag(name = "配置管理", tag = "SVN项目管理", enable = true)
+	public ProjectConfig conf() {
+		return projectConfigService.get();
+	}
+
+	@At("/conf/update")
+	@Ok("json")
+	@RequiresPermissions({ "svn.project:conf" })
+	@PermissionTag(name = "配置管理", tag = "SVN项目管理", enable = false)
+	public Message conf_update(@Param("::conf.") ProjectConfig conf, HttpServletRequest req) {
+		boolean isRight = projectConfigService.update(conf.getRepositoryPath(), conf.getDomainPath());
+		if (isRight) {
+			return Message.success("ok", req);
+		}
+		return Message.error("erroe", req);
 	}
 }

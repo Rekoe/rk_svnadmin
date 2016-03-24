@@ -18,8 +18,9 @@ h3{ padding:0; margin:0; font-weight:normal; font-size:12px;}
 <#include "/template/admin/date.ftl"/>
 	 <ul class="w-lful">
 		<li><a href="${base}/admin/server/right" target="rightFrame"><@s.m "global.admin.index"/></a></li>
-		<@perm_chow perm="oauth.user">
+		<@perm_chow perm="svn.project">
 		<li><a href="${base}/admin/project/list.rk" target="rightFrame">项目列表</a></li>
+		<li><a href="${base}/admin/project/conf.rk" target="rightFrame">基本设置</a></li>
 		</@perm_chow>
 	 </ul>
 </div>
