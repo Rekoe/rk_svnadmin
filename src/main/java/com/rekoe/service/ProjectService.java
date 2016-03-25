@@ -61,6 +61,8 @@ public class ProjectService extends BaseService<Pj> {
 		return num;
 	}
 
+	@Inject 
+	private RepositoryService repositoryService;
 	/**
 	 * 保存。<br>
 	 * 数据库里已经存在相同的路径或url的项目，不可以保存。<br>
@@ -115,6 +117,7 @@ public class ProjectService extends BaseService<Pj> {
 			pjAuth.setRw("rw");
 			pjAuth.setGr(Constants.GROUP_MANAGER);
 			projectAuthService.saveByGr(pjAuth);
+			repositoryService.createDir(pj);
 		} else {
 			dao().update(pj);
 		}

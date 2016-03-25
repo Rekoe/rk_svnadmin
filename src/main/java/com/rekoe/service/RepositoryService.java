@@ -5,6 +5,7 @@ package com.rekoe.service;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.nutz.dao.Cnd;
@@ -13,6 +14,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.tmatesoft.svn.core.SVNAuthenticationException;
+import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNProperties;
@@ -23,11 +25,14 @@ import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
+import org.tmatesoft.svn.core.wc.SVNClientManager;
+import org.tmatesoft.svn.core.wc.SVNCommitClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import com.rekoe.domain.Pj;
 import com.rekoe.domain.PjUsr;
+import com.rekoe.domain.ProjectConfig;
 import com.rekoe.domain.Usr;
 import com.rekoe.utils.EncryptUtil;
 import com.rekoe.utils.UsrProvider;
@@ -43,6 +48,7 @@ public class RepositoryService {
 	 */
 	private final Log LOG = Logs.get();
 
+	private SVNClientManager manager;
 	@Inject
 	private ProjectService projectService;
 
@@ -125,6 +131,68 @@ public class RepositoryService {
 		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(svnUserName, svnPassword);
 		repository.setAuthenticationManager(authManager);
 		return repository;
+	}
+
+	@Inject
+	private ProjectConfigService projectConfigService;
+
+	public String getProjectSVNUrl(Pj pj) {
+		ProjectConfig conf = projectConfigService.get();
+		String svnurl = conf.getDomainPath() + pj.getPj();
+		return parseURL(svnurl);
+	}
+
+	/**
+	 * 创建初始化的文件夹
+	 * 
+	 * @param pj
+	 * @throws SVNException
+	 */
+	public synchronized void createDir(Pj pj) {
+		Usr usr = UsrProvider.getCurrentUsr();
+		String svnUrl = getProjectSVNUrl(pj);
+		if (StringUtils.isBlank(svnUrl)) {
+			throw new RuntimeException("URL不可以为空");
+		}
+		String svnUserName = usr.getUsr();
+		String svnPassword = usr.getPsw();
+		if (!com.rekoe.utils.Constants.HTTP_MUTIL.equals(pj.getType())) {
+			// pj_usr覆盖用户的密码
+			PjUsr pjUsr = projectUserService.get(pj.getPj(), svnUserName);
+			if (pjUsr != null) {
+				svnPassword = pjUsr.getPsw();
+			}
+		}
+		svnPassword = EncryptUtil.decrypt(svnPassword);// 解密
+		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(svnUserName, svnPassword);
+		this.manager.setAuthenticationManager(authManager);
+		boolean makeParents = true;
+		String commitMessage = "mkdir by Rekoe";
+		ProjectConfig conf = projectConfigService.get();
+		List<String> dirs = conf.getDirs();
+		SVNURL[] urlAr = new SVNURL[dirs.size()];
+		int i = 0;
+		for (String url : dirs) {
+			try {
+				urlAr[i] = SVNURL.parseURIEncoded(url);
+			} catch (SVNException e) {
+				LOG.error(e);
+			}
+			i++;
+		}
+		SVNCommitClient commitClient = SVNClientManager.newInstance().getCommitClient();
+		try {
+			SVNCommitInfo info = commitClient.doMkDir(urlAr, commitMessage, null, makeParents);
+			if (LOG.isDebugEnabled()) {
+				long newRevision = info.getNewRevision();
+				if (newRevision >= 0)
+					LOG.debug("commit successful: new revision = " + newRevision);
+				else
+					LOG.debug("no commits performed (commit operation returned new revision < 0)");
+			}
+		} catch (SVNException e) {
+			LOG.error(e);
+		}
 	}
 
 	/**
@@ -219,6 +287,8 @@ public class RepositoryService {
 		 * For using over file:///
 		 */
 		FSRepositoryFactory.setup();
+
+		this.manager = SVNClientManager.newInstance();
 	}
 
 }

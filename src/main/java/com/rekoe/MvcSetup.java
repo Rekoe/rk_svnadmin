@@ -16,6 +16,7 @@ import org.nutz.mvc.Setup;
 import org.nutz.plugins.view.freemarker.FreeMarkerConfigurer;
 
 import com.rekoe.domain.Pj;
+import com.rekoe.domain.ProjectConfig;
 import com.rekoe.domain.User;
 import com.rekoe.domain.Usr;
 import com.rekoe.service.UserService;
@@ -47,6 +48,7 @@ public class MvcSetup implements Setup {
 		Daos.createTablesInPackage(dao, User.class.getPackage().getName(), false);
 		Daos.migration(dao, Usr.class, true, true, false);
 		Daos.migration(dao, Pj.class, true, true, false);
+		Daos.migration(dao, ProjectConfig.class, true, true, false);
 		if (0 == dao.count(User.class)) {
 			FileSqlManager fm = new FileSqlManager("init_system_h2.sql");
 			List<Sql> sqlList = fm.createCombo(fm.keys());

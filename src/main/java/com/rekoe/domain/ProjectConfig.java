@@ -1,6 +1,8 @@
 package com.rekoe.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.ColType;
@@ -11,6 +13,8 @@ import org.nutz.dao.entity.annotation.EL;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Prev;
 import org.nutz.dao.entity.annotation.Table;
+
+import com.rekoe.valueadaptor.StringJsonAdaptor;
 
 @Table("project_config")
 public class ProjectConfig implements Serializable {
@@ -31,6 +35,28 @@ public class ProjectConfig implements Serializable {
 	@ColDefine(type = ColType.VARCHAR, width = 100)
 	@Default("http://127.0.0.1/")
 	private String domainPath;
+
+	@Column("def_dirs")
+	@ColDefine(type = ColType.VARCHAR, width = 225, adaptor = StringJsonAdaptor.class)
+	@Default("[server,client,art,design,plan]")
+	@Comment("默认初始化目录")
+	private List<String> dirs;
+
+	public List<String> getDirs() {
+		if (dirs == null) {
+			this.dirs = new ArrayList<>();
+		}
+		return dirs;
+	}
+
+	public void setDirs(List<String> dirs) {
+		this.dirs = dirs;
+	}
+
+	public ProjectConfig addDir(String dir) {
+		getDirs().add(dir);
+		return this;
+	}
 
 	public ProjectConfig() {
 		super();
