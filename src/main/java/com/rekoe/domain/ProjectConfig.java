@@ -38,7 +38,7 @@ public class ProjectConfig implements Serializable {
 
 	@Column("def_dirs")
 	@ColDefine(type = ColType.VARCHAR, width = 225, adaptor = StringJsonAdaptor.class)
-	@Default("[server,client,art,design,plan]")
+	@Default("[\"branches\",\"tags\",\"trunk\",\"trunk/server\",\"trunk/client\",\"trunk/art\",\"trunk/design\",\"trunk/plan\"]")
 	@Comment("默认初始化目录")
 	private List<String> dirs;
 

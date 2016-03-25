@@ -174,7 +174,7 @@ public class RepositoryService {
 		int i = 0;
 		for (String url : dirs) {
 			try {
-				urlAr[i] = SVNURL.parseURIEncoded(url);
+				urlAr[i] = SVNURL.parseURIEncoded(getProjectSVNUrl(pj) + "/" + url);
 			} catch (SVNException e) {
 				LOG.error(e);
 			}

@@ -33,7 +33,6 @@ import com.rekoe.service.ProjectService;
 import com.rekoe.service.RepositoryService;
 import com.rekoe.service.UsrService;
 import com.rekoe.utils.CommonUtils;
-import com.rekoe.utils.UsrProvider;
 
 @IocBean
 @At("/admin/project")
@@ -47,7 +46,6 @@ public class AdminProjectAct extends BaseAction {
 	@RequiresPermissions({ "svn.project:view" })
 	@PermissionTag(name = "SVN浏览项目", tag = "SVN项目管理")
 	public Pagination list(@Param(value = "pageNumber", df = "1") int page) {
-		System.out.println(UsrProvider.getCurrentUsr());
 		return projectService.getObjListByPager(page, 20, null);
 	}
 
