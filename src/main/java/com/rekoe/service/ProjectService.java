@@ -175,6 +175,6 @@ public class ProjectService extends BaseService<Pj> {
 		projectGroupService.deletePj(pj);
 		projectUserService.deletePj(pj);
 		svnService.exportConfig(pj);
-		projectService.delete(pj);
+		delete(pj);
 	}
 }
