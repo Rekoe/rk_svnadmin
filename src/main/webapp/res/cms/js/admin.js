@@ -115,7 +115,7 @@ Cms.updateBack = function(url){
 	}); 
 	return false;
 }
-Cms.update = function(id){
+Cms.update = function(){
 	$.dialog({
 		type: "warn",
 		content: '确定要修改此记录?',
