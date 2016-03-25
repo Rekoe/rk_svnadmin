@@ -8,6 +8,31 @@
 function getTableForm() {
 	return document.getElementById('tableForm');
 }
+function deleted(pj,gr){
+	$.dialog({
+		type: "warn",
+		content: '确定要删除此记录?',
+		ok: 'Ok',
+		cancel: 'Cancel',
+		onOk: function() {
+			$.ajax({
+				url: "delete.rk",
+				type: "POST",
+				data: {"pj":pj,"gr":gr},
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+					if (message.type == "success")
+					{
+						window.location.href = back;
+					}
+				}
+			});
+		}
+	}); 
+	return false;
+}
 </script>
 </head>
 <body>
@@ -21,14 +46,15 @@ function getTableForm() {
 <div class="body-box">
 <@p.form id="tableForm" method="post">
 <@p.hidden name="pageNumber" value="${pageNo!}" />
-<@p.table value=obj;user,i,has_next><#rt/>
+<@p.table value=obj;group,i,has_next><#rt/>
 	<@p.column title="ID" align="center">${i+1}</@p.column><#t/>
-	<@p.column title="姓名" align="center">${user.name}</@p.column><#t/>
-	<@p.column title="名称" align="center">${user.usr}</@p.column><#t/>
-	<@p.column title="email" align="center">${user.email!}</@p.column><#t/>
-	<@shiro.hasPermission name="svn.user:edit">	
-	<@p.column title="编辑" align="center">
-		<a href="edit.rk?id=${user.usr}" class="pn-opt">编辑</a><#rt/>
+	<@p.column title="项目" align="center">${group.pj}</@p.column><#t/>
+	<@p.column title="用户组" align="center">${group.gr}</@p.column><#t/>
+	<@p.column title="描述" align="center">${group.des!}</@p.column><#t/>
+	<@p.column title="设置用户" align="center">设置用户</@p.column><#t/>
+	<@shiro.hasPermission name="project.group:delete">	
+	<@p.column title="删除" align="center">
+		<#if group.gr != "manager"><a href="javascript:void(0);" onclick="deleted('${group.pj}','${group.gr}')" class="pn-opt">删除</a></#if><#rt/>
 	</@p.column><#t/>
 	</@shiro.hasPermission>
 </@p.table>

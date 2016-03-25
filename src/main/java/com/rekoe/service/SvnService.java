@@ -78,7 +78,7 @@ public class SvnService {
 		}
 		File parent = new File(pj.getPath());
 		if (!parent.exists() || !parent.isDirectory()) {
-			throw new RuntimeException(String.format("找不到仓库 路径{0}", new Object[] { pj.getPath() }));
+			throw new RuntimeException(String.format("找不到仓库 路径 %s", pj.getPath()));
 		}
 		if (Constants.HTTP.equalsIgnoreCase(pj.getType())) {// HTTP(单库) SVNPath
 			this.exportHTTP(pj);
