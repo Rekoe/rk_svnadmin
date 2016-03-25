@@ -2,6 +2,7 @@ package com.rekoe.module.admin;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -16,6 +17,7 @@ import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.PjGrUsr;
 import com.rekoe.module.BaseAction;
 import com.rekoe.service.ProjectGroupUsrService;
+import com.rekoe.service.SvnService;
 import com.rekoe.service.SvnUserService;
 
 @IocBean
@@ -24,6 +26,9 @@ public class AdminProjectGroupUsrAct extends BaseAction {
 
 	@Inject
 	private ProjectGroupUsrService projectGroupUsrService;
+
+	@Inject
+	private SvnService svnService;
 
 	@At
 	@Ok("fm:template.admin.project_group_usr.list")
@@ -53,8 +58,23 @@ public class AdminProjectGroupUsrAct extends BaseAction {
 	@Ok("json")
 	@RequiresPermissions("project.group:add")
 	@PermissionTag(name = "添加项目组用户", tag = "SVN账号管理", enable = false)
-	public Message o_save(@Param("::pgu.") PjGrUsr group, HttpServletRequest req) {
-		return Message.error("ok", req);
+	public Message o_save(@Param("pj") String pj, @Param("gr") String gr, @Param("usrs") String[] usrs, HttpServletRequest req) {
+		if (usrs == null || usrs.length == 0) {
+			return Message.error("error", req);
+		}
+		for (String usr : usrs) {
+			if (StringUtils.isBlank(usr)) {
+				continue;
+			}
+			PjGrUsr pjGrUsr = new PjGrUsr();
+			pjGrUsr.setPj(pj);
+			pjGrUsr.setGr(gr);
+			pjGrUsr.setUsr(usr);
+			projectGroupUsrService.save(pjGrUsr);
+		}
+		// export
+		svnService.exportConfig(pj);
+		return Message.success("ok", req);
 	}
 
 	@At
