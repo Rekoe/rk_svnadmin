@@ -22,6 +22,9 @@ public class ProjectConfigService extends BaseService<ProjectConfig> {
 
 	public ProjectConfig get() {
 		ProjectConfig conf = dao().fetch(getEntityClass());
+		if (conf == null) {
+			dao().insert(new ProjectConfig());
+		}
 		return conf;
 	}
 
