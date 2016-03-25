@@ -24,8 +24,6 @@ $(function() {
 <@p.td width="50" label="类型"  required="true">
 	<@p.select id="pj.type" name="pj.type" value='http-mutil' list={"svn":"svn","http":"http","http-mutil":"http(多库)"} required="true"/>
 </@p.td><@p.tr/>
-<@p.text width="30" label="路径" id="pj.path" name="pj.path" value="" maxlength="100" class="required" required="true"/><@p.tr/>
-<@p.text width="30" label="URL" id="pj.url" name="pj.url" value="" maxlength="100" class="required" required="true"/><@p.tr/>
 <@p.text width="30" label="描述" id="pj.des" name="pj.des" value="" maxlength="100" class="required" required="true"/><@p.tr/>
 <@p.td colspan="2">
 <@p.submit code="global.submit" onclick="Cms.add();"/>
