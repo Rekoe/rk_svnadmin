@@ -1,8 +1,10 @@
 package com.rekoe.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.rekoe.domain.Pj;
 import com.rekoe.domain.ProjectConfig;
 
 /**
@@ -33,5 +35,18 @@ public class ProjectConfigService extends BaseService<ProjectConfig> {
 
 	public void init() {
 		get();
+	}
+
+	public String getRepoPath(String pj) {
+		ProjectConfig conf = get();
+		String path = conf.getRepositoryPath();
+		if (!StringUtils.endsWith(path, "/") || !StringUtils.endsWith(path, "\\")) {
+			path += "/";
+		}
+		return path + pj;
+	}
+
+	public String getRepoPath(Pj pj) {
+		return getRepoPath(pj.getPj());
 	}
 }

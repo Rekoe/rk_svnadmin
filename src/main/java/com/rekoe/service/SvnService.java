@@ -56,6 +56,9 @@ public class SvnService {
 	@Inject
 	private ProjectGroupUsrService projectGroupUsrService;
 
+	@Inject
+	private ProjectConfigService projectConfigService;
+
 	/**
 	 * 导出到配置文件
 	 * 
@@ -76,7 +79,8 @@ public class SvnService {
 		if (pj == null) {
 			return;
 		}
-		File parent = new File(pj.getPath());
+		String path = projectConfigService.get().getRepositoryPath() + pj.getPj();
+		File parent = new File(path);
 		if (!parent.exists() || !parent.isDirectory()) {
 			throw new RuntimeException(String.format("找不到仓库 路径 %s", pj.getPath()));
 		}
