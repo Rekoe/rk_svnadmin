@@ -146,7 +146,7 @@ public class ProjectService extends BaseService<Pj> {
 		projectGroupService.deletePj(pj);
 		projectUserService.deletePj(pj);
 		svnService.exportConfig(pj);
-		delete(pj);
+		dao().clear(getEntityClass(), Cnd.where("pj", "=", pj));
 	}
 
 	public void update(Pj pj) {
