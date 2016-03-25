@@ -56,13 +56,11 @@ public class ProjectService extends BaseService<Pj> {
 		return Lang.isEmpty(dao().fetch(getEntityClass(), Cnd.where("pj", "=", name)));
 	}
 
-	public int getCount(String path, String url) {
-		int num = dao().count(getEntityClass(), Cnd.where("path", "=", path).or("url", "=", url));
-		return num;
-	}
-
-	@Inject 
+	@Inject
 	private RepositoryService repositoryService;
+	@Inject
+	private ProjectConfigService projectConfigService;
+
 	/**
 	 * 保存。<br>
 	 * 数据库里已经存在相同的路径或url的项目，不可以保存。<br>
@@ -73,30 +71,14 @@ public class ProjectService extends BaseService<Pj> {
 	 *            项目
 	 */
 	public void save(Pj pj) {
-		// 路径 把\替换为/
-		if (StringUtils.isNotBlank(pj.getPath())) {
-			pj.setPath(StringUtils.replace(pj.getPath(), "\\", "/"));
-		}
-		// url 把\替换为/
 		if (StringUtils.isNotBlank(pj.getUrl())) {
 			pj.setUrl(StringUtils.replace(pj.getUrl(), "\\", "/"));
 		}
-
 		// 是否可以增加项目
 		boolean insert = nameOk(pj.getPj());
-		if (insert) {
-			// 数据库里已经存在相同的路径或url的项目
-			if (this.getCount(pj.getPath(), pj.getUrl()) > 0) {
-				throw new RuntimeException("数据库里已经存在相同的路径或url的仓库项目，请检查路径或url");
-			}
-		} else {
-			// 数据库里已经存在相同的路径或url的项目
-			if (this.getCount(pj.getPath(), pj.getUrl()) > 1) {
-				throw new RuntimeException("数据库里已经存在多个相同的路径或url的仓库项目，请检查路径或url");
-			}
-		}
+		String path = projectConfigService.getRepoPath(pj);
 		// 创建仓库
-		File respository = new File(pj.getPath());
+		File respository = new File(path);
 		if (!respository.exists() || !respository.isDirectory()) {// 不存在仓库
 			RepositoryService.createLocalRepository(respository);
 		}
@@ -134,10 +116,10 @@ public class ProjectService extends BaseService<Pj> {
 	 */
 	public String getRelateRootPath(String pj) {
 		Pj p = this.get(pj);
-		if (p == null || StringUtils.isBlank(p.getPath())) {
+		if (p == null) {
 			return pj;
 		}
-		return getRelateRootPath(pj);
+		return projectConfigService.getRepoPath(p);
 	}
 
 	/**
@@ -149,15 +131,7 @@ public class ProjectService extends BaseService<Pj> {
 	 * @since 3.0.3
 	 */
 	public String getRelateRootPath(Pj pj) {
-		String path = pj.getPath();
-		if (StringUtils.isBlank(path)) {
-			return pj.getPj();
-		}
-		path = StringUtils.replace(path, "\\", "/");
-		while (path.endsWith("/")) {
-			path = path.substring(0, path.length() - 1);
-		}
-		return StringUtils.substringAfterLast(path, "/");
+		return projectConfigService.getRepoPath(pj);
 	}
 
 	@Inject

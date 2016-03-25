@@ -79,16 +79,15 @@ public class SvnService {
 		if (pj == null) {
 			return;
 		}
-		String path = projectConfigService.get().getRepositoryPath() + pj.getPj();
+		String path = projectConfigService.getRepoPath(pj);
 		File parent = new File(path);
 		if (!parent.exists() || !parent.isDirectory()) {
-			throw new RuntimeException(String.format("找不到仓库 路径 %s", pj.getPath()));
+			throw new RuntimeException(String.format("找不到仓库 路径 %s", path));
 		}
 		if (Constants.HTTP.equalsIgnoreCase(pj.getType())) {// HTTP(单库) SVNPath
 			this.exportHTTP(pj);
 		} else if (Constants.HTTP_MUTIL.equalsIgnoreCase(pj.getType())) {// HTTP(多库)
-																			// SVNParentPath
-			File root = new File(pj.getPath()).getParentFile();
+			File root = new File(path).getParentFile();
 			this.exportHTTPMutil(root);
 		} else if (Constants.SVN.equalsIgnoreCase(pj.getType())) {// SVN
 			this.exportSVN(pj);
@@ -277,7 +276,8 @@ public class SvnService {
 	 *            项目用户列表
 	 */
 	private void exportPasswdHTTP(Pj pj, List<Usr> usrList) {
-		File outFile = new File(pj.getPath(), "/conf/passwd.http");
+		String path = projectConfigService.getRepoPath(pj);
+		File outFile = new File(path, "/conf/passwd.http");
 		StringBuffer contents = new StringBuffer();
 		for (Usr usr : usrList) {
 			// 采用SHA加密
@@ -297,7 +297,8 @@ public class SvnService {
 	 *            项目用户列表
 	 */
 	private void exportPasswdSVN(Pj pj, List<Usr> usrList) {
-		File outFile = new File(pj.getPath(), "/conf/passwd");
+		String path = projectConfigService.getRepoPath(pj);
+		File outFile = new File(path, "/conf/passwd");
 		StringBuffer contents = new StringBuffer();
 		contents.append("[users]").append(SEP);
 		for (Usr usr : usrList) {
@@ -376,7 +377,8 @@ public class SvnService {
 		 * if(pjGrList == null || pjGrList.size() == 0){ return; } if(pjAuthMap
 		 * == null || pjAuthMap.size() == 0){ return; }
 		 */
-		File outFile = new File(pj.getPath(), "/conf/authz");
+		String path = projectConfigService.getRepoPath(pj);
+		File outFile = new File(path, "/conf/authz");
 		StringBuffer contents = new StringBuffer();
 		contents.append("[aliases]").append(SEP);
 		contents.append("[groups]").append(SEP);
@@ -423,7 +425,8 @@ public class SvnService {
 		if (pj == null || StringUtils.isBlank(pj.getPj())) {
 			return;
 		}
-		File outFile = new File(pj.getPath(), "/conf/svnserve.conf");
+		String path = projectConfigService.getRepoPath(pj);
+		File outFile = new File(path, "/conf/svnserve.conf");
 		StringBuffer contents = new StringBuffer();
 		contents.append("[general]").append(SEP);
 		contents.append("anon-access = none").append(SEP);
@@ -444,9 +447,10 @@ public class SvnService {
 		if (pj == null || StringUtils.isBlank(pj.getPj())) {
 			return;
 		}
-		File outFile = new File(pj.getPath(), "/conf/httpd.conf");
+		String path = projectConfigService.getRepoPath(pj);
+		File outFile = new File(path, "/conf/httpd.conf");
 		StringBuffer contents = new StringBuffer();
-		contents.append("#Include ").append(pj.getPath()).append("/conf/httpd.conf").append(SEP);
+		contents.append("#Include ").append(path).append("/conf/httpd.conf").append(SEP);
 		String location = pj.getPj();
 		// 例如 http://192.168.1.100/svn/projar/trunk
 		if (StringUtils.isNotBlank(pj.getUrl()) && pj.getUrl().indexOf("//") != -1) {
@@ -457,11 +461,11 @@ public class SvnService {
 		}
 		contents.append("<Location /").append(location).append(">").append(SEP);
 		contents.append("DAV svn").append(SEP);
-		contents.append("SVNPath ").append(pj.getPath()).append(SEP);
+		contents.append("SVNPath ").append(path).append(SEP);
 		contents.append("AuthType Basic").append(SEP);
-		contents.append("AuthName ").append("\"").append(pj.getPj()).append("\"").append(SEP);
-		contents.append("AuthUserFile ").append(pj.getPath()).append("/conf/passwd.http").append(SEP);
-		contents.append("AuthzSVNAccessFile ").append(pj.getPath()).append("/conf/authz").append(SEP);
+		contents.append("AuthName ").append("\"").append(path).append("\"").append(SEP);
+		contents.append("AuthUserFile ").append(path).append("/conf/passwd.http").append(SEP);
+		contents.append("AuthzSVNAccessFile ").append(path).append("/conf/authz").append(SEP);
 		contents.append("Require valid-user").append(SEP);
 		contents.append("</Location>").append(SEP);
 		this.write(outFile, contents.toString());

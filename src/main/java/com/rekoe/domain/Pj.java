@@ -22,11 +22,6 @@ public class Pj implements Serializable{
 	@Name
 	private String pj;
 	/**
-	 * 仓库位置
-	 */
-	@Comment
-	private String path;
-	/**
 	 * 访问项目的svn地址
 	 */
 	@Comment
@@ -61,21 +56,6 @@ public class Pj implements Serializable{
 	 */
 	public void setPj(String pj) {
 		this.pj = pj;
-	}
-
-	/**
-	 * @return 仓库位置
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * @param path
-	 *            仓库位置
-	 */
-	public void setPath(String path) {
-		this.path = path;
 	}
 
 	/**
