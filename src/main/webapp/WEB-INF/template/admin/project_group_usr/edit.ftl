@@ -12,20 +12,18 @@ $(function() {
 </head>
 <body>
 <div class="box-positon">
-	<div class="rpos"><@s.m "global.position"/>: SVN项目组账号 - <@s.m "global.add"/></div>
+	<div class="rpos"><@s.m "global.position"/>: OauthUser - <@s.m "global.edit"/></div>
 	<form class="ropt">
 		<input type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='list.rk';" class="return-button"/>
 	</form>
 	<div class="clear"></div>
 </div>
 <div class="body-box">
-<@p.form id="jvForm" action="o_save" labelWidth="12" onsubmit="return false;">
-<@p.hidden name="pgu.pj" value='${obj}' />
-<@p.text width="30" label="项目" id="pgu.pj" name="pgu.pj" value="${obj}" maxlength="100" class="required" required="true" readonly="true"/><@p.tr/>
-<@p.text width="30" label="用户组" id="pgu.gr" name="pgu.gr" value="" maxlength="100" class="required" required="true"/><@p.tr/>
-<@p.text width="30" label="描述" id="pgu.des" name="pgu.des" value="" maxlength="100" class="required" required="true"/><@p.tr/>
+<@p.form id="jvForm" action="o_update" labelWidth="12" onsubmit="return false;">
+<@p.hidden name="user.id" value='${obj.id}' />
+<@p.text width="30" label="名称" id="user.userName" name="user.userName" value="${obj.userName!}" maxlength="100" class="required" required="true" readonly="true"/><@p.tr/>
 <@p.td colspan="2">
-<@p.submit code="global.submit" onclick="Cms.add();"/>
+<@p.submit code="global.submit" onclick="Cms.update();"/>
 </@p.td><@p.tr/>
 </@p.form>
 </div>

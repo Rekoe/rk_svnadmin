@@ -40,7 +40,7 @@ Cms.lmenu = function(id) {
 		});
 	});
 }
-Cms.add = function(id){
+Cms.add = function(){
 	$.dialog({
 		type: "warn",
 		content: '确定要添加此记录?',

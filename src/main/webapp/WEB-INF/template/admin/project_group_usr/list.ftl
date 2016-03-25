@@ -8,7 +8,7 @@
 function getTableForm() {
 	return document.getElementById('tableForm');
 }
-function deleted(pj,gr){
+function deleted(pj,gr,usr){
 	$.dialog({
 		type: "warn",
 		content: '确定要删除此记录?',
@@ -18,7 +18,7 @@ function deleted(pj,gr){
 			$.ajax({
 				url: "delete.rk",
 				type: "POST",
-				data: {"pj":pj,"gr":gr},
+				data: {"pj":pj,"gr":gr,"usr":usr},
 				dataType: "json",
 				cache: false,
 				success: function(message) {
@@ -40,6 +40,7 @@ function deleted(pj,gr){
 	<div class="rpos"><@s.m "global.position"/>: OauthUser - <@s.m "global.list"/></div>
 	<form class="ropt">
 		<input type="hidden" name="pj" id="pj" value="${pj}"/>
+		<input type="hidden" name="gr" id="pj" value="${gr}"/>
 		<input type="submit" class="add" value="<@s.m "global.add"/>" onclick="this.form.action='add';"/>
 	</form>
 	<div class="clear"></div>
@@ -51,8 +52,8 @@ function deleted(pj,gr){
 	<@p.column title="ID" align="center">${i+1}</@p.column><#t/>
 	<@p.column title="项目" align="center">${group.pj}</@p.column><#t/>
 	<@p.column title="用户组" align="center">${group.gr}</@p.column><#t/>
-	<@p.column title="描述" align="center">${group.des!}</@p.column><#t/>
-	<@p.column title="设置用户" align="center"><a href="${base}/admin/project/group/usr/list?pageNumber=1&pj=${group.pj}&gr=${group.gr}">设置用户</a></@p.column><#t/>
+	<@p.column title="用户名" align="center">${group.usr!}</@p.column><#t/>
+	<@p.column title="姓名" align="center">${group.usrName}</@p.column><#t/>
 	<@shiro.hasPermission name="project.group:delete">	
 	<@p.column title="删除" align="center">
 		<#if group.gr != "manager"><a href="javascript:void(0);" onclick="deleted('${group.pj}','${group.gr}')" class="pn-opt">删除</a></#if><#rt/>

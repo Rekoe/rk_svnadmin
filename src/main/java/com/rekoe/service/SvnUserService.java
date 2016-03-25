@@ -1,10 +1,18 @@
 package com.rekoe.service;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
+import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 
@@ -23,7 +31,7 @@ public class SvnUserService extends BaseService<Usr> {
 
 	public SvnUserService() {
 	}
-	
+
 	public SvnUserService(Dao dao) {
 		super(dao);
 	}
@@ -46,5 +54,41 @@ public class SvnUserService extends BaseService<Usr> {
 	 */
 	public boolean isUsername(String username) {
 		return Pattern.matches(REGEX_USERNAME, username);
+	}
+
+	/**
+	 * 获取这个项目组未选的用户(不包括*)
+	 * 
+	 * @param pj
+	 *            项目
+	 * @param gr
+	 *            组
+	 * @return 项目组未选的用户(不包括*)
+	 */
+	public List<Usr> listUnSelected(String pj, String gr) {
+		Sql sql = Sqls.create("select usr,name,psw,role from usr a where a.usr <> '*' " + " and not exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj=@pj and b.gr=@gr) order by a.usr");
+		sql.setParam("pj", pj).setParam("gr", gr);
+		final List<Usr> list = new ArrayList<Usr>();
+		sql.setCallback(new SqlCallback() {
+
+			@Override
+			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				while (rs.next()) {
+					list.add(readUsr(rs));
+				}
+				return list;
+			}
+		});
+		dao().execute(sql);
+		return list;
+	}
+
+	Usr readUsr(ResultSet rs) throws SQLException {
+		Usr result = new Usr();
+		result.setUsr(rs.getString("usr"));
+		result.setName(rs.getString("name"));
+		result.setPsw(rs.getString("psw"));
+		result.setRole(rs.getString("role"));
+		return result;
 	}
 }

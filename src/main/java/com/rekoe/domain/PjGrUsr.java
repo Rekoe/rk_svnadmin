@@ -2,10 +2,11 @@ package com.rekoe.domain;
 
 import java.io.Serializable;
 
-import org.nutz.dao.entity.annotation.Comment;
+import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Index;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.PK;
+import org.nutz.dao.entity.annotation.Readonly;
 import org.nutz.dao.entity.annotation.Table;
 import org.nutz.dao.entity.annotation.TableIndexes;
 
@@ -28,17 +29,17 @@ public class PjGrUsr implements Serializable {
 	/**
 	 * 用户
 	 */
-	@Comment
+	@Column
 	private String usr;
 	/**
 	 * 用户姓名
 	 */
-	@Comment
+	@Readonly
 	private String usrName;
 	/**
 	 * 组
 	 */
-	@Comment
+	@Column
 	private String gr;
 
 	/**

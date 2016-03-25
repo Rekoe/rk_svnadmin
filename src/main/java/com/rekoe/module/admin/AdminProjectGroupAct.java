@@ -28,7 +28,8 @@ public class AdminProjectGroupAct extends BaseAction {
 	@Ok("fm:template.admin.project_group.list")
 	@RequiresPermissions({ "project.group:view" })
 	@PermissionTag(name = "SVN浏览账号", tag = "SVN账号管理")
-	public Pagination list(@Param(value = "pageNumber", df = "1") Integer page, @Param("pj") String pj) {
+	public Pagination list(@Param(value = "pageNumber", df = "1") Integer page, @Param("pj") String pj,HttpServletRequest req) {
+		req.setAttribute("pj", pj);
 		return projectGroupService.getObjListByPager(page, 20, Cnd.where("pj", "=", pj));
 	}
 
