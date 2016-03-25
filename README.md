@@ -43,5 +43,5 @@
 	……
 
 ## 3、附录
-  Centos安装apache+svn结合的SVN服务器请参考[Centos安装apache+svn结合的SVN服务器](fl.md)
-      管理系统配置请参考[管理系统配置请参考](https://github.com/yuexiaoyun/svnadmin/blob/master/doc/SvnAdmin_Manual_zh_CN.pdf)
+  Centos安装apache+svn结合的SVN服务器请参考[Centos安装apache+svn结合的SVN服务器](fl.md)                        
+  管理系统配置请参考[管理系统配置请参考](https://github.com/yuexiaoyun/svnadmin/blob/master/doc/SvnAdmin_Manual_zh_CN.pdf)
