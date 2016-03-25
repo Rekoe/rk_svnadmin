@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.util.NutMap;
@@ -57,6 +56,14 @@ public class AdminProjectAct extends BaseAction {
 	}
 
 	@At
+	@Ok("fm:template.admin.project.edit")
+	@RequiresPermissions({ "svn.project:edit" })
+	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = false)
+	public Pj edit(@Param("pj") String pj) {
+		return projectService.get(pj);
+	}
+
+	@At
 	@Ok("json")
 	@RequiresPermissions("svn.project:add")
 	@PermissionTag(name = "SVN添加项目", tag = "SVN项目管理", enable = false)
@@ -76,7 +83,7 @@ public class AdminProjectAct extends BaseAction {
 	@Ok("fm:template.admin.project.rep")
 	@RequiresPermissions({ "svn.project:view" })
 	public String rep(@Param("pj") String pj, HttpServletRequest req) {
-		Pj project = projectService.fetch(Cnd.where("pj", "=", pj));
+		Pj project = projectService.get(pj);
 		String root = repositoryService.getRepositoryRoot(project);
 		String svnUrl = RepositoryService.parseURL(projectConfigService.getProjectUrl(pj));
 		String path = "/";
@@ -202,4 +209,14 @@ public class AdminProjectAct extends BaseAction {
 		}
 		return Message.error("erroe", req);
 	}
+
+	@At
+	@Ok("json")
+	@RequiresPermissions("svn.project:update")
+	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = true)
+	public Message o_update(@Param("::pj.") Pj pj, HttpServletRequest req) {
+		projectService.update(pj);
+		return Message.success("ok", req);
+	}
+
 }

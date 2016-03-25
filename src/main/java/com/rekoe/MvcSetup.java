@@ -19,6 +19,7 @@ import com.rekoe.domain.Pj;
 import com.rekoe.domain.ProjectConfig;
 import com.rekoe.domain.User;
 import com.rekoe.domain.Usr;
+import com.rekoe.service.ProjectConfigService;
 import com.rekoe.service.UserService;
 
 import freemarker.template.Configuration;
@@ -65,6 +66,7 @@ public class MvcSetup implements Setup {
 		}
 		UserService userService = ioc.get(UserService.class);
 		userService.initFormPackages("com.rekoe");
+		ioc.get(ProjectConfigService.class).init();
 	}
 
 	@Override
