@@ -148,4 +148,8 @@ public class ProjectService extends BaseService<Pj> {
 		svnService.exportConfig(pj);
 		delete(pj);
 	}
+
+	public void update(Pj pj) {
+		dao().update(pj);
+	}
 }

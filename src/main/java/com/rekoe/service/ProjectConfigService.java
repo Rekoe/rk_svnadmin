@@ -13,7 +13,7 @@ import com.rekoe.domain.ProjectConfig;
  *         http://www.rekoe.com<br/>
  *         QQ:5382211
  */
-@IocBean(args = { "refer:dao" }, create = "init")
+@IocBean(args = { "refer:dao" })
 public class ProjectConfigService extends BaseService<ProjectConfig> {
 
 	public ProjectConfigService(Dao dao) {
