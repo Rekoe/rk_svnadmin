@@ -21,6 +21,9 @@ public class SvnUserService extends BaseService<Usr> {
 
 	private final String REGEX_USERNAME = "^[a-zA-Z0-9]{1,16}$";
 
+	public SvnUserService() {
+	}
+	
 	public SvnUserService(Dao dao) {
 		super(dao);
 	}

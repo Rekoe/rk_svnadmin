@@ -67,8 +67,8 @@ public class UsrService extends BaseService<Usr> {
 	}
 
 	public List<Usr> getListByRootPath(String rootPath) {
-		Sql sql = Sqls.create("select p.usr,p.name,p.role,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from (" + " select a.usr,a.role,a.psw,a.name from usr a " + " where " + " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj in (select distinct pj from pj where type=@type and path like @like)) " + " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj in (select distinct pj from pj where type=@type and path like @like)) " + " ) p " + " left join pj_usr pu on (p.usr=pu.usr) where p.usr <> '*'" + " order by p.usr ");
-		sql.setParam("like", rootPath + "%").setParam("type", com.rekoe.utils.Constants.HTTP_MUTIL);
+		Sql sql = Sqls.create("select p.usr,p.name,p.role,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from (" + " select a.usr,a.role,a.psw,a.name from usr a " + " where " + " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj in (select distinct pj from pj where type=@type)) " + " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj in (select distinct pj from pj where type=@type)) " + " ) p " + " left join pj_usr pu on (p.usr=pu.usr) where p.usr <> '*'" + " order by p.usr ");
+		sql.setParam("type", com.rekoe.utils.Constants.HTTP_MUTIL);
 		final List<Usr> list = new ArrayList<Usr>();
 		sql.setCallback(new SqlCallback() {
 

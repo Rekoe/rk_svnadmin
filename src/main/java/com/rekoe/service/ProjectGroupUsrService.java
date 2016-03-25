@@ -113,8 +113,8 @@ public class ProjectGroupUsrService extends BaseService<PjGrUsr> {
 	 * @return 有相同的svn root的项目组用户
 	 */
 	public List<PjGrUsr> getListByRootPath(String rootPath) {
-		Sql sql = Sqls.create("select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr=c.usr) " + " where a.pj in (select distinct pj from pj where type=@type and path like @like) order by a.pj,a.gr,b.usr");
-		sql.setParam("type", Constants.HTTP_MUTIL).setParam("like", rootPath + "%");
+		Sql sql = Sqls.create("select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr=c.usr) " + " where a.pj in (select distinct pj from pj where type=@type) order by a.pj,a.gr,b.usr");
+		sql.setParam("type", Constants.HTTP_MUTIL);
 		final List<PjGrUsr> list = new ArrayList<PjGrUsr>();
 		sql.setCallback(new SqlCallback() {
 

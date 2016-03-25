@@ -346,8 +346,8 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 * @return 具有相同svn root的项目资源的权限列表
 	 */
 	public List<PjAuth> getListByRootPath(String rootPath) {
-		Sql sql = Sqls.create("select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj in (select distinct pj from pj where type=@type and path like @like) " + " UNION " + " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj in (select distinct pj from pj where type=@type and path like @like) " + " order by res,gr,usr");
-		sql.setParam("type", Constants.HTTP_MUTIL).setParam("like", rootPath + "%");
+		Sql sql = Sqls.create("select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj in (select distinct pj from pj where type=@type) " + " UNION " + " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj in (select distinct pj from pj where type=@type) " + " order by res,gr,usr");
+		sql.setParam("type", Constants.HTTP_MUTIL);
 		final List<PjAuth> list = new ArrayList<PjAuth>();
 		sql.setCallback(new SqlCallback() {
 
