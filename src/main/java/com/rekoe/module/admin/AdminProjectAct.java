@@ -78,7 +78,7 @@ public class AdminProjectAct extends BaseAction {
 	public String rep(@Param("pj") String pj, HttpServletRequest req) {
 		Pj project = projectService.fetch(Cnd.where("pj", "=", pj));
 		String root = repositoryService.getRepositoryRoot(project);
-		String svnUrl = RepositoryService.parseURL(project.getUrl());
+		String svnUrl = RepositoryService.parseURL(projectConfigService.getProjectUrl(pj));
 		String path = "/";
 		if (root != null) {
 			try {

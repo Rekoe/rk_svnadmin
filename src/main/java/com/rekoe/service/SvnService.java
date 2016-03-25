@@ -453,12 +453,11 @@ public class SvnService {
 		contents.append("#Include ").append(path).append("/conf/httpd.conf").append(SEP);
 		String location = pj.getPj();
 		// 例如 http://192.168.1.100/svn/projar/trunk
-		if (StringUtils.isNotBlank(pj.getUrl()) && pj.getUrl().indexOf("//") != -1) {
-			String svnUrl = RepositoryService.parseURL(pj.getUrl());
-			location = StringUtils.substringAfter(svnUrl, "//");// 192.168.1.100/svn/projar/trunk
-			location = StringUtils.substringAfter(location, "/");// svn/projar/trunk
-			location = StringUtils.substringBeforeLast(location, "/trunk");// svn/projar
-		}
+
+		String svnUrl = RepositoryService.parseURL(projectConfigService.getProjectUrl(pj));
+		location = StringUtils.substringAfter(svnUrl, "//");// 192.168.1.100/svn/projar/trunk
+		location = StringUtils.substringAfter(location, "/");// svn/projar/trunk
+		location = StringUtils.substringBeforeLast(location, "/trunk");// svn/projar
 		contents.append("<Location /").append(location).append(">").append(SEP);
 		contents.append("DAV svn").append(SEP);
 		contents.append("SVNPath ").append(path).append(SEP);

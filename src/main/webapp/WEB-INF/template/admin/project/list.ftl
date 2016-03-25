@@ -24,7 +24,6 @@ function getTableForm() {
 <@p.table value=obj;project,i,has_next><#rt/>
 	<@p.column title="ID" align="center">${i+1}</@p.column><#t/>
 	<@p.column title="姓名" align="center">${project.pj}</@p.column><#t/>
-	<@p.column title="URL" align="center"><a href="rep?pj=${project.pj}">${project.url}</a></@p.column><#t/>
 	<@p.column title="类型" align="center">${project.type}</@p.column><#t/>
 	<@p.column title="描述" align="center">${project.des}</@p.column><#t/>
 	<@shiro.hasPermission name="project.group">	

@@ -11,7 +11,7 @@ import org.nutz.dao.entity.annotation.Table;
  * 项目
  */
 @Table("pj")
-public class Pj implements Serializable{
+public class Pj implements Serializable {
 	/**
 	 * 
 	 */
@@ -21,11 +21,6 @@ public class Pj implements Serializable{
 	 */
 	@Name
 	private String pj;
-	/**
-	 * 访问项目的svn地址
-	 */
-	@Comment
-	private String url;
 	/**
 	 * 描述
 	 */
@@ -86,21 +81,6 @@ public class Pj implements Serializable{
 	 */
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	/**
-	 * @return 访问项目的svn地址
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * @param url
-	 *            访问项目的svn地址
-	 */
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	/**

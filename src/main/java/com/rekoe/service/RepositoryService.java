@@ -113,7 +113,7 @@ public class RepositoryService {
 	@SuppressWarnings("deprecation")
 	public SVNRepository getRepository(Pj pj) throws SVNException {
 		Usr usr = UsrProvider.getCurrentUsr();
-		String svnUrl = parseURL(pj.getUrl());
+		String svnUrl = parseURL(projectConfigService.getProjectUrl(pj));
 		if (StringUtils.isBlank(svnUrl)) {
 			throw new RuntimeException("URL不可以为空");
 		}

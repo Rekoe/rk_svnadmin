@@ -71,9 +71,6 @@ public class ProjectService extends BaseService<Pj> {
 	 *            项目
 	 */
 	public void save(Pj pj) {
-		if (StringUtils.isNotBlank(pj.getUrl())) {
-			pj.setUrl(StringUtils.replace(pj.getUrl(), "\\", "/"));
-		}
 		// 是否可以增加项目
 		boolean insert = nameOk(pj.getPj());
 		String path = projectConfigService.getRepoPath(pj);

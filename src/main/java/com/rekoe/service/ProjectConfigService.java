@@ -49,4 +49,17 @@ public class ProjectConfigService extends BaseService<ProjectConfig> {
 	public String getRepoPath(Pj pj) {
 		return getRepoPath(pj.getPj());
 	}
+
+	public String getProjectUrl(String pj) {
+		ProjectConfig conf = get();
+		String path = conf.getDomainPath();
+		if (!StringUtils.endsWith(path, "/") || !StringUtils.endsWith(path, "\\")) {
+			path += "/";
+		}
+		return path + pj;
+	}
+
+	public String getProjectUrl(Pj pj) {
+		return getProjectUrl(pj.getPj());
+	}
 }
