@@ -3,13 +3,16 @@ package com.rekoe.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
+import org.nutz.repo.Base64;
+
 /**
  * 加密工具
- * 
- * @author <a href="mailto:yuanhuiwu@gmail.com">Huiwu Yuan</a>
- * @since 1.0
  */
 public class EncryptUtil {
+
+	private final static Log log = Logs.get();
 	/**
 	 * 
 	 */
@@ -109,10 +112,11 @@ public class EncryptUtil {
 	 */
 	public static String encriptSHA1(String str) {
 		try {
-			return new sun.misc.BASE64Encoder().encode(MessageDigest.getInstance("SHA1").digest(str.getBytes()));
+			return Base64.encodeToString(MessageDigest.getInstance("SHA1").digest(str.getBytes()), false);
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			log.error(e);
 			throw new RuntimeException(e);
 		}
 	}
+
 }
