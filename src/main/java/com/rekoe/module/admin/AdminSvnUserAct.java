@@ -3,6 +3,7 @@ package com.rekoe.module.admin;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -28,7 +29,7 @@ public class AdminSvnUserAct extends BaseAction {
 	@RequiresPermissions({ "svn.user:view" })
 	@PermissionTag(name = "SVN浏览账号", tag = "SVN账号管理")
 	public Pagination list(@Param(value = "pageNumber", df = "1") int page) {
-		return svnUserService.getObjListByPager(page, 20, null);
+		return svnUserService.getObjListByPager(page, 20, Cnd.where("usr", "<>", "*"));
 	}
 
 	@At
