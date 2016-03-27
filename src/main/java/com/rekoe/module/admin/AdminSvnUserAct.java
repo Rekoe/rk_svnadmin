@@ -24,23 +24,23 @@ public class AdminSvnUserAct extends BaseAction {
 	private SvnUserService svnUserService;
 
 	@At
-	@Ok("fm:template.admin.project_group.list")
-	@RequiresPermissions({ "project.group:view" })
+	@Ok("fm:template.admin.svn_user.list")
+	@RequiresPermissions({ "svn.user:view" })
 	@PermissionTag(name = "SVN浏览账号", tag = "SVN账号管理")
 	public Pagination list(@Param(value = "pageNumber", df = "1") int page) {
 		return svnUserService.getObjListByPager(page, 20, null);
 	}
 
 	@At
-	@Ok("fm:template.admin.project_user.add")
-	@RequiresPermissions({ "project.group:add" })
+	@Ok("fm:template.admin.svn_user.add")
+	@RequiresPermissions({ "svn.user:add" })
 	@PermissionTag(name = "SVN添加账号", tag = "SVN账号管理", enable = true)
 	public void add() {
 	}
 
 	@At
 	@Ok("json")
-	@RequiresPermissions("project.group:add")
+	@RequiresPermissions("svn.user:add")
 	@PermissionTag(name = "SVN添加账号", tag = "SVN账号管理", enable = false)
 	public Message o_save(@Param("::user.") Usr user, HttpServletRequest req) {
 		boolean isOk = svnUserService.nameOk(user.getUsr());
