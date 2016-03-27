@@ -183,7 +183,7 @@ Cms.deleted = function(id){
 					$.message(message);
 					if (message.type == "success")
 					{
-						window.location.href = back;
+						window.location.href = list.rk;
 					}
 				}
 			});

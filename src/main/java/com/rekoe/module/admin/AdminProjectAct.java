@@ -228,7 +228,7 @@ public class AdminProjectAct extends BaseAction {
 		PjAuth entity = new PjAuth();
 		entity.setPj(pj);
 		entity.setRes(res);
-		Mvcs.getReq().setAttribute("entity", entity);
+		entity.setRw(rw);
 		projectAuthService.save(pj, res, rw, grs, usrs);
 		return pjauth(pj, res, entity, Mvcs.getReq());
 	}

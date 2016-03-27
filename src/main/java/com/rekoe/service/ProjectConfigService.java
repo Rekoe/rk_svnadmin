@@ -56,7 +56,7 @@ public class ProjectConfigService extends BaseService<ProjectConfig> {
 	public String getProjectUrl(String pj) {
 		ProjectConfig conf = get();
 		String path = conf.getDomainPath();
-		if (!StringUtils.endsWith(path, "/") || !StringUtils.endsWith(path, "\\")) {
+		if (!StringUtils.endsWith(path, "/")) {
 			path += "/";
 		}
 		return path + pj;

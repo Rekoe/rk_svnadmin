@@ -245,9 +245,11 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 */
 	public void saveByUsr(PjAuth pjAuth) {
 		if (this.getByUsr(pjAuth.getPj(), pjAuth.getUsr(), pjAuth.getRes()) == null) {
-			dao().insert(pjAuth);
+			Sql sql = Sqls.create("insert into pj_usr_auth (pj,usr,res,rw) values (@pj,@usr,@res,@rw)");
+			sql.setParam("pj", pjAuth.getPj()).setParam("usr", pjAuth.getUsr()).setParam("rw", pjAuth.getRw()).setParam("res", pjAuth.getRes());
+			dao().execute(sql);
 		} else {
-			dao().update(getEntityClass(), Chain.make("rw", pjAuth.getRw()), Cnd.where("pj", "=", pjAuth.getPj()).and("usr", "=", pjAuth.getUsr()).and("res", "=", pjAuth.getRes()));
+			dao().update("pj_usr_auth", Chain.make("rw", pjAuth.getRw()), Cnd.where("pj", "=", pjAuth.getPj()).and("usr", "=", pjAuth.getUsr()).and("res", "=", pjAuth.getRes()));
 		}
 	}
 
