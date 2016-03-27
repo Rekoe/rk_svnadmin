@@ -119,8 +119,7 @@ public class AdminProjectAct extends BaseAction {
 	@At
 	@Ok("fm:template.admin.project.pjauth")
 	@RequiresPermissions({ "svn.project:view" })
-	public String pjauth(@Param("pj") String pj, @Param("res") String res, HttpServletRequest req) {
-		PjAuth entity = (PjAuth) req.getAttribute("entity");
+	public String pjauth(@Param("pj") String pj, @Param("res") String res, @Param("entity") PjAuth entity, HttpServletRequest req) {
 		if (entity == null) {
 			entity = new PjAuth();
 			entity.setPj(pj);
@@ -136,7 +135,7 @@ public class AdminProjectAct extends BaseAction {
 		} else {
 			res = entity.getRes();
 		}
-		String root = projectConfigService.get().getRepositoryPath()+"/";
+		String root = projectConfigService.get().getRepositoryPath() + "/";
 		res = StringUtils.remove(res, root);
 		entity.setRes(res);
 		List<PjAuth> list = projectAuthService.list(pj, res);
@@ -186,7 +185,7 @@ public class AdminProjectAct extends BaseAction {
 		} else if (StringUtils.isNotBlank(usr)) {
 			projectAuthService.deleteByUsr(pj, usr, res);
 		}
-		return pjauth(pj, res, Mvcs.getReq());
+		return pjauth(pj, res, null, Mvcs.getReq());
 	}
 
 	@Inject
@@ -221,4 +220,16 @@ public class AdminProjectAct extends BaseAction {
 		return Message.success("ok", req);
 	}
 
+	@At("/pjauth/save")
+	@Ok("fm:template.admin.project.pjauth")
+	@RequiresPermissions({ "svn.project:auth.manager" })
+	@PermissionTag(name = "管理项目权限", tag = "SVN项目管理", enable = false)
+	public String pjauth_save(@Param("rw") String rw, @Param("grs") String[] grs, @Param("pj") String pj, @Param("res") String res, @Param("usrs") String[] usrs) {
+		PjAuth entity = new PjAuth();
+		entity.setPj(pj);
+		entity.setRes(res);
+		Mvcs.getReq().setAttribute("entity", entity);
+		projectAuthService.save(pj, res, rw, grs, usrs);
+		return pjauth(pj, res, entity, Mvcs.getReq());
+	}
 }

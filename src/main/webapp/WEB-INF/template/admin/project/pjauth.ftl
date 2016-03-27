@@ -86,8 +86,7 @@
 		</script>
 	</head>
 <body style="margin: 0px;">
-<form name="pjauth" action="pjauth" method="post" onsubmit="return checkForm(this);">
-	<input type="hidden" name="act" value="save">
+<form name="pjauth" action="pjauth/save" method="post" onsubmit="return checkForm(this);">
 	<input type="hidden" name="pj" value="${pj}">
 	<table class="table table-striped table-bordered">
 		<tr>
