@@ -136,6 +136,8 @@ public class AdminProjectAct extends BaseAction {
 		} else {
 			res = entity.getRes();
 		}
+		String root = projectConfigService.get().getRepositoryPath()+"/";
+		res = StringUtils.remove(res, root);
 		entity.setRes(res);
 		List<PjAuth> list = projectAuthService.list(pj, res);
 		req.setAttribute("list", list);

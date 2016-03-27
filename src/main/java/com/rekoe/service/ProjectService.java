@@ -70,6 +70,7 @@ public class ProjectService extends BaseService<Pj> {
 	 * @param pj
 	 *            项目
 	 */
+	@Aop(TransAop.READ_COMMITTED)
 	public void save(Pj pj) {
 		// 是否可以增加项目
 		boolean insert = nameOk(pj.getPj());
@@ -116,7 +117,7 @@ public class ProjectService extends BaseService<Pj> {
 		if (p == null) {
 			return pj;
 		}
-		return projectConfigService.getRepoPath(p);
+		return pj;
 	}
 
 	/**
@@ -128,7 +129,7 @@ public class ProjectService extends BaseService<Pj> {
 	 * @since 3.0.3
 	 */
 	public String getRelateRootPath(Pj pj) {
-		return projectConfigService.getRepoPath(pj);
+		return pj.getPj();
 	}
 
 	@Inject

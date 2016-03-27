@@ -261,7 +261,7 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 * @return 项目组资源的权限
 	 */
 	public PjAuth getByGr(String pj, String gr, String res) {
-		Sql sql = Sqls.create("select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth");
+		Sql sql = Sqls.create("select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth $condition");
 		sql.setCondition(Cnd.where("pj", "=", pj).and("gr", "=", gr).and("res", "=", res));
 		sql.setCallback(new SqlCallback() {
 
