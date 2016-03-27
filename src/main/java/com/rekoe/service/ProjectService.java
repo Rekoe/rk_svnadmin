@@ -90,18 +90,26 @@ public class ProjectService extends BaseService<Pj> {
 				pjGr.setDes(gr);
 				projectGroupService.save(pjGr);
 			}
+			//
+			String res = this.projectAuthService.formatRes(pj, "/");
+			PjAuth pjAuthDef = new PjAuth();
+			pjAuthDef.setPj(pj.getPj());
+			pjAuthDef.setRes(res);
+			pjAuthDef.setRw("rw");
+			pjAuthDef.setUsr("admin");
+			projectAuthService.saveByUsr(pjAuthDef);
 			// 增加默认的权限 @see Issue 29
 			PjAuth pjAuth = new PjAuth();
 			pjAuth.setPj(pj.getPj());
-			pjAuth.setRes(this.projectAuthService.formatRes(pj, "/"));
+			pjAuth.setRes(res);
 			pjAuth.setRw("rw");
 			pjAuth.setGr(Constants.GROUP_MANAGER);
 			projectAuthService.saveByGr(pjAuth);
-			repositoryService.createDir(pj);
 		} else {
 			dao().update(pj);
 		}
 		svnService.exportConfig(pj.getPj());
+		repositoryService.createDir(pj);
 	}
 
 	/**
