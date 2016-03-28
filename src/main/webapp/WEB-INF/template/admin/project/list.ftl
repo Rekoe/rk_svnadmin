@@ -30,6 +30,7 @@ function getTableForm() {
 	<@p.column title="设置用户组" align="center"><a href="${base}/admin/project/group/list?pj=${project.pj}">设置用户组</a></@p.column><#t/>
 	</@shiro.hasPermission>
 	<@p.column title="设置权限" align="center"><a href="rep?pj=${project.pj}">设置权限</a></@p.column><#t/>
+	<@p.column title="初始化" align="center"><a href="init?pj=${project.pj}">初始化</a></@p.column><#t/>
 	<@shiro.hasPermission name="svn.project:auth.manager">	
 	<@p.column title="编辑" align="center">
 		<a href="javascript:void(0);" onclick="Cms.deleted('${project.pj}')" class="pn-opt">删除</a><#rt/>

@@ -109,6 +109,11 @@ public class ProjectService extends BaseService<Pj> {
 			dao().update(pj);
 		}
 		svnService.exportConfig(pj.getPj());
+		// createDefatutDirs(pj);
+	}
+
+	// @Async
+	public void createDefatutDirs(Pj pj) {
 		repositoryService.createDir(pj);
 	}
 

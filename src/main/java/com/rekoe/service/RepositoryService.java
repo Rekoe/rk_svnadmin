@@ -46,9 +46,8 @@ public class RepositoryService {
 	/**
 	 * 日志
 	 */
-	private final Log LOG = Logs.get();
+	private final Log log = Logs.get();
 
-	private SVNClientManager manager;
 	@Inject
 	private ProjectService projectService;
 
@@ -67,7 +66,7 @@ public class RepositoryService {
 	public SVNRepository getRepository(String pjId) throws SVNException {
 		Pj pj = projectService.fetch(Cnd.where("pj", "=", pjId));
 		if (pj == null) {
-			LOG.warn("Not found project: " + pjId);
+			log.warn("Not found project: " + pjId);
 			return null;
 		}
 		return this.getRepository(pj);
@@ -148,7 +147,7 @@ public class RepositoryService {
 	 * @param pj
 	 * @throws SVNException
 	 */
-	public synchronized void createDir(Pj pj) {
+	public synchronized boolean createDir(Pj pj) {
 		Usr usr = UsrProvider.getCurrentUsr();
 		String svnUrl = getProjectSVNUrl(pj);
 		if (StringUtils.isBlank(svnUrl)) {
@@ -164,34 +163,55 @@ public class RepositoryService {
 			}
 		}
 		svnPassword = EncryptUtil.decrypt(svnPassword);// 解密
-		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(svnUserName, svnPassword);
-		this.manager.setAuthenticationManager(authManager);
-		boolean makeParents = true;
-		String commitMessage = "mkdir by Rekoe";
 		ProjectConfig conf = projectConfigService.get();
 		List<String> dirs = conf.getDirs();
 		SVNURL[] urlAr = new SVNURL[dirs.size()];
 		int i = 0;
 		for (String url : dirs) {
 			try {
-				urlAr[i] = SVNURL.parseURIEncoded(getProjectSVNUrl(pj) + "/" + url);
+				String tempUrl = getProjectSVNUrl(pj) + "/" + url;
+				urlAr[i] = SVNURL.parseURIEncoded(tempUrl);
 			} catch (SVNException e) {
-				LOG.error(e);
+				log.error(e);
 			}
 			i++;
 		}
+		return svnMkDirs(urlAr);
+	}
+
+	public boolean svnMkDirs(SVNURL[] urls) {
+		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "john");
+		SVNClientManager manager = SVNClientManager.newInstance();
+		manager.setAuthenticationManager(authManager);
 		SVNCommitClient commitClient = SVNClientManager.newInstance().getCommitClient();
 		try {
-			SVNCommitInfo info = commitClient.doMkDir(urlAr, commitMessage, null, makeParents);
-			if (LOG.isDebugEnabled()) {
-				long newRevision = info.getNewRevision();
+			SVNCommitInfo info = commitClient.doMkDir(urls, "commitMessage", null, true);
+			long newRevision = info.getNewRevision();
+			if (log.isDebugEnabled()) {
 				if (newRevision >= 0)
-					LOG.debug("commit successful: new revision = " + newRevision);
+					log.debug("commit successful: new revision = " + newRevision);
 				else
-					LOG.debug("no commits performed (commit operation returned new revision < 0)");
+					log.debug("no commits performed (commit operation returned new revision < 0)");
 			}
+			System.out.println(newRevision);
 		} catch (SVNException e) {
-			LOG.error(e);
+			log.error(e);
+			return false;
+		}
+		return true;
+	}
+
+	public static void main(String[] args) {
+		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "john");
+		SVNClientManager manager = SVNClientManager.newInstance();
+		manager.setAuthenticationManager(authManager);
+		SVNCommitClient commitClient = SVNClientManager.newInstance().getCommitClient();
+		try {
+			SVNCommitInfo info = commitClient.doMkDir(new SVNURL[] { SVNURL.parseURIEncoded("http://192.168.3.127/repository/koux/branches") }, "commitMessage", null, true);
+			long newRevision = info.getNewRevision();
+			System.out.println(newRevision);
+		} catch (SVNException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -208,10 +228,10 @@ public class RepositoryService {
 			repository = this.getRepository(pj);
 			return repository.getRepositoryRoot(true).toString();
 		} catch (SVNAuthenticationException e) {
-			LOG.error(e.getMessage());
+			log.error(e.getMessage());
 			return null;
 		} catch (SVNException e) {
-			LOG.error(e.getMessage());
+			log.error(e.getMessage());
 			return null;
 		} finally {
 			if (repository != null) {
@@ -243,10 +263,10 @@ public class RepositoryService {
 			SVNProperties properties = new SVNProperties();
 			return repository.getDir(path, SVNRevision.HEAD.getNumber(), properties, (Collection) null);
 		} catch (SVNAuthenticationException e) {
-			LOG.error(e);
+			log.error(e);
 			throw new RuntimeException("认证失败");
 		} catch (SVNException e) {
-			LOG.error(e);
+			log.error(e);
 			throw new RuntimeException(e.getMessage());
 		} finally {
 			if (repository != null) {
@@ -288,7 +308,6 @@ public class RepositoryService {
 		 */
 		FSRepositoryFactory.setup();
 
-		this.manager = SVNClientManager.newInstance();
 	}
 
 }
