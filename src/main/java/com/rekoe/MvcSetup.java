@@ -14,6 +14,13 @@ import org.nutz.ioc.Ioc;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
 import org.nutz.plugins.view.freemarker.FreeMarkerConfigurer;
+import org.tmatesoft.svn.core.SVNCommitInfo;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
+import org.tmatesoft.svn.core.wc.SVNClientManager;
+import org.tmatesoft.svn.core.wc.SVNCommitClient;
+import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import com.rekoe.domain.Pj;
 import com.rekoe.domain.ProjectConfig;
@@ -67,6 +74,20 @@ public class MvcSetup implements Setup {
 		UserService userService = ioc.get(UserService.class);
 		userService.initFormPackages("com.rekoe");
 		ioc.get(ProjectConfigService.class).init();
+	}
+
+	public static void main(String[] args) {
+		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "john");
+		SVNClientManager manager = SVNClientManager.newInstance();
+		manager.setAuthenticationManager(authManager);
+		SVNCommitClient commitClient = SVNClientManager.newInstance().getCommitClient();
+		try {
+			SVNCommitInfo info = commitClient.doMkDir(new SVNURL[] { SVNURL.parseURIEncoded("http://192.168.3.127/repository/koux/trunk") }, "commitMessage", null, true);
+			long newRevision = info.getNewRevision();
+			System.out.println(newRevision);
+		} catch (SVNException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

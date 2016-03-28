@@ -8,6 +8,31 @@
 function getTableForm() {
 	return document.getElementById('tableForm');
 }
+function init(pj){
+	$.dialog({
+		type: "warn",
+		content: '确定要创建模板目录?',
+		ok: 'Ok',
+		cancel: 'Cancel',
+		onOk: function() {
+			$.ajax({
+				url: "init.rk",
+				type: "POST",
+				data: {"pj":pj},
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+					if (message.type == "success")
+					{
+						window.location.href = "list.rk"
+					}
+				}
+			});
+		}
+	}); 
+	return false;
+}
 </script>
 </head>
 <body>

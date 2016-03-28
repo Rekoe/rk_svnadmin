@@ -84,7 +84,6 @@ public class AdminProjectAct extends BaseAction {
 	@RequiresPermissions({ "svn.project:view" })
 	public String rep(@Param("pj") String pj, HttpServletRequest req) {
 		Pj project = projectService.get(pj);
-		repositoryService.createDir(project);
 		String root = repositoryService.getRepositoryRoot(project);
 		String svnUrl = RepositoryService.parseURL(projectConfigService.getProjectUrl(pj));
 		String path = "/";
@@ -122,8 +121,11 @@ public class AdminProjectAct extends BaseAction {
 	@RequiresPermissions({ "svn.project:edit" })
 	public Message init(@Param("pj") String pj, HttpServletRequest req) {
 		Pj project = projectService.get(pj);
-		repositoryService.createDir(project);
-		return Message.success("ok", req);
+		boolean isRight = repositoryService.createDir(project);
+		if (isRight) {
+			return Message.success("ok", req);
+		}
+		return Message.error("error", req);
 	}
 
 	@At

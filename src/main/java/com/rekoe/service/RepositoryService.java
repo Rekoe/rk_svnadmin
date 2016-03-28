@@ -5,9 +5,9 @@ package com.rekoe.service;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -34,6 +34,7 @@ import com.rekoe.domain.Pj;
 import com.rekoe.domain.PjUsr;
 import com.rekoe.domain.ProjectConfig;
 import com.rekoe.domain.Usr;
+import com.rekoe.utils.DoCommit;
 import com.rekoe.utils.EncryptUtil;
 import com.rekoe.utils.UsrProvider;
 
@@ -47,6 +48,9 @@ public class RepositoryService {
 	 * 日志
 	 */
 	private final Log log = Logs.get();
+
+	@Inject
+	private DoCommit doCommit;
 
 	@Inject
 	private ProjectService projectService;
@@ -147,36 +151,17 @@ public class RepositoryService {
 	 * @param pj
 	 * @throws SVNException
 	 */
+
 	public synchronized boolean createDir(Pj pj) {
-		Usr usr = UsrProvider.getCurrentUsr();
-		String svnUrl = getProjectSVNUrl(pj);
-		if (StringUtils.isBlank(svnUrl)) {
-			throw new RuntimeException("URL不可以为空");
+		if (pj.isInitTempl()) {
+			return true;
 		}
-		String svnUserName = usr.getUsr();
-		String svnPassword = usr.getPsw();
-		if (!com.rekoe.utils.Constants.HTTP_MUTIL.equals(pj.getType())) {
-			// pj_usr覆盖用户的密码
-			PjUsr pjUsr = projectUserService.get(pj.getPj(), svnUserName);
-			if (pjUsr != null) {
-				svnPassword = pjUsr.getPsw();
-			}
+		boolean isRight = doCommit.mkdirs(pj.getPj());
+		if (isRight) {
+			pj.setInitTempl(true);
+			projectService.update(Chain.make("is_init_templ", true), Cnd.where("pj", "=", pj.getPj()));
 		}
-		svnPassword = EncryptUtil.decrypt(svnPassword);// 解密
-		ProjectConfig conf = projectConfigService.get();
-		List<String> dirs = conf.getDirs();
-		SVNURL[] urlAr = new SVNURL[dirs.size()];
-		int i = 0;
-		for (String url : dirs) {
-			try {
-				String tempUrl = getProjectSVNUrl(pj) + "/" + url;
-				urlAr[i] = SVNURL.parseURIEncoded(tempUrl);
-			} catch (SVNException e) {
-				log.error(e);
-			}
-			i++;
-		}
-		return svnMkDirs(urlAr);
+		return isRight;
 	}
 
 	public boolean svnMkDirs(SVNURL[] urls) {
@@ -193,6 +178,7 @@ public class RepositoryService {
 				else
 					log.debug("no commits performed (commit operation returned new revision < 0)");
 			}
+			System.out.println(newRevision);
 		} catch (SVNException e) {
 			log.error(e);
 			return false;

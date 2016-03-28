@@ -2,7 +2,9 @@ package com.rekoe.domain;
 
 import java.io.Serializable;
 
+import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
+import org.nutz.dao.entity.annotation.Default;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Readonly;
 import org.nutz.dao.entity.annotation.Table;
@@ -24,12 +26,12 @@ public class Pj implements Serializable {
 	/**
 	 * 描述
 	 */
-	@Comment
+	@Column
 	private String des;
 	/**
 	 * 类型
 	 */
-	@Comment
+	@Column
 	private String type;
 
 	/**
@@ -37,6 +39,19 @@ public class Pj implements Serializable {
 	 */
 	@Readonly
 	private boolean manager;
+
+	@Column("is_init_templ")
+	@Default("0")
+	@Comment("是否初始化模板")
+	private boolean initTempl;
+
+	public boolean isInitTempl() {
+		return initTempl;
+	}
+
+	public void setInitTempl(boolean initTempl) {
+		this.initTempl = initTempl;
+	}
 
 	/**
 	 * @return 项目ID
