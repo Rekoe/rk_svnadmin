@@ -193,7 +193,6 @@ public class RepositoryService {
 				else
 					log.debug("no commits performed (commit operation returned new revision < 0)");
 			}
-			System.out.println(newRevision);
 		} catch (SVNException e) {
 			log.error(e);
 			return false;
