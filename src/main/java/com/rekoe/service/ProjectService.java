@@ -1,11 +1,19 @@
 package com.rekoe.service;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.nutz.aop.interceptor.ioc.TransAop;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
+import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -155,15 +163,53 @@ public class ProjectService extends BaseService<Pj> {
 
 	@Aop(TransAop.READ_COMMITTED)
 	public void delete(String pj) {
+		deleteDB(pj);
+		svnService.exportConfig(pj);
+	}
+
+	public void deleteDB(String pj) {
 		projectAuthService.deletePj(pj);
 		projectGroupUsrService.deletePj(pj);
 		projectGroupService.deletePj(pj);
 		projectUserService.deletePj(pj);
-		svnService.exportConfig(pj);
 		dao().clear(getEntityClass(), Cnd.where("pj", "=", pj));
 	}
 
 	public void update(Pj pj) {
 		dao().update(pj);
+	}
+
+	/**
+	 * @param usr
+	 *            用户
+	 * @return 用户有权限的项目列表(用户是否是这个项目的管理员)
+	 */
+	public List<Pj> getList(String usr) {
+		Sql sql = Sqls.create("select p.pj,p.des,p.type,pm.pj manager from ( " + " select distinct a.pj,a.des,a.type from pj a where  " + " exists (select b.usr from pj_gr_usr b where a.pj=b.pj and b.usr=@usr)  " + " or exists(select c.usr from pj_usr_auth c where a.pj=c.pj and c.usr=@usr) " + " ) p " + " left join ( " + " select distinct a.pj from pj a where  " + " exists (select b.usr from pj_gr_usr b where a.pj=b.pj and b.usr=@usr and b.gr like @like)" + " ) pm on p.pj=pm.pj");
+		final List<Pj> list = new ArrayList<Pj>();
+		sql.setCallback(new SqlCallback() {
+
+			@Override
+			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				while (rs.next()) {
+					Pj pj = readPj(rs);
+					String manager = rs.getString("manager");// 是否是管理员组的用户
+					pj.setManager(StringUtils.isNotBlank(manager));
+					list.add(pj);
+				}
+				return list;
+			}
+		});
+		sql.setParam("usr", usr).setParam("like", "%" + Constants.GROUP_MANAGER);
+		dao().execute(sql);
+		return list;
+	}
+
+	public Pj readPj(ResultSet rs) throws SQLException {
+		Pj result = new Pj();
+		result.setPj(rs.getString("pj"));
+		result.setDes(rs.getString("des"));
+		result.setType(rs.getString("type"));
+		return result;
 	}
 }

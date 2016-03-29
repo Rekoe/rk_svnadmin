@@ -13,9 +13,11 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
+import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 
+import com.rekoe.domain.Pj;
 import com.rekoe.domain.Usr;
 
 /**
@@ -90,5 +92,13 @@ public class SvnUserService extends BaseService<Usr> {
 		result.setPsw(rs.getString("psw"));
 		result.setRole(rs.getString("role"));
 		return result;
+	}
+
+	@Inject
+	private ProjectService projectService;
+
+	public List<Pj> getPjList(String usr) {
+		List<Pj> list = projectService.getList(usr);// 用户可以看到的所有项目
+		return list;
 	}
 }
