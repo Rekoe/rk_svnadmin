@@ -1,5 +1,8 @@
 package com.rekoe.utils;
 
+import java.io.File;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,12 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.nutz.lang.util.NutMap;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
 
 /**
  * 工具类
  */
 public class CommonUtils {
 
+	private final static Log log = Logs.get();
 	/**
 	 * 正则表达式：验证用户名
 	 */
@@ -153,4 +159,21 @@ public class CommonUtils {
 		}
 		return paramsMap;
 	}
+
+	public static String getCurrentPath() {
+		URL url = CommonUtils.class.getProtectionDomain().getCodeSource().getLocation();
+		String filePath = null;
+		try {
+			filePath = URLDecoder.decode(url.getPath(), "utf-8");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		if (filePath.endsWith(".jar")) {
+			filePath = filePath.substring(0, filePath.lastIndexOf("/") + 1);
+		}
+		File file = new File(filePath);
+		filePath = file.getAbsolutePath();
+		return filePath;
+	}
+
 }

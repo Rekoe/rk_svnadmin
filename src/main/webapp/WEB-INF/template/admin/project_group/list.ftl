@@ -25,7 +25,7 @@ function deleted(pj,gr){
 					$.message(message);
 					if (message.type == "success")
 					{
-						window.location.href = back;
+						window.location.href = list.rk;
 					}
 				}
 			});

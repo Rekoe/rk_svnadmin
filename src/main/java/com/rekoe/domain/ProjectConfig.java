@@ -42,11 +42,24 @@ public class ProjectConfig implements Serializable {
 	@Comment("默认初始化目录")
 	private List<String> dirs;
 
+	@Column(hump = true)
+	@Comment("是否开启邮件变更提醒")
+	@Default("0")
+	private boolean emailNotify;
+
 	public List<String> getDirs() {
 		if (dirs == null) {
 			this.dirs = new ArrayList<>();
 		}
 		return dirs;
+	}
+
+	public boolean isEmailNotify() {
+		return emailNotify;
+	}
+
+	public void setEmailNotify(boolean emailNotify) {
+		this.emailNotify = emailNotify;
 	}
 
 	public void setDirs(List<String> dirs) {
