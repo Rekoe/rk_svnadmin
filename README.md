@@ -31,7 +31,7 @@
    对了，数据库还没完，添上关联关系                                                                             
    完手动执行alter
 
-	……
+```
 	alter table pj_gr add constraint FK_Relationship_2 foreign key (pj) references pj (pj) on delete restrict on update restrict;
 	alter table pj_gr_auth add constraint FK_Reference_6 foreign key (pj, gr) references pj_gr (pj, gr) on delete >restrict on update restrict;
 	alter table pj_gr_usr add constraint FK_Reference_10 foreign key (pj, gr) references pj_gr (pj, gr) on delete >restrict on update restrict;
@@ -40,7 +40,8 @@
 	alter table pj_usr add constraint FK_Reference_7 foreign key (usr) references usr (usr) on delete restrict on update restrict;
 	alter table pj_usr_auth add constraint FK_Reference_11 foreign key (pj) references pj (pj) on delete restrict on update restrict;
 	alter table pj_usr_auth add constraint FK_Reference_8 foreign key (usr) references usr (usr) on delete restrict on update restrict;
-	……
+
+```
 
 ## 3、附录
   Centos安装apache+svn结合的SVN服务器请参考[Centos安装apache+svn结合的SVN服务器](fl.md)                        
