@@ -11,10 +11,12 @@
 	<div class="clear"></div>
 </div>
 <div class="body-box">
+<#assign isSend=obj.emailNotify>
 <@p.form id="jvForm" action="update" labelWidth="12" onsubmit="return false;">
 <@p.hidden id="conf.id" name="conf.id" value='${obj.id}' />
 <@p.text width="30" label="仓库路径" id="conf.repositoryPath" name="conf.repositoryPath" value="${obj.repositoryPath}" maxlength="100" class="required" required="true"/><@p.tr/>
 <@p.text width="30" label="访问url" id="conf.domainPath" name="conf.domainPath" value="${obj.domainPath}" maxlength="100" class="required" required="true"/><@p.tr/>
+<@p.radio width="50" colspan="1" label="是否发送重置密码邮件" id="conf.emailNotify" name="conf.emailNotify" value=isSend list={"true":"global.true","false":"global.false"} required="true"/><@p.tr/>
 <@p.td label="默认开启的文件夹" colspan="6">
 <table border="0" id="attachTable">
 <tr colspan="3">

@@ -216,7 +216,7 @@ public class AdminProjectAct extends BaseAction {
 	@RequiresPermissions({ "svn.project:conf" })
 	@PermissionTag(name = "配置管理", tag = "SVN项目管理", enable = false)
 	public Message conf_update(@Param("::conf.") ProjectConfig conf, HttpServletRequest req) {
-		boolean isRight = projectConfigService.update(conf.getRepositoryPath(), conf.getDomainPath());
+		boolean isRight = projectConfigService.update(conf);
 		if (isRight) {
 			return Message.success("ok", req);
 		}

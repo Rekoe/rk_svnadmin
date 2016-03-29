@@ -8,6 +8,31 @@
 function getTableForm() {
 	return document.getElementById('tableForm');
 }
+function rest(usr){
+	$.dialog({
+		type: "warn",
+		content: '确定要充值用户密码?',
+		ok: 'Ok',
+		cancel: 'Cancel',
+		onOk: function() {
+			$.ajax({
+				url: "restpwd.rk",
+				type: "POST",
+				data: {"usr":usr},
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+					if (message.type == "success")
+					{
+						window.location.href = list.rk;
+					}
+				}
+			});
+		}
+	}); 
+	return false;
+}
 </script>
 </head>
 <body>
@@ -29,6 +54,9 @@ function getTableForm() {
 	<@shiro.hasPermission name="svn.user:edit">	
 	<@p.column title="编辑" align="center">
 		<a href="edit.rk?id=${user.usr}" class="pn-opt">编辑</a><#rt/>
+	</@p.column><#t/>
+	<@p.column title="密码重置" align="center">
+		<a href="javascript:void(0);" onclick="rest('${user.usr}')" class="pn-opt">密码重置</a><#rt/>
 	</@p.column><#t/>
 	</@shiro.hasPermission>
 </@p.table>
