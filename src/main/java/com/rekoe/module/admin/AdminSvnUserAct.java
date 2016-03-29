@@ -14,7 +14,10 @@ import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Attr;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
@@ -27,6 +30,7 @@ import com.rekoe.domain.Usr;
 import com.rekoe.module.BaseAction;
 import com.rekoe.service.EmailService;
 import com.rekoe.service.ProjectConfigService;
+import com.rekoe.service.ProjectService;
 import com.rekoe.service.SvnService;
 import com.rekoe.service.SvnUserService;
 import com.rekoe.utils.EncryptUtil;
@@ -34,6 +38,8 @@ import com.rekoe.utils.EncryptUtil;
 @IocBean
 @At("/admin/svn/user")
 public class AdminSvnUserAct extends BaseAction {
+
+	private final static Log log = Logs.get();
 
 	private static final char[] RANDOM_ARRY_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 
@@ -79,6 +85,9 @@ public class AdminSvnUserAct extends BaseAction {
 	@Inject
 	private SvnService svnService;
 
+	@Inject
+	private ProjectService projectService;
+
 	/**
 	 * 重置账号密码
 	 * 
@@ -90,17 +99,25 @@ public class AdminSvnUserAct extends BaseAction {
 	@Ok("json")
 	@RequiresPermissions("svn.user:add")
 	@PermissionTag(name = "SVN添加账号", tag = "SVN账号管理", enable = false)
-	public Message restpwd(@Param("usr") String usr, HttpServletRequest req) {
+	public Message restpwd(@Param("usr") String usr, @Attr("usr") Usr manager, HttpServletRequest req) {
 		Usr user = svnUserService.fetch(Cnd.where("usr", "=", usr));
 		if (user == null) {
 			return Message.error("error.account.empty", req);
 		}
 		String code = RandomStringUtils.random(7, RANDOM_ARRY_CHAR);
 		svnUserService.update(Chain.make("psw", EncryptUtil.encrypt(code)), Cnd.where("usr", "=", usr));
+		if (usr.equals(manager.getUsr())) {
+			req.getSession().setAttribute("usr", svnUserService.fetch(Cnd.where("usr", "=", usr)));
+		}
 		List<Pj> list = svnUserService.getPjList(usr);
 		if (list != null) {
 			for (Pj pj : list) {
-				this.svnService.exportConfig(pj);
+				try {
+					this.svnService.exportConfig(pj);
+				} catch (Exception e) {
+					projectService.deleteDB(pj.getPj());
+					log.errorf("project %s ,error %s", pj.getPj(), e.getMessage());
+				}
 			}
 		}
 		ProjectConfig conf = projectConfigService.get();

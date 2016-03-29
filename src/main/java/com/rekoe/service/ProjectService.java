@@ -163,11 +163,15 @@ public class ProjectService extends BaseService<Pj> {
 
 	@Aop(TransAop.READ_COMMITTED)
 	public void delete(String pj) {
+		deleteDB(pj);
+		svnService.exportConfig(pj);
+	}
+
+	public void deleteDB(String pj) {
 		projectAuthService.deletePj(pj);
 		projectGroupUsrService.deletePj(pj);
 		projectGroupService.deletePj(pj);
 		projectUserService.deletePj(pj);
-		svnService.exportConfig(pj);
 		dao().clear(getEntityClass(), Cnd.where("pj", "=", pj));
 	}
 
@@ -181,7 +185,7 @@ public class ProjectService extends BaseService<Pj> {
 	 * @return 用户有权限的项目列表(用户是否是这个项目的管理员)
 	 */
 	public List<Pj> getList(String usr) {
-		Sql sql = Sqls.create("select p.pj,p.path,p.url,p.des,p.type,pm.pj manager from ( " + " select distinct a.pj,a.path,a.url,a.des,a.type from pj a where  " + " exists (select b.usr from pj_gr_usr b where a.pj=b.pj and b.usr=@usr)  " + " or exists(select c.usr from pj_usr_auth c where a.pj=c.pj and c.usr=@usr) " + " ) p " + " left join ( " + " select distinct a.pj from pj a where  " + " exists (select b.usr from pj_gr_usr b where a.pj=b.pj and b.usr=@usr and b.gr like @like)" + " ) pm on p.pj=pm.pj");
+		Sql sql = Sqls.create("select p.pj,p.des,p.type,pm.pj manager from ( " + " select distinct a.pj,a.des,a.type from pj a where  " + " exists (select b.usr from pj_gr_usr b where a.pj=b.pj and b.usr=@usr)  " + " or exists(select c.usr from pj_usr_auth c where a.pj=c.pj and c.usr=@usr) " + " ) p " + " left join ( " + " select distinct a.pj from pj a where  " + " exists (select b.usr from pj_gr_usr b where a.pj=b.pj and b.usr=@usr and b.gr like @like)" + " ) pm on p.pj=pm.pj");
 		final List<Pj> list = new ArrayList<Pj>();
 		sql.setCallback(new SqlCallback() {
 
