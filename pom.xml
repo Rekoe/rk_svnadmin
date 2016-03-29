@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz</artifactId>
-			<version>1.r.55</version>
+			<version>1.r.54.r5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nutz</groupId>
@@ -116,9 +116,9 @@
 			<version>20090211</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-email</groupId>
+			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-email</artifactId>
-			<version>1.1</version>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nutz</groupId>
