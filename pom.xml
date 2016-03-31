@@ -202,16 +202,16 @@
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+		<finalName>rk_svnadmin</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
-					<include>com/rekoe/mvc/*.*</include>
+					<include>com/shanggame/mvc/*.*</include>
 				</includes>
 				<filtering>false</filtering>
 			</resource>
 		</resources>
-		<finalName>rk_svnadmin</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -263,9 +263,9 @@
 							<targetPath>WEB-INF/classes</targetPath>
 							<includes>
 								<include>msg/**/*</include>
-								<include>log4j.properties</include>
-								<include>oauth_consumer.properties</include>
-								<include>quartz.properties</include>
+								<include>ioc/**/*</include>
+								<include>*.properties</include>
+								<include>init_system_h2.sql</include>
 								<include>shiro.ini</include>
 								<include>ehcache.xml</include>
 							</includes>
