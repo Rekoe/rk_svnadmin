@@ -11,6 +11,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<repositories>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -32,7 +39,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.0.17</version>
+			<version>1.0.18</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>jconsole</artifactId>
@@ -52,7 +59,7 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz</artifactId>
-			<version>1.r.55</version>
+			<version>1.r.56-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nutz</groupId>
@@ -116,9 +123,9 @@
 			<version>20090211</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-email</groupId>
+			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-email</artifactId>
-			<version>1.1</version>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nutz</groupId>
@@ -195,16 +202,16 @@
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+		<finalName>rk_svnadmin</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
-					<include>com/rekoe/mvc/*.*</include>
+					<include>com/shanggame/mvc/*.*</include>
 				</includes>
 				<filtering>false</filtering>
 			</resource>
 		</resources>
-		<finalName>rk_svnadmin</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -256,9 +263,9 @@
 							<targetPath>WEB-INF/classes</targetPath>
 							<includes>
 								<include>msg/**/*</include>
-								<include>log4j.properties</include>
-								<include>oauth_consumer.properties</include>
-								<include>quartz.properties</include>
+								<include>ioc/**/*</include>
+								<include>*.properties</include>
+								<include>init_system_h2.sql</include>
 								<include>shiro.ini</include>
 								<include>ehcache.xml</include>
 							</includes>

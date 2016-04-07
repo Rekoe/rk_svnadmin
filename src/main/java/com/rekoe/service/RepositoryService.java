@@ -94,7 +94,6 @@ public class RepositoryService {
 		result = StringUtils.replace(result, "\b", " ");
 		result = StringUtils.replace(result, "<", " ");// eg. <br/>
 		result = StringUtils.replace(result, "(", " ");// eg. ()
-
 		result = result.trim();
 		int blank = result.indexOf(" ");
 		if (blank != -1) {

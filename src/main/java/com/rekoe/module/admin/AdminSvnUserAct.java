@@ -120,6 +120,8 @@ public class AdminSvnUserAct extends BaseAction {
 				}
 			}
 		}
+		ProjectConfig conf = projectConfigService.get();
+		emailNotify(user, emailService, conf, user.getEmail(), code);
 		return Message.success("ok", req);
 	}
 
