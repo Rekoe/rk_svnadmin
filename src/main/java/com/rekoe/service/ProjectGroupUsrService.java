@@ -9,10 +9,13 @@ import java.util.List;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
+import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
+import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.PjGrUsr;
 import com.rekoe.utils.Constants;
 
@@ -62,9 +65,11 @@ public class ProjectGroupUsrService extends BaseService<PjGrUsr> {
 	 *            组
 	 * @return 组用户列表
 	 */
-	public List<PjGrUsr> getList(String pj, String gr) {
+	public Pagination getList(String pj, String gr, int page) {
+		Pager pager = dao().createPager(page, 20);
 		Sql sql = Sqls.create("select a.pj,a.usr,a.gr,b.name as usrname from pj_gr_usr a left join usr b on (a.usr = b.usr) where a.pj=@pj and a.gr=@gr order by a.usr");
 		sql.setParam("pj", pj).setParam("gr", gr);
+		sql.setPager(pager);
 		final List<PjGrUsr> list = new ArrayList<PjGrUsr>();
 		sql.setCallback(new SqlCallback() {
 
@@ -76,8 +81,10 @@ public class ProjectGroupUsrService extends BaseService<PjGrUsr> {
 				return list;
 			}
 		});
+		Long counts = Daos.queryCount(dao(), sql.getSourceSql());
+		pager.setRecordCount(Integer.parseInt(counts.toString()));
 		dao().execute(sql);
-		return list;
+		return new Pagination(page, 20, pager.getRecordCount(), list);
 	}
 
 	/**

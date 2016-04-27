@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -37,7 +36,7 @@ public class AdminProjectGroupUsrAct extends BaseAction {
 	public Pagination list(@Param(value = "pageNumber", df = "1") int page, @Param("pj") String pj, @Param("gr") String gr, HttpServletRequest req) {
 		req.setAttribute("pj", pj);
 		req.setAttribute("gr", gr);
-		return projectGroupUsrService.getObjListByPager(page, 20, Cnd.where("pj", "=", pj).and("gr", "=", gr));
+		return projectGroupUsrService.getList(pj, gr, page);
 	}
 
 	@Inject

@@ -137,7 +137,6 @@ public class AdminProjectAct extends BaseAction {
 			entity.setPj(pj);
 			entity.setRes("");
 			entity.setRw("");
-			req.setAttribute("entity", entity);
 		}
 		if (StringUtils.isBlank(res)) {
 			String path = req.getParameter("path");
@@ -156,6 +155,7 @@ public class AdminProjectAct extends BaseAction {
 		req.setAttribute("pjreslist", projectAuthService.getResList(pj));
 		req.setAttribute("pjgrlist", projectGroupService.getList(pj));
 		req.setAttribute("usrList", usrService.getList());
+		req.setAttribute("entity", entity);
 		return pj;
 	}
 

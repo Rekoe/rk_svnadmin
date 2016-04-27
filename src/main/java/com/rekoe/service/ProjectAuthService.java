@@ -89,6 +89,7 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 				return list;
 			}
 		});
+		dao().execute(sql);
 		return list;
 	}
 
