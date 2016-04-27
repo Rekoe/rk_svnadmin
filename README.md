@@ -59,11 +59,17 @@ apache 用户需要设置可执行shell权限
 
 vim /etc/password
 
+```
 apache:x:48:48:Apache:/var/www:/bin/bash
+```
 
 第一次创建项目 会在/data/svn 目录下生成 authz httpd.conf passwd.http 三个文件 其中 需要把 
 
-Include /data/svn/httpd.conf 添加在 /etc/httpd/conf/httpd.conf 下 然后重启service httpd restart
+```
+Include /data/svn/httpd.conf 
+```
+
+添加在 /etc/httpd/conf/httpd.conf 下 然后重启service httpd restart
 
 ## 3、附录
   Centos安装apache+svn结合的SVN服务器请参考[Centos安装apache+svn结合的SVN服务器](fl.md)                        
