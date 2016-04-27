@@ -88,7 +88,7 @@ public class ProjectGroupService extends BaseService<PjGr> {
 	 *            组
 	 */
 	public void delete(String pj, String gr) {
-		Sql sql = Sqls.create("delete from pj_gr");// where pj = ? and gr=?";
+		Sql sql = Sqls.create("delete from pj_gr $condition");// where pj = ? and gr=?";
 		sql.setCondition(Cnd.where("pj", "=", pj).and("gr", "=", gr));
 		dao().execute(sql);
 	}

@@ -64,7 +64,7 @@ function checkForm(f){
 					$.message(message);
 					if (message.type == "success")
 					{
-						window.location.href = "list.rk"
+						window.location.href = "list.rk?pj=${pj}&gr=${gr}"
 					}
 				}
 			});

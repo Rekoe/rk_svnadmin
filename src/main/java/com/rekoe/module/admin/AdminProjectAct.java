@@ -121,6 +121,9 @@ public class AdminProjectAct extends BaseAction {
 	@RequiresPermissions({ "svn.project:edit" })
 	public Message init(@Param("pj") String pj, HttpServletRequest req) {
 		Pj project = projectService.get(pj);
+		if (project.isInitTempl()) {
+			return Message.success("ok", req);
+		}
 		boolean isRight = repositoryService.createDir(project);
 		if (isRight) {
 			return Message.success("ok", req);

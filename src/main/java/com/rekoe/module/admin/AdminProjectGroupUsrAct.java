@@ -82,6 +82,7 @@ public class AdminProjectGroupUsrAct extends BaseAction {
 	@PermissionTag(name = "删除项目组用户", tag = "SVN账号管理", enable = true)
 	public Message delete(@Param("pj") String pj, @Param("gr") String gr, @Param("usr") String usr, HttpServletRequest req) {
 		projectGroupUsrService.delete(pj, gr, usr);
+		svnService.exportConfig(pj);
 		return Message.success("ok", req);
 	}
 }

@@ -56,7 +56,7 @@ function deleted(pj,gr,usr){
 	<@p.column title="姓名" align="center">${group.usrName}</@p.column><#t/>
 	<@shiro.hasPermission name="project.group:delete">	
 	<@p.column title="删除" align="center">
-		<#if group.gr != "manager"><a href="javascript:void(0);" onclick="deleted('${group.pj}','${group.gr}')" class="pn-opt">删除</a></#if><#rt/>
+		<a href="javascript:void(0);" onclick="deleted('${group.pj}','${group.gr}')" class="pn-opt">删除</a><#rt/>
 	</@p.column><#t/>
 	</@shiro.hasPermission>
 </@p.table>
