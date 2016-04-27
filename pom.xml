@@ -205,9 +205,9 @@
 		<finalName>rk_svnadmin</finalName>
 		<resources>
 			<resource>
-				<directory>src/main/resources</directory>
+				<directory>src/main/java</directory>
 				<includes>
-					<include>com/shanggame/mvc/*.*</include>
+					<include>com/rekoe/mvc/*.*</include>
 				</includes>
 				<filtering>false</filtering>
 			</resource>
