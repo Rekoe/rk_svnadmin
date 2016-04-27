@@ -115,7 +115,7 @@ public class AdminSvnUserAct extends BaseAction {
 				try {
 					this.svnService.exportConfig(pj);
 				} catch (Exception e) {
-					projectService.deleteDB(pj.getPj());
+					//projectService.deleteDB(pj.getPj());
 					log.errorf("project %s ,error %s", pj.getPj(), e.getMessage());
 				}
 			}
