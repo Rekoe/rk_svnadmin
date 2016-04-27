@@ -44,15 +44,25 @@
 ```
 ##
 登陆后台后 在 [项目管理]-[基本设置]
+
 仓库路径 : /data/svn
+
 访问url: http://192.168.x.x/svn/
+
 说明: /data/svn 路径需要设置apache 用户权限 
+
 chown -R apache:apache
+
 chmod -R +w
+
 apache 用户需要设置可执行shell权限
+
 vim /etc/password
+
 apache:x:48:48:Apache:/var/www:/bin/bash
+
 第一次创建项目 会在/data/svn 目录下生成 authz httpd.conf passwd.http 三个文件 其中 需要把 
+
 Include /data/svn/httpd.conf 添加在 /etc/httpd/conf/httpd.conf 下 然后重启service httpd restart
 
 ## 3、附录
