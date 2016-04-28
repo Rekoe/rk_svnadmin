@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Lang;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.tmatesoft.svn.core.SVNException;
@@ -41,7 +42,13 @@ public class DoCommit {
 	private ProjectConfigService projectConfigService;
 
 	public boolean mkdirs(String pj) {
-		Pj project =projectService.get(pj); 
+		ProjectConfig conf = projectConfigService.get();
+		List<String> dirs = conf.getDirs();
+		return mkdirs(pj, Lang.collection2array(dirs));
+	}
+
+	public boolean mkdirs(String pj, String[] dirs) {
+		Pj project = projectService.get(pj);
 		Usr usr = UsrProvider.getCurrentUsr();
 		String svnUrl = repositoryService.getProjectSVNUrl(project);
 		if (StringUtils.isBlank(svnUrl)) {
@@ -57,9 +64,7 @@ public class DoCommit {
 			}
 		}
 		svnPassword = EncryptUtil.decrypt(svnPassword);// 解密
-		ProjectConfig conf = projectConfigService.get();
-		List<String> dirs = conf.getDirs();
-		SVNURL[] urlAr = new SVNURL[dirs.size()];
+		SVNURL[] urlAr = new SVNURL[dirs.length];
 		int i = 0;
 		for (String url : dirs) {
 			try {

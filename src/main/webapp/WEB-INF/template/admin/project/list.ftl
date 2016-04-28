@@ -76,6 +76,7 @@ function all_email(pj){
 	<@p.column title="设置用户组" align="center"><a href="${base}/admin/project/group/list?pj=${project.pj}">设置用户组</a></@p.column><#t/>
 	</@shiro.hasPermission>
 	<@p.column title="设置权限" align="center"><a href="rep?pj=${project.pj}">设置权限</a></@p.column><#t/>
+	<@p.column title="添加目录" align="center"><a href="file_add?pj=${project.pj}">添加目录</a></@p.column><#t/>
 	<@p.column title="初始化" align="center"><a href="onclick="javascript:void(0);" init('${project.pj}')">初始化</a></@p.column><#t/>
 	<@shiro.hasPermission name="svn.project:auth.manager">	
 	<@p.column title="编辑" align="center">

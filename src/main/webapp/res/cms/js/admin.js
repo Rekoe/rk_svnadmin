@@ -90,6 +90,31 @@ Cms.addBack = function(url){
 	}); 
 	return false;
 }
+Cms.add = function(act,back){
+	$.dialog({
+		type: "warn",
+		content: '确定要添加此记录?',
+		ok: 'Ok',
+		cancel: 'Cancel',
+		onOk: function() {
+			$.ajax({
+				url: act,
+				type: "POST",
+				data: $('#jvForm').serialize(),
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+					if (message.type == "success")
+					{
+						window.location.href = url;
+					}
+				}
+			});
+		}
+	}); 
+	return false;
+}
 Cms.updateBack = function(url){
 	$.dialog({
 		type: "warn",

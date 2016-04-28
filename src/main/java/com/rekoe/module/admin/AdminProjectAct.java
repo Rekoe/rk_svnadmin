@@ -32,6 +32,7 @@ import com.rekoe.service.ProjectService;
 import com.rekoe.service.RepositoryService;
 import com.rekoe.service.UsrService;
 import com.rekoe.utils.CommonUtils;
+import com.rekoe.utils.DoCommit;
 
 @IocBean
 @At("/admin/project")
@@ -246,5 +247,25 @@ public class AdminProjectAct extends BaseAction {
 		entity.setRw(rw);
 		projectAuthService.save(pj, res, rw, grs, usrs);
 		return pjauth(pj, res, entity, Mvcs.getReq());
+	}
+	
+	@At
+	@Ok("fm:template.admin.project.add_dir")
+	@RequiresPermissions("svn.project:update")
+	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = false)
+	public String file_add(@Param("pj") String pj) {
+		return pj;
+	}
+	
+	@Inject
+	private DoCommit doCommit;
+	
+	@At
+	@Ok("json")
+	@RequiresPermissions("svn.project:update")
+	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = false)
+	public Message file_save(@Param("pj") String pj,@Param("file") String file, HttpServletRequest req) {
+		doCommit.mkdirs(pj, new String[]{file});
+		return Message.success("ok", req);
 	}
 }
