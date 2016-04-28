@@ -33,6 +33,27 @@ function deleted(pj,gr,usr){
 	}); 
 	return false;
 }
+function email(pj,usr){
+	$.dialog({
+		type: "warn",
+		content: '确定要执行?',
+		ok: 'Ok',
+		cancel: 'Cancel',
+		onOk: function() {
+			$.ajax({
+				url: "${base}/admin/project/group/usr/email.rk",
+				type: "POST",
+				data: {"pj":pj,"usr":usr},
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+				}
+			});
+		}
+	}); 
+	return false;
+}
 </script>
 </head>
 <body>
@@ -59,6 +80,9 @@ function deleted(pj,gr,usr){
 		<a href="javascript:void(0);" onclick="deleted('${group.pj}','${group.gr}')" class="pn-opt">删除</a><#rt/>
 	</@p.column><#t/>
 	</@shiro.hasPermission>
+	<@p.column title="发项目邀请邮件" align="center">
+		<a href="javascript:void(0);" onclick="email('${group.pj}','${group.usr}')" class="pn-opt">发送</a><#rt/>
+	</@p.column><#t/>
 </@p.table>
 </@p.form>
 </div>

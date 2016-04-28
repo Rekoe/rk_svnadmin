@@ -48,6 +48,9 @@ public class SvnUserService extends BaseService<Usr> {
 		return Lang.isEmpty(dao().fetch(getEntityClass(), Cnd.where("usr", "=", name)));
 	}
 
+	public Usr get(String usr){
+		return dao().fetch(getEntityClass(), Cnd.where("usr", "=", usr));
+	}
 	/**
 	 * 校验用户名
 	 * 
@@ -85,12 +88,31 @@ public class SvnUserService extends BaseService<Usr> {
 		return list;
 	}
 
+	public List<Usr> listSelected(String pj) {
+		Sql sql = Sqls.create("select * from usr a where a.usr <> '*' " + " and exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj=@pj) order by a.usr");
+		sql.setParam("pj", pj);
+		final List<Usr> list = new ArrayList<Usr>();
+		sql.setCallback(new SqlCallback() {
+
+			@Override
+			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				while (rs.next()) {
+					list.add(readUsr(rs));
+				}
+				return list;
+			}
+		});
+		dao().execute(sql);
+		return list;
+	}
+
 	Usr readUsr(ResultSet rs) throws SQLException {
 		Usr result = new Usr();
 		result.setUsr(rs.getString("usr"));
 		result.setName(rs.getString("name"));
 		result.setPsw(rs.getString("psw"));
 		result.setRole(rs.getString("role"));
+		result.setEmail(rs.getString("email"));
 		return result;
 	}
 

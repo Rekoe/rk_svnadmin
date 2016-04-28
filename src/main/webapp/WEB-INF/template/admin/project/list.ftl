@@ -33,6 +33,27 @@ function init(pj){
 	}); 
 	return false;
 }
+function all_email(pj){
+	$.dialog({
+		type: "warn",
+		content: '确定要执行?',
+		ok: 'Ok',
+		cancel: 'Cancel',
+		onOk: function() {
+			$.ajax({
+				url: "${base}/admin/project/group/usr/all_email.rk",
+				type: "POST",
+				data: {"pj":pj},
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+				}
+			});
+		}
+	}); 
+	return false;
+}
 </script>
 </head>
 <body>
@@ -61,6 +82,9 @@ function init(pj){
 		<a href="javascript:void(0);" onclick="Cms.deleted('${project.pj}')" class="pn-opt">删除</a><#rt/>
 	</@p.column><#t/>
 	</@shiro.hasPermission>
+	<@p.column title="发项目邀请邮件" align="center">
+		<a href="javascript:void(0);" onclick="all_email('${project.pj}')" class="pn-opt">发送</a><#rt/>
+	</@p.column><#t/>
 </@p.table>
 </@p.form>
 </div>
