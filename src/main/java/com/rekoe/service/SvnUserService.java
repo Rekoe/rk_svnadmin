@@ -48,9 +48,10 @@ public class SvnUserService extends BaseService<Usr> {
 		return Lang.isEmpty(dao().fetch(getEntityClass(), Cnd.where("usr", "=", name)));
 	}
 
-	public Usr get(String usr){
+	public Usr get(String usr) {
 		return dao().fetch(getEntityClass(), Cnd.where("usr", "=", usr));
 	}
+
 	/**
 	 * 校验用户名
 	 * 
@@ -71,7 +72,7 @@ public class SvnUserService extends BaseService<Usr> {
 	 * @return 项目组未选的用户(不包括*)
 	 */
 	public List<Usr> listUnSelected(String pj, String gr) {
-		Sql sql = Sqls.create("select usr,name,psw,role from usr a where a.usr <> '*' " + " and not exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj=@pj and b.gr=@gr) order by a.usr");
+		Sql sql = Sqls.create("select usr,name,psw,email,role from usr a where a.usr <> '*' " + " and not exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj=@pj and b.gr=@gr) order by a.usr");
 		sql.setParam("pj", pj).setParam("gr", gr);
 		final List<Usr> list = new ArrayList<Usr>();
 		sql.setCallback(new SqlCallback() {
