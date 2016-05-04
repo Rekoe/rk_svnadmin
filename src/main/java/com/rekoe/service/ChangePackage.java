@@ -29,12 +29,12 @@ public class ChangePackage {
 					return;
 				System.out.println(file);
 				String origin = Files.read(file);
-				String output = origin.replaceAll("WenQuanYi Micro Hei.ttf", "FZY4JW_0.ttf");
+				String output = origin.replaceAll("FZY4JW_0.ttf", "FZY4FZ_0.ttf");
 				if (origin.equals(output))
 					return;
 				Files.write(file, output);
 			}
 		};
-		Disks.visitFile(new File("D:/sources"), fv, ff);
+		Disks.visitFile(new File("C:/Users/koux/Desktop/ui/ui"), fv, ff);
 	}
 }

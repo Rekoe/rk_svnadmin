@@ -19,16 +19,15 @@ $(function() {
 	<div class="clear"></div>
 </div>
 <div class="body-box">
-<@p.form id="jvForm" action="o_update" labelWidth="12" onsubmit="return false;">
+<@p.form id="jvForm" action="o_save" labelWidth="12" onsubmit="return false;">
 <@p.text width="30" label="姓名" id="user.name" name="user.name" value="" maxlength="100" class="required" required="true"/><@p.tr/>
 <@p.text width="30" label="用户名" id="user.usr" name="user.usr" value="" maxlength="100" class="required" required="true"/><@p.tr/>
-<@p.text width="30" label="密码" id="user.psw" name="user.psw" value="" maxlength="100" class="required" required="true"/><@p.tr/>
 <@p.text width="30" label="邮箱地址" id="user.email" name="user.email" value="" maxlength="100" class="required" required="true"/><@p.tr/>
 <@p.td width="50" label="角色"  required="true">
-	<@p.select id="user.role" name="user.role" value='0' list={"guest":"选择角色","admin":"admin"} required="true"/>
+	<@p.select id="user.role" name="user.role" value='0' list={"guest":"选择角色","admin":"admin","small":"small"} required="true"/>
 </@p.td><@p.tr/>
 <@p.td colspan="2">
-<@p.submit code="global.submit" onclick="Cms.add();"/>
+<@p.submit code="global.submit" onclick="Cms.add('o_save.rk','list.rk');"/>
 </@p.td><@p.tr/>
 </@p.form>
 </div>

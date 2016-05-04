@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.aop.interceptor.async.Async;
 import org.nutz.dao.Chain;
@@ -14,6 +15,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
+import org.nutz.lang.random.R;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.At;
@@ -62,14 +64,42 @@ public class AdminSvnUserAct extends BaseAction {
 	}
 
 	@At
+	@Ok("fm:template.admin.svn_user.edit")
+	@RequiresPermissions({ "svn.user:edit" })
+	@PermissionTag(name = "编辑SVN账号", tag = "SVN账号管理", enable = true)
+	public Usr edit(@Param("id") String usr) {
+		return svnUserService.get(usr);
+	}
+
+	@At
 	@Ok("json")
 	@RequiresPermissions("svn.user:add")
 	@PermissionTag(name = "SVN添加账号", tag = "SVN账号管理", enable = false)
 	public Message o_save(@Param("::user.") Usr user, HttpServletRequest req) {
 		boolean isOk = svnUserService.nameOk(user.getUsr());
 		if (isOk) {
+			user.setPsw(EncryptUtil.encrypt(R.UU64().substring(0, 10)));
 			isOk = svnUserService.insert(user);
 		}
+		if (isOk) {
+			return Message.success("ok", req);
+		}
+		return Message.error("error", req);
+	}
+
+	@At
+	@Ok("json")
+	@RequiresPermissions("svn.user:edit")
+	@PermissionTag(name = "编辑SVN账号", tag = "SVN账号管理", enable = false)
+	public Message o_update(@Param("pwd") String pwd, @Param("usr") String usr, @Param("role") String role, HttpServletRequest req) {
+		if (StringUtils.isBlank(usr)) {
+			return Message.error("error", req);
+		}
+		Chain chain = Chain.make("role", role);
+		if (StringUtils.isNotBlank(pwd)) {
+			chain.add("pwd", EncryptUtil.encrypt(pwd));
+		}
+		boolean isOk = svnUserService.update(chain, Cnd.where("usr", "=", usr)) > 0;
 		if (isOk) {
 			return Message.success("ok", req);
 		}
@@ -115,7 +145,7 @@ public class AdminSvnUserAct extends BaseAction {
 				try {
 					this.svnService.exportConfig(pj);
 				} catch (Exception e) {
-					//projectService.deleteDB(pj.getPj());
+					// projectService.deleteDB(pj.getPj());
 					log.errorf("project %s ,error %s", pj.getPj(), e.getMessage());
 				}
 			}

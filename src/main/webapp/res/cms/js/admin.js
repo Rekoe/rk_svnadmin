@@ -90,7 +90,7 @@ Cms.addBack = function(url){
 	}); 
 	return false;
 }
-Cms.add = function(act,back){
+Cms.add = function(act,url){
 	$.dialog({
 		type: "warn",
 		content: '确定要添加此记录?',

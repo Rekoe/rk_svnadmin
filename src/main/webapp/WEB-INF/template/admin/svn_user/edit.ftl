@@ -20,8 +20,11 @@ $(function() {
 </div>
 <div class="body-box">
 <@p.form id="jvForm" action="o_update" labelWidth="12" onsubmit="return false;">
-<@p.hidden name="user.id" value='${obj.id}' />
-<@p.text width="30" label="名称" id="user.userName" name="user.userName" value="${obj.userName!}" maxlength="100" class="required" required="true" readonly="true"/><@p.tr/>
+<@p.hidden name="usr" value='${obj.usr}' />
+<@p.text width="30" label="密码" id="pwd" name="pwd" value='' maxlength="100" class="required" required="true"/><@p.tr/>
+<@p.td width="50" label="角色"  required="true">
+	<@p.select id="user.role" name="role" value='${obj.role}' list={"guest":"选择角色","admin":"admin","small":"small"} required="true"/>
+</@p.td><@p.tr/>
 <@p.td colspan="2">
 <@p.submit code="global.submit" onclick="Cms.update();"/>
 </@p.td><@p.tr/>

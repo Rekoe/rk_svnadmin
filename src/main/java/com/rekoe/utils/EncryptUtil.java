@@ -63,6 +63,11 @@ public class EncryptUtil {
 		return ret.toString();
 	}
 
+	public static void main(String[] args) {
+		String str = "abc";
+		System.out.println(encrypt(str));
+		System.out.println(decrypt(encrypt(str)));
+	}
 	/**
 	 * 解密
 	 * 
