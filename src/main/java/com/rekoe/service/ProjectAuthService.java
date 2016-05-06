@@ -160,7 +160,9 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 	 *            资源
 	 */
 	public void deleteByUsr(String pj, String usr, String res) {
-		deleteByUsr(pj, usr, res);
+		Sql sql = Sqls.create("delete from pj_usr_auth $condition");
+		sql.setCondition(Cnd.where("pj", "=", pj).and("usr", "=", usr).and("res", "=", res));
+		dao().execute(sql);
 		svnService.exportConfig(pj);
 	}
 

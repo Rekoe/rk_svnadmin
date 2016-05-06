@@ -248,7 +248,7 @@ public class AdminProjectAct extends BaseAction {
 		projectAuthService.save(pj, res, rw, grs, usrs);
 		return pjauth(pj, res, entity, Mvcs.getReq());
 	}
-	
+
 	@At
 	@Ok("fm:template.admin.project.add_dir")
 	@RequiresPermissions("svn.project:update")
@@ -256,16 +256,29 @@ public class AdminProjectAct extends BaseAction {
 	public String file_add(@Param("pj") String pj) {
 		return pj;
 	}
-	
+
 	@Inject
 	private DoCommit doCommit;
-	
+
 	@At
 	@Ok("json")
 	@RequiresPermissions("svn.project:update")
 	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = false)
-	public Message file_save(@Param("pj") String pj,@Param("file") String file, HttpServletRequest req) {
-		doCommit.mkdirs(pj, new String[]{file});
+	public Message file_save(@Param("pj") String pj, @Param("file") String file, HttpServletRequest req) {
+		doCommit.mkdirs(pj, new String[] { file });
 		return Message.success("ok", req);
+	}
+
+	@At("/pjauth_delete")
+	@Ok("fm:template.admin.project.pjauth")
+	@RequiresPermissions("svn.project:auth.manager")
+	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = false)
+	public String pjauth_delete(@Param("pj") String pj, @Param("gr") String gr, @Param("usr") String usr, @Param("res") String res, HttpServletRequest req) {
+		if (StringUtils.isNotBlank(gr)) {
+			projectAuthService.deleteByGr(pj, gr, res);
+		} else if (StringUtils.isNotBlank(usr)) {
+			projectAuthService.deleteByUsr(pj, usr, res);
+		}
+		return pjauth(pj, res, null, req);
 	}
 }

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title></title>
 <script src="${base}/resources/jquery-1.7.min.js" type="text/javascript"></script>
-<span style="color:green;font-weight:bold;"><a href="${base}/pj">项目管理(${pj})</a>　|　权限管理</span><br><br>
+<span style="color:green;font-weight:bold;">项目管理(${pj})　|　权限管理</span><br><br>
 <script type="text/javascript" src="${base}/resources/treeview/treeview.js"></script>
 <link rel="stylesheet" href="${base}/resources/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="${base}/resources/treeview/treeview.css"></link>

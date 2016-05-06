@@ -14,6 +14,7 @@ $(function() {
 <div class="box-positon">
 	<div class="rpos"><@s.m "global.position"/>: SVN项目组账号 - <@s.m "global.add"/></div>
 	<form class="ropt">
+		<input type="hidden" name="pj" id="pj" value="${obj}"/>
 		<input type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='list.rk';" class="return-button"/>
 	</form>
 	<div class="clear"></div>

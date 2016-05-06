@@ -183,7 +183,7 @@
 		<td>${pjAuth.gr!""}${pjAuth.usr!pjAuth.usrName}:(${pjAuth.usr})</td>
 		<td><#if "r"== pjAuth.rw>可读<#elseif "rw"== pjAuth.rw>可读可写<#else>没有权限</#if></td>
 		<@shiro.hasPermission name="svn.project:auth.manager">	
-		<td><a href="javascript:if(confirm('确认删除?')){del('delete?pj=${pjAuth.pj}&res=${pjAuth.res}&gr=${pjAuth.gr}&usr=${pjAuth.usr}')}">删除</a></td>
+		<td><a href="javascript:if(confirm('确认删除?')){del('pjauth_delete?pj=${pjAuth.pj}&res=${pjAuth.res}&gr=${pjAuth.gr}&usr=${pjAuth.usr}')}">删除</a></td>
 		</@shiro.hasPermission>
 	</tr>
 	</#list>

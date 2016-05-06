@@ -216,3 +216,29 @@ Cms.deleted = function(id){
 	}); 
 	return false;
 }
+
+Cms.deletedByAction = function(id,action){
+	$.dialog({
+		type: "warn",
+		content: '确定要删除此记录?',
+		ok: 'Ok',
+		cancel: 'Cancel',
+		onOk: function() {
+			$.ajax({
+				url: "delete.rk",
+				type: "POST",
+				data: {"id":id},
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+					if (message.type == "success")
+					{
+						window.location.href = action;
+					}
+				}
+			});
+		}
+	}); 
+	return false;
+}
