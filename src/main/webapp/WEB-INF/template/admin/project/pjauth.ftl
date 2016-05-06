@@ -86,7 +86,7 @@
 		</script>
 	</head>
 <body style="margin: 0px;">
-<form name="pjauth" action="pjauth/save" method="post" onsubmit="return checkForm(this);">
+<form name="pjauth" action="${base}/admin/project/pjauth/save" method="post" onsubmit="return checkForm(this);">
 	<input type="hidden" name="pj" value="${pj}">
 	<table class="table table-striped table-bordered">
 		<tr>
@@ -183,7 +183,7 @@
 		<td>${pjAuth.gr!""}${pjAuth.usr!pjAuth.usrName}:(${pjAuth.usr})</td>
 		<td><#if "r"== pjAuth.rw>可读<#elseif "rw"== pjAuth.rw>可读可写<#else>没有权限</#if></td>
 		<@shiro.hasPermission name="svn.project:auth.manager">	
-		<td><a href="javascript:if(confirm('确认删除?')){del('pjauth_delete?pj=${pjAuth.pj}&res=${pjAuth.res}&gr=${pjAuth.gr}&usr=${pjAuth.usr}')}">删除</a></td>
+		<td><a href="javascript:if(confirm('确认删除?')){del('${base}/admin/project/pjauth_delete?pj=${pjAuth.pj}&res=${pjAuth.res}&gr=${pjAuth.gr}&usr=${pjAuth.usr}')}">删除</a></td>
 		</@shiro.hasPermission>
 	</tr>
 	</#list>
