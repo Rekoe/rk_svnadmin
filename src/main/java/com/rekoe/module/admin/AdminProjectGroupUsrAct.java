@@ -1,5 +1,6 @@
 package com.rekoe.module.admin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.aop.interceptor.async.Async;
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.json.Json;
+import org.nutz.lang.Lang;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
@@ -19,11 +25,13 @@ import com.rekoe.annotation.PermissionTag;
 import com.rekoe.common.Message;
 import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.Pj;
+import com.rekoe.domain.PjGrAuth;
 import com.rekoe.domain.PjGrUsr;
 import com.rekoe.domain.ProjectConfig;
 import com.rekoe.domain.Usr;
 import com.rekoe.module.BaseAction;
 import com.rekoe.service.EmailService;
+import com.rekoe.service.ProjectAuthService;
 import com.rekoe.service.ProjectConfigService;
 import com.rekoe.service.ProjectGroupUsrService;
 import com.rekoe.service.ProjectService;
@@ -133,24 +141,51 @@ public class AdminProjectGroupUsrAct extends BaseAction {
 	@Async
 	public void sendProjectOpenEmail(Pj project, ProjectConfig conf, List<Usr> getList, EmailService emailService) {
 		for (Usr usr : getList) {
-			Map<String, Object> root = new HashMap<>();
-			root.put("usr", usr.getUsr());
-			root.put("name", usr.getName());
-			root.put("pwd", EncryptUtil.decrypt(usr.getPsw()));
-			root.put("project", project.getDes());
-			root.put("url", conf.getDomainPath() + project.getPj());
-			emailService.projectOpen(usr.getEmail(), root);
+			sendProjectOpenEmail1(project, conf, usr, emailService);
 		}
 	}
 
-	@Async
-	public void sendProjectOpenEmail(Pj project, ProjectConfig conf, Usr usr, EmailService emailService) {
+	private final static Log log = Logs.get();
+	@Inject
+	private ProjectAuthService projectAuthService;
+
+	private void sendProjectOpenEmail1(Pj project, ProjectConfig conf, Usr usr, EmailService emailService) {
+		if (Lang.isEmpty(usr)) {
+			log.error("send open email user empty");
+			return;
+		}
 		Map<String, Object> root = new HashMap<>();
 		root.put("usr", usr.getUsr());
 		root.put("name", usr.getName());
 		root.put("pwd", EncryptUtil.decrypt(usr.getPsw()));
 		root.put("project", project.getDes());
-		root.put("url", conf.getDomainPath() + project.getPj());
-		emailService.projectOpen(usr.getEmail(), root);
+		String url = conf.getDomainPath() + project.getPj();
+		root.put("url", url);
+		List<String> urlList = new ArrayList<String>();
+		Cnd cnd = Cnd.where("pj", "=", project.getPj()).and("usr", "=", usr.getUsr());
+		List<PjGrUsr> list = projectGroupUsrService.query(cnd);
+		if (Lang.isEmpty(list)) {
+			log.errorf("Cant Not Set User %s Project %s Gruop", usr.getUsr(), project.getPj());
+			return;
+		}
+		for (PjGrUsr pgu : list) {
+			List<PjGrAuth> $list = projectAuthService.loadPjGrAuth(project.getPj(), pgu.getGr());
+			for (PjGrAuth pjauth : $list) {
+				String res = pjauth.getRes();
+				res = StringUtils.remove(res, "[" + pjauth.getPj() + ":");
+				res = StringUtils.remove(res, "]");
+				urlList.add(url + res);
+			}
+		}
+		root.put("urls", urlList);
+		boolean send = emailService.projectOpen(usr.getEmail(), root);
+		if (send) {
+			log.info("email send OK");
+		}
+	}
+
+	@Async
+	public void sendProjectOpenEmail(Pj project, ProjectConfig conf, Usr usr, EmailService emailService) {
+		sendProjectOpenEmail1(project, conf, usr, emailService);
 	}
 }

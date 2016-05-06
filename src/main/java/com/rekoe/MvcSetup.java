@@ -23,6 +23,7 @@ import org.tmatesoft.svn.core.wc.SVNCommitClient;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import com.rekoe.domain.Pj;
+import com.rekoe.domain.PjGrUsr;
 import com.rekoe.domain.ProjectConfig;
 import com.rekoe.domain.User;
 import com.rekoe.domain.Usr;
@@ -52,6 +53,7 @@ public class MvcSetup implements Setup {
 		});
 		ioc.get(FreeMarkerConfigurer.class, "mapTags");
 		Dao dao = ioc.get(Dao.class);
+		dao.create(PjGrUsr.class, false);
 		// dao.clear(OAuthUser.class);
 		Daos.createTablesInPackage(dao, User.class.getPackage().getName(), false);
 		Daos.migration(dao, Usr.class, true, true, false);

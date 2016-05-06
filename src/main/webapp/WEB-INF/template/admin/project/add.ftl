@@ -26,7 +26,7 @@ $(function() {
 </@p.td><@p.tr/>
 <@p.text width="30" label="描述" id="pj.des" name="pj.des" value="" maxlength="100" class="required" required="true"/><@p.tr/>
 <@p.td colspan="2">
-<@p.submit code="global.submit" onclick="Cms.add();"/>
+<@p.submit code="global.submit" onclick="Cms.add('o_save.rk','list.rk');"/>
 </@p.td><@p.tr/>
 </@p.form>
 </div>

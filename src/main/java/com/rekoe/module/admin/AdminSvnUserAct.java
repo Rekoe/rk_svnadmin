@@ -77,12 +77,18 @@ public class AdminSvnUserAct extends BaseAction {
 	@PermissionTag(name = "SVN添加账号", tag = "SVN账号管理", enable = false)
 	public Message o_save(@Param("::user.") Usr user, HttpServletRequest req) {
 		boolean isOk = svnUserService.nameOk(user.getUsr());
-		if (isOk) {
+		boolean isEmail = Strings.isEmail(user.getEmail());
+		if (isOk && isEmail) {
 			user.setPsw(EncryptUtil.encrypt(R.UU64().substring(0, 10)));
 			isOk = svnUserService.insert(user);
+		} else {
+			isOk = false;
 		}
 		if (isOk) {
 			return Message.success("ok", req);
+		}
+		if (!isEmail) {
+			return Message.error("email error", req);
 		}
 		return Message.error("error", req);
 	}

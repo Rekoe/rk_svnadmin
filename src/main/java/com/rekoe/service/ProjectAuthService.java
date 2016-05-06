@@ -296,6 +296,10 @@ public class ProjectAuthService extends BaseService<PjAuth> {
 		}
 	}
 
+	public List<PjGrAuth> loadPjGrAuth(String pj, String gr) {
+		return dao().query(PjGrAuth.class, Cnd.where("pj", "=", pj).and("gr", "=", gr));
+	}
+
 	/**
 	 * 格式化资源.如果资源没有[],自动加上[relateRoot:/]
 	 * 

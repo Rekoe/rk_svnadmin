@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Index;
-import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.PK;
 import org.nutz.dao.entity.annotation.Readonly;
 import org.nutz.dao.entity.annotation.Table;
@@ -24,7 +23,7 @@ public class PjGrUsr implements Serializable {
 	/**
 	 * 项目
 	 */
-	@Name
+	@Column
 	private String pj;
 	/**
 	 * 用户

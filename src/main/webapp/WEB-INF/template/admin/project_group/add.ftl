@@ -25,7 +25,7 @@ $(function() {
 <@p.text width="30" label="用户组" id="pgu.gr" name="pgu.gr" value="" maxlength="100" class="required" required="true"/><@p.tr/>
 <@p.text width="30" label="描述" id="pgu.des" name="pgu.des" value="" maxlength="100" class="required" required="true"/><@p.tr/>
 <@p.td colspan="2">
-<@p.submit code="global.submit" onclick="Cms.add();"/>
+<@p.submit code="global.submit" onclick="Cms.add('o_save.rk','list.rk?pj=${obj}');"/>
 </@p.td><@p.tr/>
 </@p.form>
 </div>

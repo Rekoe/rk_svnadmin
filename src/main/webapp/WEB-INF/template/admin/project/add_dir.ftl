@@ -23,7 +23,7 @@ $(function() {
 <@p.hidden name="pj" id="pj" value='${obj}' />
 <@p.text width="30" label="目录" id="file" name="file" value="" maxlength="100" class="required" required="true" help="说明: 若trunk下如果要增加目录请使用 trunk/filename"/><@p.tr/>
 <@p.td>
-<@p.submit code="global.submit" onclick="Cms.add('file_save','file_add.rk');"/>
+<@p.submit code="global.submit" onclick="Cms.add('file_save','file_add.rk?pj=${obj}');"/>
 </@p.td><@p.tr/>
 </@p.form>
 </div>

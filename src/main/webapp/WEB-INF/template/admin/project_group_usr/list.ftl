@@ -25,7 +25,7 @@ function deleted(pj,gr,usr){
 					$.message(message);
 					if (message.type == "success")
 					{
-						window.location.href = back;
+						window.location.href = "list.rk";
 					}
 				}
 			});
@@ -77,7 +77,7 @@ function email(pj,usr){
 	<@p.column title="姓名" align="center">${group.usrName}</@p.column><#t/>
 	<@shiro.hasPermission name="project.group:delete">	
 	<@p.column title="删除" align="center">
-		<a href="javascript:void(0);" onclick="deleted('${group.pj}','${group.gr}')" class="pn-opt">删除</a><#rt/>
+		<a href="javascript:void(0);" onclick="deleted('${group.pj}','${group.gr}','${group.usr}')" class="pn-opt">删除</a><#rt/>
 	</@p.column><#t/>
 	</@shiro.hasPermission>
 	<@p.column title="发项目邀请邮件" align="center">
