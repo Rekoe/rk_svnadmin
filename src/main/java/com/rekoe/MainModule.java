@@ -8,6 +8,7 @@ import org.nutz.mvc.annotation.Localization;
 import org.nutz.mvc.annotation.Modules;
 import org.nutz.mvc.annotation.SetupBy;
 import org.nutz.mvc.annotation.Views;
+import org.nutz.mvc.impl.NutActionChainMaker;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
 import org.nutz.plugins.view.freemarker.FreemarkerViewMaker;
 
@@ -16,7 +17,7 @@ import org.nutz.plugins.view.freemarker.FreemarkerViewMaker;
 @SetupBy(MvcSetup.class)
 @Fail(">>:/admin/common/unauthorized.rk")
 @Encoding(input = "UTF-8", output = "UTF-8")
-@ChainBy(args = "com/rekoe/mvc/mvc-chains.js")
+@ChainBy(type = NutActionChainMaker.class, args = { "com/rekoe/mvc/mvc-chains.js" })
 @Views({ FreemarkerViewMaker.class })
 @Localization(value = "msg/", defaultLocalizationKey = "zh-CN")
 public class MainModule {

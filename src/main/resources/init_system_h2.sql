@@ -14,13 +14,19 @@ INSERT INTO system_user_role(USERID,ROLEID) VALUES
 /*  .system_role_permission  		*/
 INSERT INTO system_role_permission(ROLEID,PERMISSIONID) VALUES 
 (1,1)
-/*
+/*  .add_indexs  		*/
 alter table pj_gr add constraint FK_Relationship_2 foreign key (pj) references pj (pj) on delete restrict on update restrict;
+/*  .add_indexs_pj_gr_auth 		*/
 alter table pj_gr_auth add constraint FK_Reference_6 foreign key (pj, gr) references pj_gr (pj, gr) on delete restrict on update restrict;
+/*  .add_indexs_pj_gr_usr 		*/
 alter table pj_gr_usr add constraint FK_Reference_10 foreign key (pj, gr) references pj_gr (pj, gr) on delete restrict on update restrict;
+/*  .add_indexs_pj_gr_usr_1 		*/
 alter table pj_gr_usr add constraint FK_Reference_9 foreign key (usr) references usr (usr) on delete restrict on update restrict;
+/*  .add_indexs_pj_gr_usr_2 		*/
 alter table pj_usr add constraint FK_Reference_5 foreign key (pj) references pj (pj) on delete restrict on update restrict;
+/*  .add_indexs_pj_gr_usr_3 		*/
 alter table pj_usr add constraint FK_Reference_7 foreign key (usr) references usr (usr) on delete restrict on update restrict;
+/*  .add_indexs_pj_usr_auth_1 		*/
 alter table pj_usr_auth add constraint FK_Reference_11 foreign key (pj) references pj (pj) on delete restrict on update restrict;
+/*  .add_indexs_pj_usr_auth_2 		*/
 alter table pj_usr_auth add constraint FK_Reference_8 foreign key (usr) references usr (usr) on delete restrict on update restrict;
-*/
