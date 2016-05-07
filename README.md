@@ -28,20 +28,7 @@
  Tomcat启动完成之后，在浏览器中输入http://localhost:8080/rk_svnadmin/user/login                    
  ok.看到登录页面了吧？接下来输入用户名：admin 密码：123 点击登录，被问我怎么知道的，在代码中有，不信自己去看。                                                          
    环境搭建完毕，接下来，骚年，尽情的释放你的洪荒之力吧！！                                                                      
-   对了，数据库还没完，添上关联关系                                                                             
-   完手动执行alter
-
-```
-	alter table pj_gr add constraint FK_Relationship_2 foreign key (pj) references pj (pj) on delete restrict on update restrict;
-	alter table pj_gr_auth add constraint FK_Reference_6 foreign key (pj, gr) references pj_gr (pj, gr) on delete >restrict on update restrict;
-	alter table pj_gr_usr add constraint FK_Reference_10 foreign key (pj, gr) references pj_gr (pj, gr) on delete >restrict on update restrict;
-	alter table pj_gr_usr add constraint FK_Reference_9 foreign key (usr) references usr (usr) on delete restrict on update restrict;
-	alter table pj_usr add constraint FK_Reference_5 foreign key (pj) references pj (pj) on delete restrict on >update restrict;
-	alter table pj_usr add constraint FK_Reference_7 foreign key (usr) references usr (usr) on delete restrict on update restrict;
-	alter table pj_usr_auth add constraint FK_Reference_11 foreign key (pj) references pj (pj) on delete restrict on update restrict;
-	alter table pj_usr_auth add constraint FK_Reference_8 foreign key (usr) references usr (usr) on delete restrict on update restrict;
-
-```
+   
 ##
 登陆后台后 在 [项目管理]-[基本设置]
 
