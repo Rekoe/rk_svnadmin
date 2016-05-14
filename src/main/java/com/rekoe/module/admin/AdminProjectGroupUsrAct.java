@@ -162,7 +162,7 @@ public class AdminProjectGroupUsrAct extends BaseAction {
 		root.put("url", url);
 		List<String> urlList = new ArrayList<String>();
 		Cnd cnd = Cnd.where("pj", "=", project.getPj()).and("usr", "=", usr.getUsr());
-		List<PjGrUsr> list = projectGroupUsrService.query(cnd);
+		List<PjGrUsr> list = projectGroupUsrService.query(cnd,null);
 		if (Lang.isEmpty(list)) {
 			log.errorf("Cant Not Set User %s Project %s Gruop", usr.getUsr(), project.getPj());
 			return;
