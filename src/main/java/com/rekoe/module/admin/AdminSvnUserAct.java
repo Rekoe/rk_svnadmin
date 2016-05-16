@@ -103,7 +103,7 @@ public class AdminSvnUserAct extends BaseAction {
 		}
 		Chain chain = Chain.make("role", role);
 		if (StringUtils.isNotBlank(pwd)) {
-			chain.add("pwd", EncryptUtil.encrypt(pwd));
+			chain.add("psw", EncryptUtil.encrypt(pwd));
 		}
 		boolean isOk = svnUserService.update(chain, Cnd.where("usr", "=", usr)) > 0;
 		if (isOk) {
