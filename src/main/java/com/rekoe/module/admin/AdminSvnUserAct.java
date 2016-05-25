@@ -107,6 +107,16 @@ public class AdminSvnUserAct extends BaseAction {
 		}
 		boolean isOk = svnUserService.update(chain, Cnd.where("usr", "=", usr)) > 0;
 		if (isOk) {
+			List<Pj> list = svnUserService.getPjList(usr);
+			if (list != null) {
+				for (Pj pj : list) {
+					try {
+						this.svnService.exportConfig(pj);
+					} catch (Exception e) {
+						log.errorf("project %s ,error %s", pj.getPj(), e.getMessage());
+					}
+				}
+			}
 			return Message.success("ok", req);
 		}
 		return Message.error("error", req);
