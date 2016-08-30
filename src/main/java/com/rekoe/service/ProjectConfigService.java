@@ -35,9 +35,8 @@ public class ProjectConfigService extends BaseService<ProjectConfig> {
 		dao().update(conf);
 		return true;
 	}
-	public boolean update(ProjectConfig conf) {
-		dao().update(conf);
-		return true;
+	public int update(ProjectConfig conf) {
+		return dao().update(conf);
 	}
 
 	public void init() {

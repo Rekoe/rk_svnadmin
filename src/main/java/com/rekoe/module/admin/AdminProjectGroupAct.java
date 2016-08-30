@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.dao.Cnd;
+import org.nutz.integration.shiro.annotation.NutzRequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
@@ -11,7 +12,6 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
-import com.rekoe.annotation.PermissionTag;
 import com.rekoe.common.Message;
 import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.PjGr;
@@ -27,8 +27,7 @@ public class AdminProjectGroupAct extends BaseAction {
 
 	@At
 	@Ok("fm:template.admin.project_group.list")
-	@RequiresPermissions({ "project.group:view" })
-	@PermissionTag(name = "SVN浏览账号", tag = "SVN账号管理")
+	@NutzRequiresPermissions(value = "project.group:view", name = "SVN浏览账号", tag = "SVN账号管理", enable = true)
 	public Pagination list(@Param(value = "pageNumber", df = "1") Integer page, @Param("pj") String pj, HttpServletRequest req) {
 		req.setAttribute("pj", pj);
 		return projectGroupService.getObjListByPager(page, 20, Cnd.where("pj", "=", pj));
@@ -36,8 +35,7 @@ public class AdminProjectGroupAct extends BaseAction {
 
 	@At
 	@Ok("fm:template.admin.project_group.add")
-	@RequiresPermissions({ "project.group:add" })
-	@PermissionTag(name = "添加项目用户组", tag = "SVN账号管理", enable = true)
+	@NutzRequiresPermissions(value = "project.group:add", name = "添加项目用户组", tag = "SVN账号管理", enable = true)
 	public String add(@Param("pj") String pj) {
 		return pj;
 	}
@@ -45,7 +43,6 @@ public class AdminProjectGroupAct extends BaseAction {
 	@At
 	@Ok("json")
 	@RequiresPermissions("project.group:add")
-	@PermissionTag(name = "添加项目用户组", tag = "SVN账号管理", enable = false)
 	public Message o_save(@Param("::pgu.") PjGr group, HttpServletRequest req) {
 		PjGr old = projectGroupService.fetch(Cnd.where("pj", "=", group.getPj()).and("gr", "=", group.getGr()));
 		if (Lang.isEmpty(old)) {
@@ -57,8 +54,7 @@ public class AdminProjectGroupAct extends BaseAction {
 
 	@At
 	@Ok("json")
-	@RequiresPermissions("project.group:delete")
-	@PermissionTag(name = "删除项目用户组", tag = "SVN账号管理", enable = true)
+	@NutzRequiresPermissions(value = "project.group:delete", name = "删除项目用户组", tag = "SVN账号管理", enable = true)
 	public Message delete(@Param("pj") String pj, @Param("gr") String gr, HttpServletRequest req) {
 		projectGroupService.delete(pj, gr);
 		return Message.success("ok", req);

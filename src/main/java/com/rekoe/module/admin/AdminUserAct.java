@@ -13,22 +13,24 @@ import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.subject.Subject;
+import org.nutz.dao.Chain;
+import org.nutz.dao.Cnd;
+import org.nutz.integration.shiro.annotation.NutzRequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 import org.nutz.lang.Mirror;
+import org.nutz.lang.Strings;
 import org.nutz.mvc.NutConfigException;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Attr;
 import org.nutz.mvc.annotation.Fail;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.web.Webs;
 import org.nutz.web.ajax.Ajax;
 
 import com.alibaba.druid.util.DruidWebUtils;
-import com.rekoe.annotation.PermissionTag;
 import com.rekoe.common.Message;
 import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.Role;
@@ -59,35 +61,29 @@ public class AdminUserAct {
 
 	@At
 	@Ok("fm:template.admin.user.list")
-	@RequiresPermissions({ "system.user:view" })
-	@PermissionTag(name = "浏览账号", tag = "账号管理")
+	@NutzRequiresPermissions(value = "system.user:view", name = "浏览账号", tag = "账号管理", enable = true)
 	public Pagination list(@Param(value = "pageNumber", df = "1") int pageNumber) {
 		return userService.getUserListByPager(pageNumber, 20);
 	}
 
 	@At
 	@Ok("fm:template.admin.user.add")
-	@RequiresPermissions({ "system.user:add" })
-	@PermissionTag(name = "添加账号", tag = "账号管理", enable = false)
+	@RequiresPermissions("system.user:add")
 	public List<Role> add() {
 		return roleService.list();
 	}
 
 	@At
 	@Ok("json")
-	@RequiresPermissions("system.user:delete")
-	@PermissionTag(name = "删除账号", tag = "账号管理")
+	@NutzRequiresPermissions(value = "system.user:delete", name = "删除账号", tag = "账号管理", enable = true)
 	public Message delete(@Param("ids") int[] uids, HttpServletRequest req) {
-		for (int id : uids) {
-			userService.delete(id);
-		}
+		userService.update(Chain.make("is_del", true), Cnd.where("id", "id", uids));
 		return Message.success("admin.message.success", req);
 	}
 
 	@At
 	@Ok(">>:${obj==true?'/admin/user/list.rk':'/admin/common/unauthorized.rk'}")
-	@RequiresPermissions({ "system.user:add" })
-	@PermissionTag(name = "添加账号", tag = "账号管理", enable = false)
+	@NutzRequiresPermissions(value = "system.user:add", name = "添加账号", tag = "账号管理", enable = true)
 	public boolean save(HttpServletRequest req, @Param("username") String username, @Param("password") String password, @Param("isEnabled") boolean isEnabled, @Param("roleIds") int[] roleIds) {
 		return userService.save(username, password, isEnabled, req.getRemoteAddr(), roleIds);
 	}
@@ -95,21 +91,19 @@ public class AdminUserAct {
 	@At("/check/username")
 	@Ok("raw")
 	public boolean checkName(@Param("username") String username) {
-		User user = userService.fetchByName(username);
-		return Lang.isEmpty(user) ? true : false;
+		return Lang.isEmpty(userService.fetchByName(username)) ? true : false;
 	}
 
 	@At("/check_email")
 	@Ok("raw")
 	public boolean checkEmail(@Param("email") String email) {
-		return StringUtils.isBlank(email) ? false : email.matches("\\w+@\\w+\\.(com\\.cn)|\\w+@\\w+\\.(com|cn)");
+		return Strings.isEmail(email);
 	}
 
 	@At
 	@Ok("fm:template.admin.user.edit")
 	@Fail("json")
-	@RequiresPermissions({ "system.user:edit" })
-	@PermissionTag(name = "编辑账号", tag = "账号管理")
+	@NutzRequiresPermissions(value = "system.user:edit", name = "编辑账号", tag = "账号管理", enable = true)
 	public User edit(@Attr(Webs.ME) User user, @Param("id") long id, HttpServletRequest req) {
 		User editUser = userService.view(id);
 		if (Lang.isEmpty(editUser) || editUser.isLocked()) {
@@ -131,7 +125,7 @@ public class AdminUserAct {
 
 	@At
 	@Ok(">>:/admin/user/list")
-	@RequiresPermissions({ "system.user:edit" })
+	@RequiresPermissions("system.user:edit")
 	public Object update(@Param("id") long id, @Param("allServer") Boolean allServer, @Param("serverIds") Integer[] serverIds, @Param("roleIds") Integer[] roleIds) {
 		User user = userService.fetch(id);
 		userService.removeUserUpdata(user);
@@ -145,8 +139,7 @@ public class AdminUserAct {
 	 */
 	@At
 	@Ok("json")
-	@RequiresPermissions("system.user:lock")
-	@PermissionTag(name = "锁定账号", tag = "账号管理")
+	@NutzRequiresPermissions(value = "system.user:lock", name = "锁定账号", tag = "账号管理", enable = true)
 	public Message lock(@Param("id") long id, HttpServletRequest req) {
 		User user = userService.view(id);
 		if (Lang.isEmpty(user)) {
@@ -178,6 +171,7 @@ public class AdminUserAct {
 
 	@At("/profile/edit")
 	@Ok("fm:template.admin.profile.edit")
+	@RequiresUser
 	public Subject profileEdit() {
 		return SecurityUtils.getSubject();
 	}
@@ -188,7 +182,6 @@ public class AdminUserAct {
 	@At
 	@Ok("fm:template.admin.user.add_user")
 	@RequiresPermissions("system.user:add")
-	@PermissionTag(name = "添加账号", tag = "账号管理")
 	public void add_user() {
 	}
 
@@ -219,7 +212,6 @@ public class AdminUserAct {
 
 	@At("/profile/re_update")
 	@Ok(">>:${obj?'/admin/main':'/admin/common/unauthorized.rk'}")
-	@Filters
 	public boolean regUpate(@Param("username") String username, @Param("password") String password, @Attr("me") User suser) {
 		if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
 			return false;

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.nutz.integration.shiro.annotation.NutzRequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.util.NutMap;
@@ -17,7 +18,6 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
-import com.rekoe.annotation.PermissionTag;
 import com.rekoe.common.Message;
 import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.Pj;
@@ -43,23 +43,20 @@ public class AdminProjectAct extends BaseAction {
 
 	@At
 	@Ok("fm:template.admin.project.list")
-	@RequiresPermissions({ "svn.project:view" })
-	@PermissionTag(name = "SVN浏览项目", tag = "SVN项目管理")
+	@NutzRequiresPermissions(value = "svn.project:view", name = "浏览项目", tag = "SVN项目管理", enable = true)
 	public Pagination list(@Param(value = "pageNumber", df = "1") int page) {
 		return projectService.getObjListByPager(page, 20, null);
 	}
 
 	@At
 	@Ok("fm:template.admin.project.add")
-	@RequiresPermissions({ "svn.project:add" })
-	@PermissionTag(name = "SVN添加项目", tag = "SVN项目管理", enable = true)
+	@NutzRequiresPermissions(value = "svn.project:add", name = "添加项目", tag = "SVN项目管理", enable = true)
 	public void add() {
 	}
 
 	@At
 	@Ok("fm:template.admin.project.edit")
-	@RequiresPermissions({ "svn.project:edit" })
-	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = false)
+	@NutzRequiresPermissions(value = "svn.project:edit", name = "编辑项目", tag = "SVN项目管理", enable = true)
 	public Pj edit(@Param("pj") String pj) {
 		return projectService.get(pj);
 	}
@@ -67,7 +64,6 @@ public class AdminProjectAct extends BaseAction {
 	@At
 	@Ok("json")
 	@RequiresPermissions("svn.project:add")
-	@PermissionTag(name = "SVN添加项目", tag = "SVN项目管理", enable = false)
 	public Message o_save(@Param("::pj.") Pj pj, HttpServletRequest req) {
 		boolean isOk = projectService.nameOk(pj.getPj());
 		if (isOk) {
@@ -82,7 +78,7 @@ public class AdminProjectAct extends BaseAction {
 
 	@At
 	@Ok("fm:template.admin.project.rep")
-	@RequiresPermissions({ "svn.project:view" })
+	@RequiresPermissions("svn.project:view")
 	public String rep(@Param("pj") String pj, HttpServletRequest req) {
 		Pj project = projectService.get(pj);
 		String root = repositoryService.getRepositoryRoot(project);
@@ -119,7 +115,7 @@ public class AdminProjectAct extends BaseAction {
 
 	@At
 	@Ok("json")
-	@RequiresPermissions({ "svn.project:edit" })
+	@RequiresPermissions("svn.project:edit")
 	public Message init(@Param("pj") String pj, HttpServletRequest req) {
 		Pj project = projectService.get(pj);
 		if (project.isInitTempl()) {
@@ -134,7 +130,7 @@ public class AdminProjectAct extends BaseAction {
 
 	@At
 	@Ok("fm:template.admin.project.pjauth")
-	@RequiresPermissions({ "svn.project:view" })
+	@RequiresPermissions("svn.project:view")
 	public String pjauth(@Param("pj") String pj, @Param("res") String res, @Param("entity") PjAuth entity, HttpServletRequest req) {
 		if (entity == null) {
 			entity = new PjAuth();
@@ -168,7 +164,7 @@ public class AdminProjectAct extends BaseAction {
 
 	@At
 	@Ok("raw")
-	@RequiresPermissions({ "svn.project:view" })
+	@RequiresPermissions("svn.project:view")
 	public String ajaxTreeService(HttpServletRequest req, HttpServletResponse response) {
 		NutMap params = CommonUtils.getRequestParametersMap(req);
 		com.rekoe.domain.Ajax ajax = treeService.execute(params);
@@ -180,8 +176,7 @@ public class AdminProjectAct extends BaseAction {
 
 	@At
 	@Ok("json")
-	@RequiresPermissions({ "svn.project:auth.manager" })
-	@PermissionTag(name = "管理项目权限", tag = "SVN项目管理", enable = false)
+	@NutzRequiresPermissions(value = "svn.project:auth.manager", name = "管理项目权限", tag = "SVN项目管理", enable = true)
 	public Message delete(@Param("id") String id, HttpServletRequest req) {
 		try {
 			projectService.delete(id);
@@ -194,7 +189,6 @@ public class AdminProjectAct extends BaseAction {
 	@At("/pjauth/delete")
 	@Ok("fm:template.admin.project.pjauth")
 	@RequiresPermissions({ "svn.project:auth.manager" })
-	@PermissionTag(name = "管理项目权限", tag = "SVN项目管理", enable = true)
 	public String pjauth_delete(@Param("gr") String gr, @Param("pj") String pj, @Param("res") String res, @Param("usr") String usr) {
 		if (StringUtils.isNotBlank(gr)) {
 			projectAuthService.deleteByGr(pj, gr, res);
@@ -209,28 +203,22 @@ public class AdminProjectAct extends BaseAction {
 
 	@At
 	@Ok("fm:template.admin.project.config")
-	@RequiresPermissions({ "svn.project:conf" })
-	@PermissionTag(name = "配置管理", tag = "SVN项目管理", enable = true)
+	@NutzRequiresPermissions(value = "svn.project:conf", name = "配置管理", tag = "SVN项目管理", enable = true)
 	public ProjectConfig conf() {
 		return projectConfigService.get();
 	}
 
 	@At("/conf/update")
 	@Ok("json")
-	@RequiresPermissions({ "svn.project:conf" })
-	@PermissionTag(name = "配置管理", tag = "SVN项目管理", enable = false)
+	@RequiresPermissions("svn.project:conf")
 	public Message conf_update(@Param("::conf.") ProjectConfig conf, HttpServletRequest req) {
-		boolean isRight = projectConfigService.update(conf);
-		if (isRight) {
-			return Message.success("ok", req);
-		}
-		return Message.error("erroe", req);
+		projectConfigService.update(conf);
+		return Message.success("ok", req);
 	}
 
 	@At
 	@Ok("json")
-	@RequiresPermissions("svn.project:update")
-	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = true)
+	@NutzRequiresPermissions(value = "svn.project:update", name = "SVN编辑项目", tag = "SVN项目管理", enable = true)
 	public Message o_update(@Param("::pj.") Pj pj, HttpServletRequest req) {
 		projectService.update(pj);
 		return Message.success("ok", req);
@@ -239,7 +227,6 @@ public class AdminProjectAct extends BaseAction {
 	@At("/pjauth/save")
 	@Ok("fm:template.admin.project.pjauth")
 	@RequiresPermissions({ "svn.project:auth.manager" })
-	@PermissionTag(name = "管理项目权限", tag = "SVN项目管理", enable = false)
 	public String pjauth_save(@Param("rw") String rw, @Param("grs") String[] grs, @Param("pj") String pj, @Param("res") String res, @Param("usrs") String[] usrs) {
 		PjAuth entity = new PjAuth();
 		entity.setPj(pj);
@@ -252,7 +239,6 @@ public class AdminProjectAct extends BaseAction {
 	@At
 	@Ok("fm:template.admin.project.add_dir")
 	@RequiresPermissions("svn.project:update")
-	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = false)
 	public String file_add(@Param("pj") String pj) {
 		return pj;
 	}
@@ -263,7 +249,6 @@ public class AdminProjectAct extends BaseAction {
 	@At
 	@Ok("json")
 	@RequiresPermissions("svn.project:update")
-	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = false)
 	public Message file_save(@Param("pj") String pj, @Param("file") String file, HttpServletRequest req) {
 		doCommit.mkdirs(pj, new String[] { file });
 		return Message.success("ok", req);
@@ -272,7 +257,6 @@ public class AdminProjectAct extends BaseAction {
 	@At("/pjauth_delete")
 	@Ok("fm:template.admin.project.pjauth")
 	@RequiresPermissions("svn.project:auth.manager")
-	@PermissionTag(name = "SVN编辑项目", tag = "SVN项目管理", enable = false)
 	public String pjauth_delete(@Param("pj") String pj, @Param("gr") String gr, @Param("usr") String usr, @Param("res") String res, HttpServletRequest req) {
 		if (StringUtils.isNotBlank(gr)) {
 			projectAuthService.deleteByGr(pj, gr, res);

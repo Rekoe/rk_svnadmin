@@ -61,6 +61,18 @@ public class User implements Serializable {
 	@ColDefine(type = ColType.BOOLEAN)
 	private boolean system;
 
+	@Column("is_del")
+	@ColDefine(type = ColType.BOOLEAN)
+	private boolean del;
+	
+	public boolean isDel() {
+		return del;
+	}
+
+	public void setDel(boolean del) {
+		this.del = del;
+	}
+
 	public String getProviderid() {
 		return providerid;
 	}

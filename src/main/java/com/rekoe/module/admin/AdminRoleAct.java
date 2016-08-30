@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.dao.Cnd;
+import org.nutz.integration.shiro.annotation.NutzRequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
@@ -14,7 +15,6 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
-import com.rekoe.annotation.PermissionTag;
 import com.rekoe.common.Message;
 import com.rekoe.domain.Permission;
 import com.rekoe.domain.PermissionCategory;
@@ -44,16 +44,14 @@ public class AdminRoleAct {
 
 	@At
 	@Ok("fm:template.admin.user.role.list")
-	@RequiresPermissions("system.role:view")
-	@PermissionTag(name = "浏览角色", tag = "角色管理")
+	@NutzRequiresPermissions(value = "system.role:view", name = "浏览角色", tag = "角色管理", enable = true)
 	public Object list(@Param(value = "pageNumber", df = "1") int pageNumber) {
 		return roleService.getRoleListByPager(pageNumber, 20);
 	}
 
 	@At
 	@Ok("fm:template.admin.user.role.edit")
-	@RequiresPermissions("system.role:edit")
-	@PermissionTag(name = "编辑角色", tag = "角色管理")
+	@NutzRequiresPermissions(value = "system.role:edit", name = "编辑角色", tag = "角色管理", enable = true)
 	public Object edit(@Param("id") long id, HttpServletRequest req) {
 		Role role = roleService.view(id);
 		List<PermissionCategory> pcList = permissionCategoryService.list();
@@ -81,8 +79,7 @@ public class AdminRoleAct {
 	 */
 	@At
 	@Ok("fm:template.admin.user.role.add")
-	@RequiresPermissions("system.role:add")
-	@PermissionTag(name = "添加角色", tag = "角色管理")
+	@NutzRequiresPermissions(value = "system.role:add", name = "添加角色", tag = "角色管理", enable = true)
 	public List<PermissionCategory> add(HttpServletRequest req) {
 		return permissionCategoryService.list();
 	}
@@ -90,7 +87,6 @@ public class AdminRoleAct {
 	@At
 	@Ok(">>:${obj==true?'/role/list.rk':'/admin/common/unauthorized.rk'}")
 	@RequiresPermissions("system.role:add")
-	@PermissionTag(name = "添加角色", tag = "角色管理", enable = false)
 	public boolean save(@Param("name") String name, @Param("description") String desc, @Param("authorities") int[] ids) {
 		Role role = roleService.fetchByName(name);
 		if (Lang.isEmpty(role)) {
@@ -106,8 +102,7 @@ public class AdminRoleAct {
 
 	@At
 	@Ok("json")
-	@RequiresPermissions("system.role:delete")
-	@PermissionTag(name = "删除角色", tag = "角色管理")
+	@NutzRequiresPermissions(value = "system.role:delete", name = "删除角色", tag = "角色管理", enable = true)
 	public Message delete(@Param("ids") Long[] uids, HttpServletRequest req) {
 		for (Long id : uids) {
 			roleService.delete(id);

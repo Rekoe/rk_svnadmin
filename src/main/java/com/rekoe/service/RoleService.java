@@ -32,10 +32,9 @@ public class RoleService extends BaseService<Role> {
 		return query(null, null);
 	}
 
-	public boolean insert(Role role) {
+	public Role insert(Role role) {
 		role = dao().insert(role);
-		dao().insertRelation(role, "permissions");
-		return true;
+		return dao().insertRelation(role, "permissions");
 	}
 
 	public void delete(Long id) {
@@ -48,8 +47,8 @@ public class RoleService extends BaseService<Role> {
 		return dao().fetchLinks(fetch(id), "permissions");
 	}
 
-	public void update(Role role) {
-		dao().update(role);
+	public int update(Role role) {
+		return dao().update(role);
 	}
 
 	public Role fetchByName(String name) {

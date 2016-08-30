@@ -12,11 +12,9 @@ import org.nutz.service.IdEntityService;
 
 import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.PermissionCategory;
+
 /**
- * @author 科技㊣²º¹³
- * 2014年2月3日 下午4:48:45
- * http://www.rekoe.com
- * QQ:5382211
+ * @author 科技㊣²º¹³ 2014年2月3日 下午4:48:45 http://www.rekoe.com QQ:5382211
  */
 @IocBean(args = { "refer:dao" })
 public class PermissionCategoryService extends IdEntityService<PermissionCategory> {
@@ -36,8 +34,8 @@ public class PermissionCategoryService extends IdEntityService<PermissionCategor
 		return list;
 	}
 
-	public void insert(PermissionCategory permission) {
-		dao().insert(permission);
+	public PermissionCategory insert(PermissionCategory permission) {
+		return dao().insert(permission);
 	}
 
 	public PermissionCategory fetchByID(String id) {
@@ -48,8 +46,8 @@ public class PermissionCategoryService extends IdEntityService<PermissionCategor
 		return fetchByID(id);
 	}
 
-	public void update(PermissionCategory permission) {
-		dao().update(permission);
+	public int update(PermissionCategory permission) {
+		return dao().update(permission);
 	}
 
 	public void remove(String id) {
@@ -60,9 +58,8 @@ public class PermissionCategoryService extends IdEntityService<PermissionCategor
 		return Lang.isEmpty(pageNumber) ? 1 : pageNumber;
 	}
 
-	public Pagination getPermissionCategoryListByPager(Integer pageNumber) {
+	public Pagination getPermissionCategoryListByPager(int pageNumber) {
 		int pageSize = 20;
-		pageNumber = getPageNumber(pageNumber);
 		Pager pager = dao().createPager(pageNumber, pageSize);
 		List<PermissionCategory> list = dao().query(PermissionCategory.class, null, pager);
 		pager.setRecordCount(dao().count(PermissionCategory.class, null));

@@ -62,18 +62,18 @@ public class BaseService<T> extends IdEntityService<T> {
 	public void delete(String[] ids) {
 		dao().clear(getEntityClass(), Cnd.where("id", "in", ids));
 	}
+
 	public void delete(String id) {
 		dao().clear(getEntityClass(), Cnd.where("id", "in", id));
 	}
 
-	public boolean insert(T t) {
+	public T insert(T t) {
 		try {
-			dao().insert(t);
+			return dao().insert(t);
 		} catch (Exception e) {
 			log.error(e);
-			return false;
+			return null;
 		}
-		return true;
 	}
 
 	protected String getRandomStr(String str, String num) {

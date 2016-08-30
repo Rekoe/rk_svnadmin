@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.nutz.integration.shiro.annotation.NutzRequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -39,24 +40,21 @@ public class PermissionAct {
 
 	@At
 	@Ok("fm:template.admin.user.permission.list")
-	@RequiresPermissions({ "system.permission:view" })
-	@PermissionTag(name = "浏览权限", tag = "权限管理")
+	@NutzRequiresPermissions(value = "system.permission:view", name = "浏览权限", tag = "权限管理", enable = true)
 	public Pagination list(@Param(value = "pageNumber", df = "1") int pageNumber) {
 		return permissionService.getPermissionListByPager(pageNumber);
 	}
 
 	@At("/list_category/?")
 	@Ok("fm:template.admin.user.permission.list")
-	@RequiresPermissions({ "system.permission:view" })
-	@PermissionTag(name = "浏览权限分类", tag = "权限管理", enable = false)
-	public Pagination listCategory(String id, @Param(value = "pageNumber", df = "1") Integer pageNumber) {
+	@RequiresPermissions("system.permission:view")
+	public Pagination listCategory(String id, @Param(value = "pageNumber", df = "1") int pageNumber) {
 		return permissionService.getPermissionListByPager(pageNumber, id);
 	}
 
 	@At
 	@Ok("fm:template.admin.user.permission.edit")
-	@RequiresPermissions({ "system.permission:edit" })
-	@PermissionTag(name = "编辑限分类", tag = "权限管理")
+	@NutzRequiresPermissions(value = "system.permission:edit", name = "编辑限分类", tag = "权限管理", enable = true)
 	public List<PermissionCategory> edit(long id, HttpServletRequest req) {
 		Permission permission = permissionService.fetch(id);
 		req.setAttribute("permission", permission);
@@ -65,8 +63,7 @@ public class PermissionAct {
 
 	@At
 	@Ok("fm:template.admin.user.permission.add")
-	@RequiresPermissions({ "system.permission:add" })
-	@PermissionTag(name = "添加权限", tag = "权限管理")
+	@NutzRequiresPermissions(value = "system.permission:add", name = "添加权限", tag = "权限管理", enable = true)
 	public List<PermissionCategory> add() {
 		List<PermissionCategory> list = permissionCategoryService.list();
 		return list;
@@ -74,8 +71,7 @@ public class PermissionAct {
 
 	@At
 	@Ok("json")
-	@RequiresPermissions({ "system.permission:delete" })
-	@PermissionTag(name = "删除权限", tag = "权限管理")
+	@NutzRequiresPermissions(value = "system.permission:delete", name = "删除权限", tag = "权限管理", enable = true)
 	public Message delete(@Attr(Webs.ME) User user, @Param("id") long id, HttpServletRequest req) {
 		Permission permission = permissionService.fetch(id);
 		if (permission.isLocked() && !user.isSystem()) {
@@ -87,8 +83,7 @@ public class PermissionAct {
 
 	@At
 	@Ok(">>:/admin/permission/list.rk")
-	@RequiresPermissions({ "system.permission:edit" })
-	@PermissionTag(name = "编辑权限", tag = "权限管理", enable = false)
+	@RequiresPermissions("system.permission:edit")
 	public boolean update(@Param("::permission.") Permission permission, @Param("description") String description, @Param("name") String name, @Param("id") String id) {
 		permission.setName(name);
 		permission.setDescription(description);

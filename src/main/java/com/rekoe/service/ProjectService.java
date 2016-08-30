@@ -175,8 +175,8 @@ public class ProjectService extends BaseService<Pj> {
 		dao().clear(getEntityClass(), Cnd.where("pj", "=", pj));
 	}
 
-	public void update(Pj pj) {
-		dao().update(pj);
+	public int update(Pj pj) {
+		return dao().update(pj);
 	}
 
 	/**

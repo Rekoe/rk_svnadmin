@@ -80,7 +80,8 @@ public class AdminSvnUserAct extends BaseAction {
 		boolean isEmail = Strings.isEmail(user.getEmail());
 		if (isOk && isEmail) {
 			user.setPsw(EncryptUtil.encrypt(R.UU64().substring(0, 10)));
-			isOk = svnUserService.insert(user);
+			svnUserService.insert(user);
+			isOk = true;
 		} else {
 			isOk = false;
 		}

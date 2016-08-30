@@ -43,6 +43,7 @@ public class PublicKeyAuthentication {
 			sess.close();
 			/* Close the connection */
 			conn.close();
+			br.close();
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
 			System.exit(2);

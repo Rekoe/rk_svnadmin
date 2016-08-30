@@ -27,8 +27,8 @@ import com.rekoe.domain.PjGrUsr;
 import com.rekoe.domain.ProjectConfig;
 import com.rekoe.domain.User;
 import com.rekoe.domain.Usr;
+import com.rekoe.service.AuthorityService;
 import com.rekoe.service.ProjectConfigService;
-import com.rekoe.service.UserService;
 
 import freemarker.template.Configuration;
 
@@ -73,8 +73,7 @@ public class MvcSetup implements Setup {
 				dao.update(user);
 			}
 		}
-		UserService userService = ioc.get(UserService.class);
-		userService.initFormPackages("com.rekoe");
+		ioc.get(AuthorityService.class).initFormPackage("com.rekoe");
 		ioc.get(ProjectConfigService.class).init();
 	}
 
