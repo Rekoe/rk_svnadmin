@@ -3,6 +3,7 @@ package com.rekoe.domain;
 import java.io.Serializable;
 
 import org.nutz.dao.entity.annotation.Column;
+import org.nutz.dao.entity.annotation.Default;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -35,8 +36,9 @@ public class Usr implements Serializable {
 	/**
 	 * 角色
 	 */
-	@Column
-	private String role;
+	@Column("svn_role_type")
+	@Default("small")
+	private SVNRoleType role;
 
 	@Column
 	private String email;
@@ -94,18 +96,11 @@ public class Usr implements Serializable {
 		this.psw = psw;
 	}
 
-	/**
-	 * @return 角色
-	 */
-	public String getRole() {
+	public SVNRoleType getRole() {
 		return role;
 	}
 
-	/**
-	 * @param role
-	 *            角色
-	 */
-	public void setRole(String role) {
+	public void setRole(SVNRoleType role) {
 		this.role = role;
 	}
 

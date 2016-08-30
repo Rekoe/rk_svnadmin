@@ -9,11 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.nutz.aop.interceptor.async.Async;
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Lang;
 import org.nutz.lang.Strings;
 import org.nutz.lang.random.R;
 import org.nutz.log.Log;
@@ -28,6 +31,8 @@ import com.rekoe.common.Message;
 import com.rekoe.common.page.Pagination;
 import com.rekoe.domain.Pj;
 import com.rekoe.domain.ProjectConfig;
+import com.rekoe.domain.SVNRoleType;
+import com.rekoe.domain.User;
 import com.rekoe.domain.Usr;
 import com.rekoe.module.BaseAction;
 import com.rekoe.service.EmailService;
@@ -35,6 +40,7 @@ import com.rekoe.service.ProjectConfigService;
 import com.rekoe.service.ProjectService;
 import com.rekoe.service.SvnService;
 import com.rekoe.service.SvnUserService;
+import com.rekoe.service.UserService;
 import com.rekoe.utils.EncryptUtil;
 
 @IocBean
@@ -44,7 +50,8 @@ public class AdminSvnUserAct extends BaseAction {
 	private final static Log log = Logs.get();
 
 	private static final char[] RANDOM_ARRY_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-
+	@Inject
+	private UserService userService;
 	@Inject
 	private SvnUserService svnUserService;
 
@@ -80,6 +87,18 @@ public class AdminSvnUserAct extends BaseAction {
 		boolean isEmail = Strings.isEmail(user.getEmail());
 		if (isOk && isEmail) {
 			user.setPsw(EncryptUtil.encrypt(R.UU64().substring(0, 10)));
+			SVNRoleType role = user.getRole();
+			switch (role) {
+			case admin: {
+				User u = userService.fetch(Cnd.where("name", "=", user.getUsr()));
+				if (Lang.isEmpty(u)) {
+					userService.initUser(user.getUsr(), user.getUsr(), "svn", Lang.getIP(req), false, user.getPsw());
+				}
+				break;
+			}
+			default:
+				break;
+			}
 			svnUserService.insert(user);
 			isOk = true;
 		} else {
@@ -153,6 +172,9 @@ public class AdminSvnUserAct extends BaseAction {
 		}
 		String code = RandomStringUtils.random(7, RANDOM_ARRY_CHAR);
 		svnUserService.update(Chain.make("psw", EncryptUtil.encrypt(code)), Cnd.where("usr", "=", usr));
+		String salt = new SecureRandomNumberGenerator().nextBytes().toBase64();
+		String pwd = new Sha256Hash(code, salt, 1024).toBase64();
+		userService.update(Chain.make("salt", salt).add("password", pwd), Cnd.where("name", "=", usr));
 		if (usr.equals(manager.getUsr())) {
 			req.getSession().setAttribute("usr", svnUserService.fetch(Cnd.where("usr", "=", usr)));
 		}

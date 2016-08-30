@@ -12,6 +12,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.rekoe.domain.SVNRoleType;
 import com.rekoe.domain.Usr;
 
 /**
@@ -62,7 +63,7 @@ public class UsrService extends BaseService<Usr> {
 		result.setUsr(rs.getString("usr"));
 		result.setName(rs.getString("name"));
 		result.setPsw(rs.getString("psw"));
-		result.setRole(rs.getString("role"));
+		result.setRole(SVNRoleType.valueOf(rs.getString("svn_role_type")));
 		return result;
 	}
 

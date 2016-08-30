@@ -18,6 +18,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 
 import com.rekoe.domain.Pj;
+import com.rekoe.domain.SVNRoleType;
 import com.rekoe.domain.Usr;
 
 /**
@@ -112,7 +113,7 @@ public class SvnUserService extends BaseService<Usr> {
 		result.setUsr(rs.getString("usr"));
 		result.setName(rs.getString("name"));
 		result.setPsw(rs.getString("psw"));
-		result.setRole(rs.getString("role"));
+		result.setRole(SVNRoleType.valueOf(rs.getString("svn_role_type")));
 		result.setEmail(rs.getString("email"));
 		return result;
 	}

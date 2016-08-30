@@ -119,6 +119,14 @@ public class UserService extends BaseService<User> {
 	}
 
 	public User initUser(String name, String openid, String providerid, String addr) {
+		return dao().insert(initUser(name, openid, providerid, addr, true));
+	}
+
+	public User initUser(String name, String openid, String providerid, String addr, boolean locked) {
+		return initUser(name, openid, providerid, addr, locked, R.UU32());
+	}
+
+	public User initUser(String name, String openid, String providerid, String addr, boolean locked, String pwd) {
 		User temp = dao().fetch(getEntityClass(), Cnd.where("name", "=", name));
 		if (!Lang.isEmpty(temp)) {
 			name += R.random(2, 5);
@@ -129,8 +137,11 @@ public class UserService extends BaseService<User> {
 		user.setOpenid(openid);
 		user.setProviderid(providerid);
 		user.setRegisterIp(addr);
-		user.setLocked(true);
+		user.setLocked(locked);
 		user.setSystem(false);
+		String salt = new SecureRandomNumberGenerator().nextBytes().toBase64();
+		user.setSalt(salt);
+		user.setPassword(new Sha256Hash(pwd, salt, 1024).toBase64());
 		return dao().insert(user);
 	}
 
