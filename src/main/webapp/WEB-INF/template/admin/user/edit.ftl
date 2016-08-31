@@ -4,49 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title></title>
 <#include "/template/admin/head.ftl"/>
-<script type="text/javascript">
-$(function() {
-	$("#serverDialog").dialog({
-		autoOpen: false,
-		modal: true,
-		width: 280,
-		height: 420,
-		position: ["center",20],
-		buttons: {
-			"OK": function() {
-				$(this).dialog("close");
-			}
-		},
-		close: function(event, ui) {
-			var s="";
-			$('#serverids option:selected').each(function(){
-				s += "<input type='hidden' name='serverIds' value='" +$(this).val()+ "'/>";
-			});
-			$("#serverIdsContainer").empty().append(s);
-		}
-	});
-	var servers_opened = false;
-	$('#server').click(function(){
-		if(!servers_opened) {
-			$.get("${base}/admin/server/v_servers_edit",{"id":${obj.id}},function(s) {
-				$(s).appendTo("#serverids");
-			});
-			servers_opened = true;
-		}
-		$('#serverDialog').dialog('open');
-		return false;
-	});	
-});
-function disservers(chk) {
-	$("#allServer").val(chk);
-	if(chk) {
-		$("#serverids").addClass("disabled").attr("disabled","disabled").children().each(function(){$(this).removeAttr("selected")});
-		$("#serverIdsContainer").empty();
-	} else {
-		$("#serverids").removeAttr("disabled").removeClass("disabled");
-	}
-}
-</script>
 </head>
 <body>
 <div class="box-positon">
@@ -71,25 +28,6 @@ function disservers(chk) {
 </#list>
 <label><input value="${role.id}" type="checkbox" name="roleIds" <#if isContain>checked="checked"</#if> />${role.description}</label><br />
 </#list></@p.td><@p.tr/>
-<@p.td colspan="1" label="cms.server.set" required="true">
-	<input id="server" type="button" value="<@s.m "cms.server.select"/>"/>
-	<input type="hidden" id="allServer" name="allServer" value="${allServer?string('true','false')}"/>
-	<span id="serverIdsContainer">
-		<#list serverList as cid>
-			<#list obj.servers?keys as key>
-				<#if key==cid.id>
-				<input type="hidden" name="serverIds" value="${cid.id}"/>
-				<#break>
-				</#if>
-			</#list>
-		</#list>
-		</span>
-	<div id="serverDialog" title="<@s.m "cmsUser.channels"/><@s.m "cms.server.list"/>" style="display:none;">
-		<label><input type="checkbox" onclick="disservers(this.checked)"<#if allServer> checked="checked"</#if>/><@s.m "cmsUser.servers.allserver"/></label>
-		<select id="serverids"<#if allServer> disabled="disabled" class="disabled"</#if> multiple="multiple" size="15" style="width:100%;" name="serverids"></select>
-	</div>
-<div style="clear:both"></div>
-</@p.td><@p.tr/>
 <@p.td colspan="1"><@p.submit code="global.submit"/> &nbsp; <@p.reset code="global.reset"/></@p.td><@p.tr/>
 </@p.form>
 </div>
