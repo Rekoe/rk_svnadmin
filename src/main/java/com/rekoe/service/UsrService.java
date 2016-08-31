@@ -63,7 +63,7 @@ public class UsrService extends BaseService<Usr> {
 		result.setUsr(rs.getString("usr"));
 		result.setName(rs.getString("name"));
 		result.setPsw(rs.getString("psw"));
-		result.setRole(SVNRoleType.valueOf(rs.getString("svn_role_type")));
+		result.setRole(SVNRoleType.valueOf(rs.getString("role")));
 		return result;
 	}
 
