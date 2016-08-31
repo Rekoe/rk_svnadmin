@@ -36,7 +36,7 @@ public class Usr implements Serializable {
 	/**
 	 * 角色
 	 */
-	@Column("svn_role_type")
+	@Column("role")
 	@Default("small")
 	private SVNRoleType role;
 
