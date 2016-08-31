@@ -57,7 +57,8 @@ public class AdminLoginAct {
 			Subject subject = SecurityUtils.getSubject();
 			ThreadContext.bind(subject);
 			subject.login(token);
-			Usr usr = usrService.fetch(Cnd.where("usr", "=", "admin"));
+			User user = (User) subject.getPrincipal();
+			Usr usr = usrService.fetch(Cnd.where("usr", "=", user.getName()));
 			if (!Lang.isEmpty(usr)) {
 				session.setAttribute("usr", usr);
 			}
