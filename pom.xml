@@ -120,7 +120,7 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-integration-shiro</artifactId>
-			<version>1.r.57</version>
+			<version>1.r.59</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>shiro-core</artifactId>
