@@ -43,7 +43,7 @@ public class NutAuthoDaoRealm extends AbstractNutAuthoRealm {
 		oauthToken.setRname(user.isSystem());
 		oauthToken.setUserId(openid);
 		SimpleAuthenticationInfo account = new SimpleAuthenticationInfo(user, credential, getName());
-		oauthToken.getSession().setAttribute(org.nutz.web.Webs.ME, user);
+		oauthToken.getSession().setAttribute("me", user);
 		return account;
 	}
 }

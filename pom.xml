@@ -196,7 +196,11 @@
 				<includes>
 					<include>**/*.js</include>
 					<include>**/msg/**/*.properties</include>
-					<include>log4j2.xml</include>
+					<include>oauth_consumer.properties</include>
+					<include>quartz.properties</include>
+					<include>log4j.properties</include>
+					<include>shiro.ini</include>
+					<include>ehcache.xml</include>
 				</includes>
 			</resource>
 			<resource>
@@ -205,6 +209,16 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -230,40 +244,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<archiveClasses>true</archiveClasses>
-					<packagingExcludes>WEB-INF/web.xml</packagingExcludes>
-					<warSourceExcludes>WEB-INF/classes/com/**</warSourceExcludes>
-					<webResources>
-						<resource>
-							<directory>src/main/resources</directory>
-							<targetPath>WEB-INF/classes</targetPath>
-							<includes>
-								<include>msg/**/*</include>
-								<include>ioc/**/*</include>
-								<include>*.properties</include>
-								<include>init_system_h2.sql</include>
-								<include>shiro.ini</include>
-								<include>ehcache.xml</include>
-							</includes>
-						</resource>
-					</webResources>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

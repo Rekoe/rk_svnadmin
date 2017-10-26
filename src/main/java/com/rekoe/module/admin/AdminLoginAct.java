@@ -26,7 +26,6 @@ import org.nutz.mvc.view.ServerRedirectView;
 import org.nutz.mvc.view.ViewWrapper;
 import org.nutz.plugins.view.freemarker.FreeMarkerConfigurer;
 import org.nutz.plugins.view.freemarker.FreemarkerView;
-import org.nutz.web.Webs;
 
 import com.rekoe.domain.User;
 import com.rekoe.domain.Usr;
@@ -69,7 +68,7 @@ public class AdminLoginAct {
 					break;
 				}
 			}
-			session.setAttribute(Webs.ME, subject.getPrincipal());
+			session.setAttribute("me", subject.getPrincipal());
 			return new ServerRedirectView("/admin/main.rk");
 		} catch (IncorrectCaptchaException e) {
 			return new ViewWrapper(new FreemarkerView(freeMarkerConfigurer, TEMPLATE_LOGIN), e.getMessage());
@@ -91,7 +90,7 @@ public class AdminLoginAct {
 	@At
 	@Ok("fm:template.front.account.create_user")
 	@RequiresAuthentication
-	public Object register(@Attr(Webs.ME) User user) {
+	public Object register(@Attr("me") User user) {
 		if (Lang.isEmpty(user) || user.isSystem()) {
 			return new ForwardView("/admin/common/unauthorized.rk");
 		}

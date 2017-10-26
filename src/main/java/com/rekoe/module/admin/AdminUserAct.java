@@ -27,7 +27,6 @@ import org.nutz.mvc.annotation.Attr;
 import org.nutz.mvc.annotation.Fail;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
-import org.nutz.web.Webs;
 import org.nutz.web.ajax.Ajax;
 
 import com.alibaba.druid.util.DruidWebUtils;
@@ -104,7 +103,7 @@ public class AdminUserAct {
 	@Ok("fm:template.admin.user.edit")
 	@Fail("json")
 	@NutzRequiresPermissions(value = "system.user:edit", name = "编辑账号", tag = "账号管理", enable = true)
-	public User edit(@Attr(Webs.ME) User user, @Param("id") long id, HttpServletRequest req) {
+	public User edit(@Attr("me") User user, @Param("id") long id, HttpServletRequest req) {
 		User editUser = userService.view(id);
 		if (Lang.isEmpty(editUser) || editUser.isLocked()) {
 			throw new NutConfigException(String.format("先解除帐号 %s 的锁定状态", editUser.getName()));
@@ -239,7 +238,7 @@ public class AdminUserAct {
 	@At
 	@Ok("json")
 	@RequiresUser
-	public Object pwd_updata(@Param("oldpwd") String oldpwd, @Param("newpwd") String newpwd, @Param("rewpwd") String rewpwd, @Attr(Webs.ME) User user) {
+	public Object pwd_updata(@Param("oldpwd") String oldpwd, @Param("newpwd") String newpwd, @Param("rewpwd") String rewpwd, @Attr("me") User user) {
 		if (StringUtils.isNotBlank(newpwd)) {
 			if (Lang.equals(newpwd, rewpwd)) {
 				String oldSalt = user.getSalt();
