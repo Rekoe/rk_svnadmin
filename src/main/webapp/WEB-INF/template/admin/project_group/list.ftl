@@ -52,7 +52,7 @@ function deleted(pj,gr){
 	<@p.column title="项目" align="center">${group.pj}</@p.column><#t/>
 	<@p.column title="用户组" align="center">${group.gr}</@p.column><#t/>
 	<@p.column title="描述" align="center">${group.des!}</@p.column><#t/>
-	<@p.column title="设置用户" align="center"><a href="${base}/admin/project/group/usr/list?pageNumber=1&pj=${group.pj}&gr=${group.gr}">设置用户</a></@p.column><#t/>
+	<@p.column title="设置用户" align="center"><a href="${base}/admin/project/group/usr/list?pj=${group.pj}&gr=${group.gr}">设置用户</a></@p.column><#t/>
 	<@shiro.hasPermission name="project.group:delete">	
 	<@p.column title="删除" align="center">
 		<#if group.gr != "manager"><a href="javascript:void(0);" onclick="deleted('${group.pj}','${group.gr}')" class="pn-opt">删除</a></#if><#rt/>

@@ -81,7 +81,7 @@ public class ProjectGroupUsrService extends BaseService<PjGrUsr> {
 				return list;
 			}
 		});
-		Long counts = Daos.queryCount(dao(), sql.getSourceSql());
+		Long counts = Daos.queryCount(dao(), sql);
 		pager.setRecordCount(Integer.parseInt(counts.toString()));
 		dao().execute(sql);
 		return new Pagination(page, 20, pager.getRecordCount(), list);
