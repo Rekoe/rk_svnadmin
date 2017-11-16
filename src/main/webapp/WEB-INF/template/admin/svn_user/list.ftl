@@ -11,7 +11,7 @@ function getTableForm() {
 function rest(usr){
 	$.dialog({
 		type: "warn",
-		content: '确定要充值用户密码?',
+		content: '确定要重置用户密码?',
 		ok: 'Ok',
 		cancel: 'Cancel',
 		onOk: function() {
@@ -26,6 +26,38 @@ function rest(usr){
 					if (message.type == "success")
 					{
 						window.location.href = list.rk;
+					}
+				}
+			});
+		}
+	}); 
+	return false;
+}
+
+function lock(usr,lock){
+	var rl = 'lock.rk';
+	var text =  '确定要锁定此账号?';
+	if(lock==1){
+		text =  '确定要解锁此账号?';
+		rl = 'unlock.rk';
+	}
+	$.dialog({
+		type: "warn",
+		content:	text,
+		ok: 'Ok',
+		cancel: 'Cancel',
+		onOk: function() {
+			$.ajax({
+				url: rl,
+				type: "POST",
+				data: {"usr":usr},
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+					if (message.type == "success")
+					{
+						window.location.href = "${action}?pageNumber=${page}";
 					}
 				}
 			});
@@ -57,6 +89,13 @@ function rest(usr){
 	</@p.column><#t/>
 	<@p.column title="密码重置" align="center">
 		<a href="javascript:void(0);" onclick="rest('${user.usr}')" class="pn-opt">密码重置</a><#rt/>
+	</@p.column><#t/>
+	<@p.column title="账号锁定" align="center">
+		<#if lock==0>
+				<a href="javascript:void(0);" onclick="lock('${user.usr}','${lock}')" class="pn-opt">账号锁定</a><#rt/>
+			<#else>
+				<a href="javascript:void(0);" onclick="lock('${user.usr}','${lock}')" class="pn-opt">账号解锁</a><#rt/>
+		</#if>
 	</@p.column><#t/>
 	</@shiro.hasPermission>
 </@p.table>

@@ -43,6 +43,10 @@ public class Usr implements Serializable {
 	@Column
 	private String email;
 
+	@Column("is_lock")
+	@Default("0")
+	private boolean lock;
+
 	/**
 	 * @return 用户ID
 	 */

@@ -1,7 +1,5 @@
 package com.rekoe.web.freemarker;
 
-import static com.rekoe.mvc.ProcessTimeProcessor.START_TIME;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.text.DecimalFormat;
@@ -38,7 +36,7 @@ public class ProcessTimeDirective implements TemplateDirectiveModel {
 	}
 
 	private long getStartTime(Environment env) throws TemplateModelException {
-		TemplateModel startTime = env.getGlobalVariable(START_TIME);
+		TemplateModel startTime = env.getGlobalVariable("_t_start");
 		if (startTime == null) {
 			log.warn("Variable '{}' not found in GlobalVariable", "START_TIME");
 			return -1;
@@ -46,7 +44,7 @@ public class ProcessTimeDirective implements TemplateDirectiveModel {
 		if (startTime instanceof TemplateNumberModel) {
 			return ((TemplateNumberModel) startTime).getAsNumber().longValue();
 		} else {
-			throw new NutConfigException(START_TIME);
+			throw new NutConfigException("_t_start");
 		}
 	}
 

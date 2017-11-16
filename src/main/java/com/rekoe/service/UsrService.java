@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
@@ -32,7 +33,7 @@ public class UsrService extends BaseService<Usr> {
 	 * @return 所有用户列表
 	 */
 	public List<Usr> getList() {
-		return dao().query(getEntityClass(), null);
+		return dao().query(getEntityClass(), Cnd.where("is_lock", "=", false));
 	}
 
 	/**

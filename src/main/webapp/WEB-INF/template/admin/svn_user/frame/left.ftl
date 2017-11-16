@@ -21,6 +21,9 @@ h3{ padding:0; margin:0; font-weight:normal; font-size:12px;}
 		<@perm_chow perm="svn.user">
 		<li><a href="${base}/admin/svn/user/list.rk" target="rightFrame">账号列表</a></li>
 		</@perm_chow>
+				<@perm_chow perm="svn.user">
+		<li><a href="${base}/admin/svn/user/lock_list.rk" target="rightFrame">已锁账号列表</a></li>
+		</@perm_chow>
 	 </ul>
 </div>
 </body>

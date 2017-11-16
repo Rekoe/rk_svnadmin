@@ -73,7 +73,7 @@ public class SvnUserService extends BaseService<Usr> {
 	 * @return 项目组未选的用户(不包括*)
 	 */
 	public List<Usr> listUnSelected(String pj, String gr) {
-		Sql sql = Sqls.create("select usr,name,psw,email,role from usr a where a.usr <> '*' " + " and not exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj=@pj and b.gr=@gr) order by a.usr");
+		Sql sql = Sqls.create("select usr,name,psw,email,role from usr a where a.usr <> '*' " + " and not exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj=@pj and b.gr=@gr)  and a.is_lock=false order by a.usr");
 		sql.setParam("pj", pj).setParam("gr", gr);
 		final List<Usr> list = new ArrayList<Usr>();
 		sql.setCallback(new SqlCallback() {
@@ -91,7 +91,7 @@ public class SvnUserService extends BaseService<Usr> {
 	}
 
 	public List<Usr> listSelected(String pj) {
-		Sql sql = Sqls.create("select * from usr a where a.usr <> '*' " + " and exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj=@pj) order by a.usr");
+		Sql sql = Sqls.create("select * from usr a where a.usr <> '*' " + " and exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj=@pj) and a.is_lock=false order by a.usr");
 		sql.setParam("pj", pj);
 		final List<Usr> list = new ArrayList<Usr>();
 		sql.setCallback(new SqlCallback() {

@@ -59,8 +59,22 @@ public class AdminSvnUserAct extends BaseAction {
 	@Ok("fm:template.admin.svn_user.list")
 	@RequiresPermissions({ "svn.user:view" })
 	@PermissionTag(name = "SVN浏览账号", tag = "SVN账号管理")
-	public Pagination list(@Param(value = "pageNumber", df = "1") int page) {
-		return svnUserService.getObjListByPager(page, 20, Cnd.where("usr", "<>", "*"));
+	public Pagination list(@Param(value = "pageNumber", df = "1") int page, HttpServletRequest req) {
+		req.setAttribute("page", page);
+		req.setAttribute("action", "list.rk");
+		req.setAttribute("lock", 0);
+		return svnUserService.getObjListByPager(page, 20, Cnd.where("usr", "<>", "*").and("is_lock", "=", false));
+	}
+
+	@At
+	@Ok("fm:template.admin.svn_user.list")
+	@RequiresPermissions({ "svn.user:view" })
+	@PermissionTag(name = "SVN浏览账号", tag = "SVN账号管理")
+	public Pagination lock_list(@Param(value = "pageNumber", df = "1") int page, HttpServletRequest req) {
+		req.setAttribute("page", page);
+		req.setAttribute("action", "lock_list.rk");
+		req.setAttribute("lock", 1);
+		return svnUserService.getObjListByPager(page, 20, Cnd.where("usr", "<>", "*").and("is_lock", "=", true));
 	}
 
 	@At
@@ -191,6 +205,52 @@ public class AdminSvnUserAct extends BaseAction {
 		}
 		ProjectConfig conf = projectConfigService.get();
 		emailNotify(user, emailService, conf, user.getEmail(), code);
+		return Message.success("ok", req);
+	}
+
+	@At
+	@Ok("json")
+	@RequiresPermissions("svn.user:add")
+	@PermissionTag(name = "SVN添加账号", tag = "SVN账号管理", enable = false)
+	public Message lock(@Param("usr") String usr, @Attr("usr") Usr manager, HttpServletRequest req) {
+		Usr user = svnUserService.fetch(Cnd.where("usr", "=", usr));
+		if (user == null) {
+			return Message.error("error.account.empty", req);
+		}
+		String code = RandomStringUtils.random(7, RANDOM_ARRY_CHAR);
+		boolean value = true;
+		svnUserService.update(Chain.make("psw", EncryptUtil.encrypt(code)).add("is_lock", value), Cnd.where("usr", "=", usr));
+		String salt = new SecureRandomNumberGenerator().nextBytes().toBase64();
+		String pwd = new Sha256Hash(code, salt, 1024).toBase64();
+		userService.update(Chain.make("salt", salt).add("password", pwd).add("is_locked", value), Cnd.where("name", "=", usr));
+		if (usr.equals(manager.getUsr())) {
+			req.getSession().setAttribute("usr", svnUserService.fetch(Cnd.where("usr", "=", usr)));
+		}
+		List<Pj> list = svnUserService.getPjList(usr);
+		if (list != null) {
+			for (Pj pj : list) {
+				try {
+					this.svnService.exportConfig(pj);
+				} catch (Exception e) {
+					log.errorf("project %s ,error %s", pj.getPj(), e.getMessage());
+				}
+			}
+		}
+		return Message.success("ok", req);
+	}
+
+	@At
+	@Ok("json")
+	@RequiresPermissions("svn.user:add")
+	@PermissionTag(name = "SVN添加账号", tag = "SVN账号管理", enable = false)
+	public Message unlock(@Param("usr") String usr, @Attr("usr") Usr manager, HttpServletRequest req) {
+		Usr user = svnUserService.fetch(Cnd.where("usr", "=", usr));
+		if (user == null) {
+			return Message.error("error.account.empty", req);
+		}
+		boolean value = false;
+		svnUserService.update(Chain.make("is_lock", value), Cnd.where("usr", "=", usr));
+		userService.update(Chain.make("is_locked", value), Cnd.where("name", "=", usr));
 		return Message.success("ok", req);
 	}
 
