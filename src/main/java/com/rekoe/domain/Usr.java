@@ -47,6 +47,26 @@ public class Usr implements Serializable {
 	@Default("0")
 	private boolean lock;
 
+	@Column("is_local")
+	@Default("0")
+	private boolean local;
+
+	public boolean isLock() {
+		return lock;
+	}
+
+	public void setLock(boolean lock) {
+		this.lock = lock;
+	}
+
+	public boolean isLocal() {
+		return local;
+	}
+
+	public void setLocal(boolean local) {
+		this.local = local;
+	}
+
 	/**
 	 * @return 用户ID
 	 */

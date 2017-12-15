@@ -9,7 +9,7 @@
 	<url>http://www.rekoe.com</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<nutz.version>1.r.63-SNAPSHOT</nutz.version>
+		<nutz.version>1.r.63</nutz.version>
 		<freemarker.version>2.3.26-incubating</freemarker.version>
 	</properties>
 	<repositories>

@@ -14,6 +14,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.nutz.aop.interceptor.async.Async;
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
+import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
@@ -254,6 +255,9 @@ public class AdminSvnUserAct extends BaseAction {
 		return Message.success("ok", req);
 	}
 
+	@Inject
+	private PropertiesProxy conf;
+
 	@Async
 	private void emailNotify(Usr user, EmailService emailService, ProjectConfig conf, String to, String pwd) {
 		if (conf.isEmailNotify() && Strings.isEmail(to)) {
@@ -261,6 +265,7 @@ public class AdminSvnUserAct extends BaseAction {
 			root.put("name", user.getName());
 			root.put("pwd", pwd);
 			root.put("usr", user.getUsr());
+			root.put("addr", user.isLocal() ? this.conf.get("server.local", "192.168.3.2") : this.conf.get("server.outside", "119.2.19.101"));
 			emailService.restpwd(to, root);
 		}
 	}

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.aop.interceptor.async.Async;
 import org.nutz.dao.Cnd;
+import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
@@ -141,6 +142,9 @@ public class AdminProjectGroupUsrAct extends BaseAction {
 	@Inject
 	private ProjectAuthService projectAuthService;
 
+	@Inject
+	private PropertiesProxy conf;
+
 	private void sendProjectOpenEmail1(Pj project, ProjectConfig conf, Usr usr, EmailService emailService) {
 		if (Lang.isEmpty(usr)) {
 			log.error("send open email user empty");
@@ -151,7 +155,8 @@ public class AdminProjectGroupUsrAct extends BaseAction {
 		root.put("name", usr.getName());
 		root.put("pwd", EncryptUtil.decrypt(usr.getPsw()));
 		root.put("project", project.getDes());
-		String url = conf.getDomainPath() + project.getPj();
+		String host = usr.isLocal() ? this.conf.get("server.local", "http://192.168.3.2/repository/") : this.conf.get("server.outside", "http://119.2.19.101/repository/");
+		String url = host + project.getPj();
 		root.put("url", url);
 		List<String> urlList = new ArrayList<String>();
 		Cnd cnd = Cnd.where("pj", "=", project.getPj()).and("usr", "=", usr.getUsr());
@@ -170,6 +175,7 @@ public class AdminProjectGroupUsrAct extends BaseAction {
 			}
 		}
 		root.put("urls", urlList);
+		root.put("addr", usr.isLocal() ? this.conf.get("server.local", "192.168.3.2") : this.conf.get("server.outside", "119.2.19.101"));
 		boolean send = emailService.projectOpen(usr.getEmail(), root);
 		if (send) {
 			log.info("email send OK");
