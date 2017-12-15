@@ -79,8 +79,8 @@ function freshTree(){
 				</ul>
 			</div>
 		</td>
-		<td valign="top" height="100%">
-			<iframe height="100%" width="100%" style="border:0px;" frameBorder="0" name="pjauthWindow" src="pjauth?pj=${pj}"></iframe>
+		<td valign="top">
+			<iframe height="530" width="100%" style="border:0px;" frameBorder="0" name="pjauthWindow" src="pjauth?pj=${pj}"></iframe>
 		</td>
 	</tr>
 </table>
