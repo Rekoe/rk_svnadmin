@@ -95,7 +95,7 @@ public class ProjectGroupUsrService extends BaseService<PjGrUsr> {
 	 * @return 项目的组用户列表
 	 */
 	public List<PjGrUsr> getList(String pj) {
-		Sql sql = Sqls.create("select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr = c.usr) where a.pj=@pj and c.is_lock=falsd order by a.gr,b.usr");
+		Sql sql = Sqls.create("select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr = c.usr) where a.pj=@pj and c.is_lock=false order by a.gr,b.usr");
 		sql.setParam("pj", pj);
 		final List<PjGrUsr> list = new ArrayList<PjGrUsr>();
 		sql.setCallback(new SqlCallback() {

@@ -1,6 +1,7 @@
 package com.rekoe.module.admin;
 
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 
@@ -16,6 +17,7 @@ public class FrameAct {
 	@At("/admin/frame/user/left")
 	@Ok("fm:template.admin.user.frame.left")
 	public void userLeft() {
+		 
 	}
 
 	@At("/admin/frame/user/right")

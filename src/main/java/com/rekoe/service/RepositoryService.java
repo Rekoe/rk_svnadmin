@@ -186,12 +186,15 @@ public class RepositoryService {
 	}
 
 	public static void main(String[] args) {
-		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "john");
+		DAVRepositoryFactory.setup();
+		SVNRepositoryFactoryImpl.setup();
+		FSRepositoryFactory.setup();
+		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "123456");
 		SVNClientManager manager = SVNClientManager.newInstance();
 		manager.setAuthenticationManager(authManager);
 		SVNCommitClient commitClient = SVNClientManager.newInstance().getCommitClient();
 		try {
-			SVNCommitInfo info = commitClient.doMkDir(new SVNURL[] { SVNURL.parseURIEncoded("http://192.168.3.127/repository/koux/branches") }, "commitMessage", null, true);
+			SVNCommitInfo info = commitClient.doMkDir(new SVNURL[] { SVNURL.parseURIEncoded("http://127.0.0.1:3380/svn/hunnit") }, "commitMessage", null, true);
 			long newRevision = info.getNewRevision();
 			System.out.println(newRevision);
 		} catch (SVNException e) {
