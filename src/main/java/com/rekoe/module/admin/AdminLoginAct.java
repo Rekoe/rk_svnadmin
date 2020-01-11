@@ -10,6 +10,8 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ThreadContext;
+import org.nutz.boot.starter.freemarker.FreeMarkerConfigurer;
+import org.nutz.boot.starter.freemarker.FreemarkerView;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -24,8 +26,6 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.view.ForwardView;
 import org.nutz.mvc.view.ServerRedirectView;
 import org.nutz.mvc.view.ViewWrapper;
-import org.nutz.plugins.view.freemarker.FreeMarkerConfigurer;
-import org.nutz.plugins.view.freemarker.FreemarkerView;
 
 import com.rekoe.domain.User;
 import com.rekoe.domain.Usr;

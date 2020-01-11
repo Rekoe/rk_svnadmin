@@ -24,6 +24,8 @@ import org.brickred.socialauth.SocialAuthConfig;
 import org.brickred.socialauth.SocialAuthManager;
 import org.brickred.socialauth.exception.SocialAuthException;
 import org.brickred.socialauth.util.SocialAuthUtil;
+import org.nutz.boot.starter.freemarker.FreeMarkerConfigurer;
+import org.nutz.boot.starter.freemarker.FreemarkerView;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Encoding;
@@ -36,8 +38,6 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.view.ForwardView;
 import org.nutz.mvc.view.ServerRedirectView;
 import org.nutz.mvc.view.ViewWrapper;
-import org.nutz.plugins.view.freemarker.FreeMarkerConfigurer;
-import org.nutz.plugins.view.freemarker.FreemarkerView;
 
 import com.rekoe.common.Message;
 import com.rekoe.shiro.realm.OAuthToken;

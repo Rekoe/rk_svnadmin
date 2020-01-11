@@ -4,12 +4,12 @@ import java.io.File;
 import java.util.Map;
 
 import org.apache.commons.mail.HtmlEmail;
+import org.nutz.boot.starter.freemarker.FreeMarkerConfigurer;
 import org.nutz.ioc.Ioc;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
-import org.nutz.plugins.view.freemarker.FreeMarkerConfigurer;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
