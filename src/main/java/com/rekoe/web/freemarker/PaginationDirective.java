@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.ioc.loader.annotation.IocBean;
+
 import com.rekoe.utils.DirectiveUtils;
 
 import freemarker.core.Environment;
@@ -14,9 +16,11 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
+@IocBean(name = "pagination")
 public class PaginationDirective implements TemplateDirectiveModel {
 
 	private static final String PATTERN = "pattern";
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {

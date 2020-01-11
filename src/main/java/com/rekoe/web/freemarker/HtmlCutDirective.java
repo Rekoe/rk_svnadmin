@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 
 import com.rekoe.utils.DirectiveUtils;
@@ -19,14 +20,14 @@ import freemarker.template.TemplateModel;
 /**
  * HTML文本提取并截断
  */
+@IocBean(name = "htmlCut")
 public class HtmlCutDirective implements TemplateDirectiveModel {
 	public static final String PARAM_S = "s";
 	public static final String PARAM_LEN = "len";
 	public static final String PARAM_APPEND = "append";
 
-	@SuppressWarnings({"unchecked","rawtypes"})
-	public void execute(Environment env, Map params, TemplateModel[] loopVars,
-			TemplateDirectiveBody body) throws TemplateException, IOException {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
 		String s = DirectiveUtils.getString(PARAM_S, params);
 		Integer len = DirectiveUtils.getInt(PARAM_LEN, params);
 		String append = DirectiveUtils.getString(PARAM_APPEND, params);

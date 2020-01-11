@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 
 import com.rekoe.domain.Permission;
@@ -17,6 +18,7 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
+@IocBean(name = "permission")
 public class PermissionDirective implements TemplateDirectiveModel {
 
 	private final static String ERROR_ID = "-1";

@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.Map;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Times;
 
 import com.rekoe.utils.DirectiveUtils;
@@ -18,6 +19,7 @@ import freemarker.template.TemplateModel;
 /**
  * 格式化date
  */
+@IocBean(name = "timeFormat")
 public class TimeFormatDirective implements TemplateDirectiveModel {
 	public static final String PARAM_TIME = "time";
 	public static final String PARAM_FORMAT = "format";
@@ -30,8 +32,9 @@ public class TimeFormatDirective implements TemplateDirectiveModel {
 		String formatTime = Times.format(format, Times.D(NumberUtils.toLong(time)));
 		out.append(formatTime);
 	}
+
 	public static void main(String[] args) {
-		String formatTime = Times.format("yyyy-MM", Times.now());//Times.D("1389076676271"));
+		String formatTime = Times.format("yyyy-MM", Times.now());// Times.D("1389076676271"));
 		System.out.print(formatTime);
 		System.out.println(Times.D(1389076676271L));
 	}

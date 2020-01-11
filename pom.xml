@@ -61,9 +61,8 @@
 			<version>20090211</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-email</artifactId>
-			<version>1.4</version>
+			<groupId>org.nutz</groupId>
+			<artifactId>nutzboot-starter-email</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.nutz</groupId>
@@ -113,6 +112,10 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutzboot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nutz</groupId>
+			<artifactId>nutzboot-starter-ngrok</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.nutz</groupId>

@@ -23,9 +23,6 @@ public class EmailServiceImpl implements EmailService {
 	protected Ioc ioc;
 
 	@Inject
-	private Configuration configuration;
-
-	@Inject
 	private FreeMarkerConfigurer freeMarkerConfigurer;
 
 	public boolean send(String to, String subject, String templateFile, Map<String, Object> root) {
@@ -49,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
 	private String processTemplateIntoString(String templateFile, Map<String, Object> root) {
 		try {
 			String path = "template" + File.separator + "admin" + File.separator + "common" + File.separator + templateFile + freeMarkerConfigurer.getSuffix();
-			Template template = configuration.getTemplate(path);
+			Template template = freeMarkerConfigurer.getConfiguration().getTemplate(path);
 			template.setEncoding("UTF-8");
 			java.io.StringWriter writer = new java.io.StringWriter();
 			template.process(root, writer);

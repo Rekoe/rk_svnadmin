@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Times;
 
 import freemarker.core.Environment;
@@ -16,6 +17,7 @@ import freemarker.template.TemplateModel;
  * 执行时间标签
  * 
  */
+@IocBean(name = "currentTime")
 public class CurrentTimeDirective implements TemplateDirectiveModel {
 
 	@SuppressWarnings({ "rawtypes" })
