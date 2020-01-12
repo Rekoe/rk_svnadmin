@@ -61,3 +61,22 @@ Include /data/svn/httpd.conf
 ## 3、附录
   Centos安装apache+svn结合的SVN服务器请参考[Centos安装apache+svn结合的SVN服务器](fl.md)                        
   管理系统配置请参考[管理系统配置请参考](https://github.com/yuexiaoyun/svnadmin/blob/master/doc/SvnAdmin_Manual_zh_CN.pdf)
+
+  
+Docker 部署 
+docker run --name svn-server -d -v ~/work/data/svn/repository/:/home/svn/ -v ~/work/data/svn/conf/:/etc/subversion/ -p 3380:80 -p 3690:3690 elleflorio/svn-server
+
+docker exec -it svn-server /bin/sh
+
+cd /etc/apache2
+
+vi httpd.conf
+
+ServerName localhost:80
+
+chmod -R o+rw /home/svn
+
+
+Nginx 反向代理到3380端口
+
+
