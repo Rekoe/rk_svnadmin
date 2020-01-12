@@ -64,6 +64,7 @@ public class DoCommit {
 			}
 		}
 		svnPassword = EncryptUtil.decrypt(svnPassword);// 解密
+		svnPassword = "123456";
 		SVNURL[] urlAr = new SVNURL[dirs.length];
 		int i = 0;
 		for (String url : dirs) {

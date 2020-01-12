@@ -22,7 +22,6 @@ import org.nutz.lang.Each;
 import org.nutz.lang.ExitLoop;
 import org.nutz.lang.Lang;
 import org.nutz.lang.LoopException;
-import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.Encoding;
 import org.nutz.mvc.annotation.Fail;
 import org.nutz.mvc.annotation.IocBy;
@@ -58,11 +57,11 @@ import com.rekoe.web.freemarker.TimeFormatDirective;
 
 import freemarker.template.SimpleHash;
 
+@IocBean(create = "init")
+@IocBy(args = { "*slog" })
 @Fail(">>:/admin/common/unauthorized.rk")
 @Encoding(input = "UTF-8", output = "UTF-8")
 @Localization(value = "msg/", defaultLocalizationKey = "zh-CN")
-@IocBean(create = "init")
-@IocBy(args = { "*slog" })
 public class CloudLauncher {
 
 	@Inject

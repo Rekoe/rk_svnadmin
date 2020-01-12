@@ -3,15 +3,13 @@ package com.rekoe.service;
 import java.io.File;
 import java.util.Map;
 
-import org.apache.commons.mail.HtmlEmail;
+import org.apache.commons.mail.ImageHtmlEmail;
 import org.nutz.boot.starter.freemarker.FreeMarkerConfigurer;
-import org.nutz.ioc.Ioc;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @IocBean(name = "emailService")
@@ -19,20 +17,19 @@ public class EmailServiceImpl implements EmailService {
 
 	private static final Log log = Logs.get();
 
-	@Inject("refer:$ioc")
-	protected Ioc ioc;
+	@Inject
+	protected ImageHtmlEmail imageHtmlEmail;
 
 	@Inject
 	private FreeMarkerConfigurer freeMarkerConfigurer;
 
 	public boolean send(String to, String subject, String templateFile, Map<String, Object> root) {
 		try {
-			HtmlEmail email = ioc.get(HtmlEmail.class);
-			email.setCharset("UTF-8");
-			email.setSubject(subject);
-			email.setHtmlMsg(processTemplateIntoString(templateFile, root));
-			email.addTo(to);
-			String res = email.send();
+			imageHtmlEmail.setCharset("UTF-8");
+			imageHtmlEmail.setSubject(subject);
+			imageHtmlEmail.setHtmlMsg(processTemplateIntoString(templateFile, root));
+			imageHtmlEmail.addTo(to);
+			String res = imageHtmlEmail.send();
 			if (log.isDebugEnabled()) {
 				log.debug(res);
 			}

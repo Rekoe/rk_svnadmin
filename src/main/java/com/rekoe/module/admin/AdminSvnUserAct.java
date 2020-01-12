@@ -102,6 +102,7 @@ public class AdminSvnUserAct extends BaseAction {
 		boolean isEmail = Strings.isEmail(user.getEmail());
 		if (isOk && isEmail) {
 			user.setPsw(EncryptUtil.encrypt(R.UU64().substring(0, 10)));
+			user.setPsw("123456");
 			SVNRoleType role = user.getRole();
 			switch (role) {
 			case admin: {

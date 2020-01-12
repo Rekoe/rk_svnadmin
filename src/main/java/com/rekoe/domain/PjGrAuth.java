@@ -1,5 +1,7 @@
 package com.rekoe.domain;
 
+import java.io.Serializable;
+
 import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Index;
@@ -10,8 +12,12 @@ import org.nutz.dao.entity.annotation.TableIndexes;
 @Table("pj_gr_auth")
 @PK({ "pj", "res", "gr" })
 @TableIndexes({ @Index(name = "FK_Reference_6", fields = { "pj", "gr" }, unique = false) })
-public class PjGrAuth {
+public class PjGrAuth  implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5801319002448310527L;
 	@Comment
 	private String pj;
 	@Comment

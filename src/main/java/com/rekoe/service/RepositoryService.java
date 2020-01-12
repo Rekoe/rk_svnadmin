@@ -124,6 +124,7 @@ public class RepositoryService {
 			}
 		}
 		svnPassword = EncryptUtil.decrypt(svnPassword);// 解密
+		System.out.println(svnPassword);
 		SVNRepository repository = SVNRepositoryFactory.create(SVNURL.parseURIDecoded(svnUrl));
 		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(svnUserName, svnPassword);
 		repository.setAuthenticationManager(authManager);
@@ -159,7 +160,7 @@ public class RepositoryService {
 	}
 
 	public boolean svnMkDirs(SVNURL[] urls) {
-		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "john");
+		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "123456".toCharArray());
 		SVNClientManager manager = SVNClientManager.newInstance();
 		manager.setAuthenticationManager(authManager);
 		SVNCommitClient commitClient = SVNClientManager.newInstance().getCommitClient();
@@ -181,7 +182,7 @@ public class RepositoryService {
 	}
 
 	public static void main(String[] args) throws SVNException {
-		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "123456");
+		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "123456".toCharArray());
 		SVNClientManager manager = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true), authManager);
 		SVNCommitClient commitClient = manager.getCommitClient();
 		commitClient.getDebugLog();

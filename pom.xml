@@ -12,7 +12,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<nutzboot.version>2.3.9-SNAPSHOT</nutzboot.version>
 		<nutz.version>1.r.68-SNAPSHOT</nutz.version>
-		<axe.version>1.5</axe.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencyManagement>
@@ -45,7 +44,7 @@
 		<dependency>
 			<groupId>ch.ethz.ganymed</groupId>
 			<artifactId>ganymed-ssh2</artifactId>
-			<version>build210</version>
+			<version>262</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nutz</groupId>

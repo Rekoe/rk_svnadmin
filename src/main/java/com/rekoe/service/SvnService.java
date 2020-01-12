@@ -17,7 +17,6 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
-import org.nutz.repo.Base64;
 
 import com.rekoe.domain.Pj;
 import com.rekoe.domain.PjAuth;
@@ -25,9 +24,6 @@ import com.rekoe.domain.PjGrUsr;
 import com.rekoe.domain.Usr;
 import com.rekoe.utils.Constants;
 import com.rekoe.utils.EncryptUtil;
-
-import cn.hutool.crypto.digest.DigestAlgorithm;
-import cn.hutool.crypto.digest.DigestUtil;
 
 /**
  * 导出svn配置信息服务层
@@ -66,7 +62,8 @@ public class SvnService {
 	/**
 	 * 导出到配置文件
 	 * 
-	 * @param pj 项目id
+	 * @param pj
+	 *            项目id
 	 */
 	public synchronized void exportConfig(String pj) {
 		this.exportConfig(projectService.fetch(Cnd.where("pj", "=", pj)));
@@ -75,7 +72,8 @@ public class SvnService {
 	/**
 	 * 导出到配置文件
 	 * 
-	 * @param pj 项目
+	 * @param pj
+	 *            项目
 	 */
 	public synchronized void exportConfig(Pj pj) {
 		if (pj == null) {
@@ -102,7 +100,8 @@ public class SvnService {
 	/**
 	 * 导出svn协议的配置信息
 	 * 
-	 * @param pj 项目
+	 * @param pj
+	 *            项目
 	 */
 	private void exportSVN(Pj pj) {
 		// 项目的用户
@@ -119,7 +118,8 @@ public class SvnService {
 	/**
 	 * 导出http(单库)的配置信息
 	 * 
-	 * @param pj 项目
+	 * @param pj
+	 *            项目
 	 */
 	private void exportHTTP(Pj pj) {
 		// 项目的用户
@@ -136,7 +136,8 @@ public class SvnService {
 	/**
 	 * 导出http(多库)的配置信息
 	 * 
-	 * @param root svn root
+	 * @param root
+	 *            svn root
 	 */
 	private void exportHTTPMutil(File root) {
 		String svnRoot = StringUtils.replace(root.getAbsolutePath(), "\\", "/");
@@ -157,7 +158,8 @@ public class SvnService {
 	/**
 	 * 获取有相同svn root的项目的权限列表
 	 * 
-	 * @param rootPath svn root
+	 * @param rootPath
+	 *            svn root
 	 * @return 有相同svn root的项目的权限列表
 	 */
 	private Map<String, List<PjAuth>> getPjAuthsByRootPath(String rootPath) {
@@ -178,7 +180,8 @@ public class SvnService {
 	/**
 	 * 获取项目的权限列表
 	 * 
-	 * @param pj 项目
+	 * @param pj
+	 *            项目
 	 * @return 项目的权限列表
 	 */
 	private Map<String, List<PjAuth>> getPjAuths(String pj) {
@@ -200,7 +203,8 @@ public class SvnService {
 	/**
 	 * 获取项目的组列表
 	 * 
-	 * @param pj 项目
+	 * @param pj
+	 *            项目
 	 * @return 项目的组列表
 	 */
 	private Map<String, List<PjGrUsr>> getPjGrUsrs(String pj) {
@@ -221,7 +225,8 @@ public class SvnService {
 	/**
 	 * 获取有相同svn root的项目的权限列表
 	 * 
-	 * @param rootPath svn root
+	 * @param rootPath
+	 *            svn root
 	 * @return 有相同svn root的项目的权限列表
 	 */
 	private Map<String, List<PjGrUsr>> getPjGrUsrsByRootPath(String rootPath) {
@@ -245,8 +250,10 @@ public class SvnService {
 	/**
 	 * 输出http多库方式的密码文件
 	 * 
-	 * @param root    svn root
-	 * @param usrList 所有用户列表
+	 * @param root
+	 *            svn root
+	 * @param usrList
+	 *            所有用户列表
 	 */
 	private void exportPasswdHTTPMutil(File root, List<Usr> usrList) {
 		File outFile = new File(root, "passwd.http");
@@ -263,8 +270,10 @@ public class SvnService {
 	/**
 	 * 输出http单库方式的密码文件
 	 * 
-	 * @param pj      项目
-	 * @param usrList 项目用户列表
+	 * @param pj
+	 *            项目
+	 * @param usrList
+	 *            项目用户列表
 	 */
 	private void exportPasswdHTTP(Pj pj, List<Usr> usrList) {
 		String path = projectConfigService.getRepoPath(pj);
@@ -279,11 +288,17 @@ public class SvnService {
 		this.write(outFile, contents.toString());
 	}
 
+	public static void main(String[] args) {
+		String shaPsw = "admin:{SHA}" + EncryptUtil.encriptSHA1(EncryptUtil.decrypt("123456"));
+		System.out.println(shaPsw);
+	}
 	/**
 	 * 输出svn方式的密码文件
 	 * 
-	 * @param pj      项目
-	 * @param usrList 项目用户列表
+	 * @param pj
+	 *            项目
+	 * @param usrList
+	 *            项目用户列表
 	 */
 	private void exportPasswdSVN(Pj pj, List<Usr> usrList) {
 		String path = projectConfigService.getRepoPath(pj);
@@ -299,9 +314,12 @@ public class SvnService {
 	/**
 	 * 输出http多库方式的权限文件
 	 * 
-	 * @param root       svn root
-	 * @param pjGrUsrMap 所有的项目组用户列表
-	 * @param resMap     所有的权限列表
+	 * @param root
+	 *            svn root
+	 * @param pjGrUsrMap
+	 *            所有的项目组用户列表
+	 * @param resMap
+	 *            所有的权限列表
 	 */
 	private void exportAuthzHTTPMutil(File root, Map<String, List<PjGrUsr>> pjGrUsrMap, Map<String, List<PjAuth>> resMap) {
 		if (root == null) {
@@ -348,17 +366,20 @@ public class SvnService {
 	/**
 	 * 输出权限配置文件
 	 * 
-	 * @param pj         项目
-	 * @param pjGrUsrMap 项目的组列表
-	 * @param resMap     项目的权限列表
+	 * @param pj
+	 *            项目
+	 * @param pjGrUsrMap
+	 *            项目的组列表
+	 * @param resMap
+	 *            项目的权限列表
 	 */
 	private void exportAuthz(Pj pj, Map<String, List<PjGrUsr>> pjGrUsrMap, Map<String, List<PjAuth>> resMap) {
 		if (pj == null || StringUtils.isBlank(pj.getPj())) {
 			return;
 		}
 		/*
-		 * if(pjGrList == null || pjGrList.size() == 0){ return; } if(pjAuthMap == null
-		 * || pjAuthMap.size() == 0){ return; }
+		 * if(pjGrList == null || pjGrList.size() == 0){ return; } if(pjAuthMap
+		 * == null || pjAuthMap.size() == 0){ return; }
 		 */
 		String path = projectConfigService.getRepoPath(pj);
 		File outFile = new File(path, "/conf/authz");
@@ -401,7 +422,8 @@ public class SvnService {
 	/**
 	 * 输出svn方式的svnserve.conf
 	 * 
-	 * @param pj 项目
+	 * @param pj
+	 *            项目
 	 */
 	private void exportSvnConf(Pj pj) {
 		if (pj == null || StringUtils.isBlank(pj.getPj())) {
@@ -422,7 +444,8 @@ public class SvnService {
 	/**
 	 * 输出http单库方式的httpd.conf文件
 	 * 
-	 * @param pj 项目
+	 * @param pj
+	 *            项目
 	 */
 	private void exportSVNPathConf(Pj pj) {
 		if (pj == null || StringUtils.isBlank(pj.getPj())) {
@@ -455,7 +478,8 @@ public class SvnService {
 	/**
 	 * 输出http多库方式的httpd.conf文件
 	 * 
-	 * @param root svn root
+	 * @param root
+	 *            svn root
 	 */
 	private void exportSVNParentPathConf(File root) {
 		String svnRoot = StringUtils.replace(root.getAbsolutePath(), "\\", "/");
@@ -480,8 +504,10 @@ public class SvnService {
 	/**
 	 * 写文件流
 	 * 
-	 * @param outFile  输出文件
-	 * @param contents 内容
+	 * @param outFile
+	 *            输出文件
+	 * @param contents
+	 *            内容
 	 */
 	private void write(File outFile, String contents) {
 		BufferedWriter writer = null;
@@ -512,14 +538,5 @@ public class SvnService {
 				}
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		String key = "admin" + ":{SHA}" + Base64.encodeToString(DigestUtil.digester(DigestAlgorithm.SHA1).digest("123456"), false);
-		System.out.println(key);
-		String key2 = "admin" + ":{SHA}" + EncryptUtil.encriptSHA1("123456");
-		System.out.println(key2);
-		String decode = EncryptUtil.decrypt("fEqNCco3Yq9h5ZUglD3CZJT4lBs=");
-		System.out.println(decode);
 	}
 }
