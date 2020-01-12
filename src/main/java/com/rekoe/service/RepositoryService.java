@@ -61,11 +61,9 @@ public class RepositoryService {
 	/**
 	 * 获取svn仓库
 	 * 
-	 * @param pjId
-	 *            项目ID
+	 * @param pjId 项目ID
 	 * @return svn仓库
-	 * @throws SVNException
-	 *             svn异常，例如没有权限等
+	 * @throws SVNException svn异常，例如没有权限等
 	 */
 	public SVNRepository getRepository(String pjId) throws SVNException {
 		Pj pj = projectService.fetch(Cnd.where("pj", "=", pjId));
@@ -79,8 +77,7 @@ public class RepositoryService {
 	/**
 	 * 从项目的url中获取svn的url
 	 * 
-	 * @param url
-	 *            项目url
+	 * @param url 项目url
 	 * @return svn url
 	 */
 	public static String parseURL(String url) {
@@ -106,11 +103,9 @@ public class RepositoryService {
 	/**
 	 * 获取svn仓库
 	 * 
-	 * @param pj
-	 *            项目
+	 * @param pj 项目
 	 * @return svn仓库
-	 * @throws SVNException
-	 *             svn异常，例如没有权限等
+	 * @throws SVNException svn异常，例如没有权限等
 	 */
 	@SuppressWarnings("deprecation")
 	public SVNRepository getRepository(Pj pj) throws SVNException {
@@ -185,28 +180,28 @@ public class RepositoryService {
 		return true;
 	}
 
-	public static void main(String[] args) {
-		DAVRepositoryFactory.setup();
-		SVNRepositoryFactoryImpl.setup();
-		FSRepositoryFactory.setup();
+	public static void main(String[] args) throws SVNException {
 		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("admin", "123456");
-		SVNClientManager manager = SVNClientManager.newInstance();
-		manager.setAuthenticationManager(authManager);
-		SVNCommitClient commitClient = SVNClientManager.newInstance().getCommitClient();
+		SVNClientManager manager = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true), authManager);
+		SVNCommitClient commitClient = manager.getCommitClient();
+		commitClient.getDebugLog();
 		try {
-			SVNCommitInfo info = commitClient.doMkDir(new SVNURL[] { SVNURL.parseURIEncoded("http://127.0.0.1:3380/svn/hunnit") }, "commitMessage", null, true);
+			SVNCommitInfo info = commitClient.doMkDir(new SVNURL[] { SVNURL.parseURIEncoded("http://svn.test.com/svn/hunnit/test") }, "commitMessage", null, true);
 			long newRevision = info.getNewRevision();
 			System.out.println(newRevision);
-		} catch (SVNException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		SVNRepository repository = SVNRepositoryFactory.create(SVNURL.parseURIDecoded("http://svn.test.com/svn/hunnit"));
+		repository.setAuthenticationManager(authManager);
+		long lastVersion = repository.getLatestRevision();
+		System.out.println(lastVersion);
 	}
 
 	/**
 	 * 返回项目仓库的根
 	 * 
-	 * @param pj
-	 *            项目
+	 * @param pj 项目
 	 * @return 仓库根
 	 */
 	public String getRepositoryRoot(Pj pj) {
@@ -230,10 +225,8 @@ public class RepositoryService {
 	/**
 	 * 获取项目指定路径的svn仓库文件系统
 	 * 
-	 * @param pj
-	 *            项目
-	 * @param path
-	 *            相对仓库根目录的路径
+	 * @param pj   项目
+	 * @param path 相对仓库根目录的路径
 	 * @return 目录或文件系统
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -268,8 +261,7 @@ public class RepositoryService {
 	 * <code>createLocalRepository(path, null, enableRevisionProperties, force)</code>
 	 * .
 	 * 
-	 * @param respository
-	 *            a repository root location
+	 * @param respository a repository root location
 	 * @return a local URL (file:///) of a newly created repository
 	 */
 	public static SVNURL createLocalRepository(File respository) {

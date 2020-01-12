@@ -1,21 +1,15 @@
 package com.rekoe.utils;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 import org.nutz.repo.Base64;
+
+import cn.hutool.crypto.digest.DigestAlgorithm;
+import cn.hutool.crypto.digest.DigestUtil;
 
 /**
  * 加密工具
  */
 public class EncryptUtil {
 
-	private final static Log log = Logs.get();
-	/**
-	 * 
-	 */
 	private static final String cvt = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789#@$";
 
 	/**
@@ -26,8 +20,7 @@ public class EncryptUtil {
 	/**
 	 * 加密
 	 * 
-	 * @param str
-	 *            明文
+	 * @param str 明文
 	 * @return 密文
 	 */
 	public static String encrypt(String str) {
@@ -63,16 +56,10 @@ public class EncryptUtil {
 		return ret.toString();
 	}
 
-	public static void main(String[] args) {
-		String str = "abc";
-		System.out.println(encrypt(str));
-		System.out.println(decrypt(encrypt(str)));
-	}
 	/**
 	 * 解密
 	 * 
-	 * @param str
-	 *            密文
+	 * @param str 密文
 	 * @return 明文
 	 */
 	public static String decrypt(String str) {
@@ -111,17 +98,11 @@ public class EncryptUtil {
 	/**
 	 * apache SHA1 加密
 	 * 
-	 * @param str
-	 *            明文
+	 * @param str 明文
 	 * @return 密文
 	 */
 	public static String encriptSHA1(String str) {
-		try {
-			return Base64.encodeToString(MessageDigest.getInstance("SHA1").digest(str.getBytes()), false);
-		} catch (NoSuchAlgorithmException e) {
-			log.error(e);
-			throw new RuntimeException(e);
-		}
+		return Base64.encodeToString(DigestUtil.digester(DigestAlgorithm.SHA1).digest(str), false);
 	}
 
 }
